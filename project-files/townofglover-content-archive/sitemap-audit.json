@@ -1,0 +1,66 @@
+[
+  {
+    "url": "https://townofglover.com/wp-sitemap.xml",
+    "final_url": "https://townofglover.com/wp-sitemap.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 5,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/sitemap_index.xml",
+    "final_url": "",
+    "status": "",
+    "content_type": "",
+    "loc_count": 0,
+    "error": "Failed to fetch https://townofglover.com/sitemap_index.xml: HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://townofglover.com/sitemap.xml",
+    "final_url": "https://townofglover.com/wp-sitemap.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 5,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/wp-sitemap-posts-post-1.xml",
+    "final_url": "https://townofglover.com/wp-sitemap-posts-post-1.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 488,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/wp-sitemap-posts-page-1.xml",
+    "final_url": "https://townofglover.com/wp-sitemap-posts-page-1.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 52,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/wp-sitemap-taxonomies-category-1.xml",
+    "final_url": "https://townofglover.com/wp-sitemap-taxonomies-category-1.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 10,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/wp-sitemap-taxonomies-post_tag-1.xml",
+    "final_url": "https://townofglover.com/wp-sitemap-taxonomies-post_tag-1.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 1,
+    "error": ""
+  },
+  {
+    "url": "https://townofglover.com/wp-sitemap-users-1.xml",
+    "final_url": "https://townofglover.com/wp-sitemap-users-1.xml",
+    "status": 200,
+    "content_type": "application/xml",
+    "loc_count": 5,
+    "error": ""
+  }
+]

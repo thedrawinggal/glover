@@ -1,0 +1,23 @@
+# Local operating-system and generated files.
+.DS_Store
+**/.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local WordPress configuration, generated content, and logs.
+wp-config.php
+wp-content/debug.log
+wp-content/*.log
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+
+# ACF Pro is installed locally but must not be redistributed publicly.
+wp-content/plugins/advanced-custom-fields-pro/
+
+# Local working output and large downloaded source-site binaries.
+project-files/tmp/
+project-files/townofglover-content-archive/.document-organization-cache.json
+project-files/townofglover-content-archive/attachments/
+project-files/townofglover-content-archive/images/
+project-files/townofglover-content-archive/raw-html/

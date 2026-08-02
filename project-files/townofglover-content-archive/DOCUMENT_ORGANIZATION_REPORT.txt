@@ -1,0 +1,77 @@
+GLOVER DOCUMENT ORGANIZATION REPORT
+
+Files inventoried: 990
+Renames applied: yes
+Files needing manual review: 33
+Exact duplicate copies retained and labeled: 15
+
+READ METHODS
+- embedded-text: 509
+- ocr: 480
+- strings: 1
+
+DOCUMENT TYPES
+- Meeting Minutes: 664
+- Meeting Agenda: 103
+- Flyer: 34
+- Town Report: 19
+- Notice: 19
+- Report: 18
+- Policy: 16
+- Ordinance: 14
+- Letter: 8
+- Bylaw: 8
+- Plans: 7
+- Form: 6
+- Town Plan: 6
+- Town Meeting Minutes: 6
+- Proposal: 6
+- Plan: 5
+- Article: 4
+- Public Hearing Notice: 4
+- Press Release: 3
+- Map: 3
+- Contract: 2
+- Event Calendar: 2
+- Budget: 2
+- Town Meeting Warning: 2
+- Meeting Summary: 2
+- Emergency Action Plan: 2
+- Engineering Analysis: 2
+- Fact Sheet: 2
+- Application: 2
+- Presentation: 2
+- Petition: 2
+- Survey: 2
+- Election Document: 1
+- Tax Document: 1
+- Rules and Regulations: 1
+- Technical Review: 1
+- Regulation: 1
+- Timeline: 1
+- Grant Summary: 1
+- Bid Documents: 1
+- Ordinance Amendment Notice: 1
+- Guidelines: 1
+- Resource List: 1
+- Reference Guide: 1
+- Guidance: 1
+
+ORGANIZATIONS
+- Glover Selectboard: 423
+- Town of Glover: 195
+- Glover Planning Commission: 106
+- Glover Energy Committee: 87
+- Glover Cemetery Commission: 63
+- Glover Equity Committee: 43
+- Glover Trails Committee: 37
+- Glover Budget and Finance Committee: 19
+- Glover Town Meeting: 12
+- Glover Board of Civil Authority: 2
+- Glover ARPA Advisory Committee: 2
+- Glover Hazard Mitigation Committee: 1
+
+NAMING CONVENTION
+- YYYY-MM-DD - Organization - Document Type - Subject - Status.ext
+- Undated is used only when no reliable date was found in the document or old filename.
+- Exact duplicate files are retained and explicitly labeled Duplicate 2, etc.
