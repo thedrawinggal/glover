@@ -1,0 +1,49 @@
+@use 'sass:math';
+
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin position-center($position, $direction) {
+  @if $direction == "vertical" {
+    position: $position;
+    top: 50%;
+    @include transform(translateY(-50%));
+  }
+
+  @if $direction == "horizontal" {
+    position: $position;
+    left: 50%;
+    @include transform(translateX(-50%));
+  }
+
+  @if $direction == "both" {
+    position: $position;
+    left: 50%;
+    top: 50%;
+    @include transform(translateX(-50%) translateY(-50%));
+  }
+}
+
+@mixin transform($property) {
+  -moz-transform: $property;
+  -webkit-transform: $property;
+  -ms-transform: $property;
+  transform: $property;
+}
+
+@mixin animation($property) {
+  -moz-animation: $property;
+  -webkit-animation: $property;
+  -ms-animation: $property;
+  animation: $property;
+}
+
+// assume rem size of 16px (font-size: 100%)
+@function px-to-rem($px-value) {
+  @return math.div($px-value, 16) + rem;
+}

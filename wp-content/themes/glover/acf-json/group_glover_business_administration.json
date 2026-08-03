@@ -1,0 +1,210 @@
+{
+    "key": "group_glover_business_administration",
+    "title": "Business Directory: Administration",
+    "fields": [
+        {
+            "key": "field_glover_business_admin_guidance",
+            "label": "Private directory administration",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "These fields are for Town administration and verification only. Do not display them publicly.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_glover_business_listing_contact_name",
+            "label": "Listing Contact Name",
+            "name": "listing_contact_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Private contact responsible for confirming or correcting this listing.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_listing_contact_email",
+            "label": "Listing Contact Email",
+            "name": "listing_contact_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Private email address; never display it unless it is also entered as the public email address.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_listing_source",
+            "label": "Listing Source",
+            "name": "listing_source",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "business_owner": "Business owner or authorized representative",
+                "town_research": "Town research",
+                "chamber": "Barton Area Chamber of Commerce",
+                "other": "Other verified source"
+            },
+            "allow_null": 1,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "default_value": false,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_glover_business_source_url",
+            "label": "Source URL",
+            "name": "source_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Optional supporting page used to verify the listing.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_glover_business_consent_confirmed",
+            "label": "Publication Consent Confirmed",
+            "name": "consent_confirmed",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Confirm when the business owner or authorized representative has approved publication.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Consent has been confirmed",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Confirmed",
+            "ui_off_text": "Not confirmed"
+        },
+        {
+            "key": "field_glover_business_last_verified",
+            "label": "Last Verified",
+            "name": "last_verified",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "Record the most recent date on which the public information was checked.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "default_to_current_date": 0
+        },
+        {
+            "key": "field_glover_business_review_due",
+            "label": "Review Due",
+            "name": "review_due",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "Optional date for the next accuracy review.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "default_to_current_date": 0
+        },
+        {
+            "key": "field_glover_business_internal_notes",
+            "label": "Internal Notes",
+            "name": "internal_notes",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Private verification or maintenance notes. Do not enter sensitive information that the Town does not need to retain.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "new_lines": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "business"
+            }
+        ]
+    ],
+    "menu_order": 1,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [],
+    "active": true,
+    "description": "Private verification, consent, source, and maintenance information for business directory records.",
+    "show_in_rest": false,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1785768569
+}

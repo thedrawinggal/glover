@@ -1,0 +1,596 @@
+{
+    "key": "group_glover_business_public_listing",
+    "title": "Business Directory: Public Listing",
+    "fields": [
+        {
+            "key": "field_glover_business_listing_tab",
+            "label": "Listing Details",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_business_summary",
+            "label": "Business Summary",
+            "name": "business_summary",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Write a concise, plain-language description of what the business provides. Do not include contact details that belong in the fields below.",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "new_lines": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_glover_business_categories",
+            "label": "Business Categories",
+            "name": "business_categories",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Select the one approved primary category that best describes this business. Use Business Offerings for additional goods, services, or visitor experiences.",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "business_category",
+            "field_type": "radio",
+            "multiple": 0,
+            "allow_null": 0,
+            "return_format": "id",
+            "add_term": 0,
+            "load_terms": 1,
+            "save_terms": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_business_offerings",
+            "label": "Business Offerings",
+            "name": "business_offerings",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Select every confirmed offering that applies to this business. Leave this field blank when none of the approved offerings apply.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "business_offering",
+            "field_type": "checkbox",
+            "multiple": 1,
+            "allow_null": 1,
+            "return_format": "id",
+            "add_term": 0,
+            "load_terms": 1,
+            "save_terms": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_business_contact_tab",
+            "label": "Public Contact",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_business_contact_guidance",
+            "label": "Contact requirement",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Provide at least one public contact method: phone number, email address, or website.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_glover_business_phone",
+            "label": "Public Phone Number",
+            "name": "phone_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Enter the number as it should be displayed publicly.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_email",
+            "label": "Public Email Address",
+            "name": "public_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Use only an address approved for publication.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_website",
+            "label": "Website",
+            "name": "website_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Enter the complete URL, including https:\/\/.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_glover_business_social_links",
+            "label": "Social Links",
+            "name": "social_links",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add only official public profiles maintained by the business.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "button_label": "Add Social Link",
+            "rows_per_page": 10,
+            "collapsed": "field_glover_business_social_platform",
+            "min": 0,
+            "max": 0,
+            "sub_fields": [
+                {
+                    "key": "field_glover_business_social_platform",
+                    "label": "Platform",
+                    "name": "platform",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "35",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "facebook": "Facebook",
+                        "instagram": "Instagram",
+                        "linkedin": "LinkedIn",
+                        "youtube": "YouTube",
+                        "other": "Other"
+                    },
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "default_value": false,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_glover_business_social_links"
+                },
+                {
+                    "key": "field_glover_business_social_url",
+                    "label": "Profile URL",
+                    "name": "profile_url",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "65",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_glover_business_social_links"
+                }
+            ]
+        },
+        {
+            "key": "field_glover_business_location_tab",
+            "label": "Location",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_business_location_type",
+            "label": "Location Type",
+            "name": "location_type",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "Choose whether the business address may be displayed publicly.",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "public": "Public business location",
+                "private": "Home-based or private location — do not publish a street address",
+                "service_area": "Service-area or online business"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "save_other_choice": 0,
+            "layout": "vertical",
+            "return_format": "value",
+            "default_value": ""
+        },
+        {
+            "key": "field_glover_business_address_line_1",
+            "label": "Street Address",
+            "name": "street_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "public"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "60",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_address_line_2",
+            "label": "Address Line 2",
+            "name": "address_line_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "public"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "40",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_town",
+            "label": "Town",
+            "name": "town",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "public"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "45",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Glover",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_state",
+            "label": "State",
+            "name": "state",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "public"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "VT",
+            "maxlength": 2,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_postal_code",
+            "label": "ZIP Code",
+            "name": "zip_code",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Enter the verified ZIP code for this business. No default is applied.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "public"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "35",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glover_business_service_area",
+            "label": "Service Area or Location Information",
+            "name": "service_area",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Describe the area served or explain how customers access the business without publishing a private address.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "private"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_glover_business_location_type",
+                        "operator": "==",
+                        "value": "service_area"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "new_lines": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_glover_business_hours_access_tab",
+            "label": "Hours and Access",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_business_availability_type",
+            "label": "Availability",
+            "name": "availability_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "regular": "Regular public hours",
+                "seasonal": "Seasonal hours",
+                "appointment": "By appointment",
+                "no_public_hours": "No public hours",
+                "online": "Online only"
+            },
+            "allow_null": 1,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "default_value": false,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_glover_business_hours_information",
+            "label": "Hours Information",
+            "name": "hours_information",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Enter current hours, seasonal details, or appointment instructions in plain language.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "new_lines": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_glover_business_accessibility_information",
+            "label": "Accessibility Information",
+            "name": "accessibility_information",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional. Include only specific information confirmed by the business, such as step-free entrances, accessible parking, or accessible restrooms. Do not make a general accessibility claim.",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "new_lines": "",
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content",
+        "excerpt",
+        "discussion",
+        "comments",
+        "format",
+        "categories",
+        "tags",
+        "send-trackbacks"
+    ],
+    "active": true,
+    "description": "Publicly displayed business directory information. Business names use the WordPress title, and the featured image may be used for a logo or representative image.",
+    "show_in_rest": false,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1785771307
+}

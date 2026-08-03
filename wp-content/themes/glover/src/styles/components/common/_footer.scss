@@ -1,0 +1,18 @@
+.site-footer{
+	
+	.cultivate-tag {
+
+      a{
+        font-size: 12px; //explicit use px intentional
+        font-weight: 400; 
+        color:#000000; 
+        line-height: 24px; //explicit use of px intentional
+      }
+
+      .cultivate-logo-svg:hover .svg-path {
+          fill: #E21B95;
+          transition: fill 0.2s ease;
+      }
+    }
+
+}

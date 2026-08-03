@@ -1,0 +1,25 @@
+.single-image-container {
+  .single-image {
+    &.single-image-desktop {
+      display: none;
+    }
+
+    &.single-image-mobile {
+      display: block;
+    }
+  }
+}
+
+@media(min-width: $SM) {
+  .single-image-container {
+    .single-image {
+      &.single-image-desktop {
+        display: block;
+      }
+
+      &.single-image-mobile {
+        display: none !important;
+      }
+    }
+  }
+}

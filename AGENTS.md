@@ -26,23 +26,26 @@ The requirements in this section apply to every phase of the project, including 
 
 ### Accessibility and ADA compliance
 
-Accessibility is a release requirement, not an optional enhancement.
+Accessibility is a required design and implementation consideration, even when dedicated accessibility testing has not been requested.
 
-- Review every design, component, page, interaction, content change, document, media asset, and third-party integration for accessibility before treating it as approved or implementation-ready.
+- Every feature plan must identify the applicable accessibility requirements, affected users and states, relevant WCAG success criteria when known, and accessibility-focused implementation and review criteria.
+- Consider accessibility while designing and building every component, page, interaction, content change, document, media asset, and third-party integration. Do not postpone known accessibility requirements until a later testing phase.
 - Use WCAG 2.1 Level AA as the minimum legal baseline for this municipal website under ADA Title II. Target WCAG 2.2 Level AA for all new and substantially revised work unless an approved project constraint requires otherwise. A project constraint never permits silently ignoring a WCAG 2.1 Level AA failure.
 - Flag every known or suspected accessibility failure. Do not omit, minimize, or silently accept a failure, and do not describe a design or implementation as accessible while known failures remain.
 - For each finding, record the affected design, content, component, state, or workflow; the affected users and practical impact; the applicable WCAG success criterion and conformance level when known; the severity; and a recommended remediation.
 - Do not approve an inaccessible design as implementation-ready. Return it with clearly identified findings and required corrections.
-- Recheck accessibility after implementation. Design approval does not establish that the finished implementation is compliant.
-- Use both automated checks and manual review. Automated results alone are never sufficient to claim accessibility or ADA compliance.
-- Manual review must cover all relevant states and responsive layouts, including keyboard-only operation, visible and logical focus, headings and landmarks, semantic names and relationships, screen-reader output, text and non-text contrast, zoom and reflow, touch target size, forms and error handling, status messages, motion and animation, alternative text, captions or transcripts, and accessible downloads.
+- Dedicated accessibility testing is on demand. Do not run automated accessibility scans, manual keyboard or screen-reader audits, contrast audits, or formal ADA/WCAG compliance reviews unless the repository owner explicitly requests them in the current conversation.
+- When dedicated accessibility testing is requested, recheck the implemented result; design review alone does not establish that the finished implementation is compliant.
+- When dedicated accessibility testing is requested, use both automated checks and manual review. Automated results alone are never sufficient to claim accessibility or ADA compliance.
+- Requested manual review must cover all relevant states and responsive layouts, including keyboard-only operation, visible and logical focus, headings and landmarks, semantic names and relationships, screen-reader output, text and non-text contrast, zoom and reflow, touch target size, forms and error handling, status messages, motion and animation, alternative text, captions or transcripts, and accessible downloads.
 - Include hover, focus, active, disabled, loading, empty, validation, error, success, open, and closed states when those states exist. Accessibility requirements apply to the complete user journey, not only the default screen.
 - Do not rely on color, position, shape, sound, or motion alone to communicate meaning or status.
 - Require meaningful alternative text for informative images and empty alternative text for decorative images. Complex images, maps, charts, and diagrams require an equivalent accessible explanation when their information is not otherwise available in nearby text.
 - Require captions for prerecorded video with meaningful audio, transcripts or equivalent alternatives where applicable, and controls for media or motion that starts automatically.
 - Treat PDFs, forms, presentations, spreadsheets, and other downloadable public materials as part of the accessibility review. Do not assume that linking to a document makes the underlying information accessible.
 - Treat third-party services and embedded tools as part of the user experience. Flag accessibility barriers even when the project cannot directly modify the third-party system, and identify an equivalent accessible path when one is supported.
-- If complete verification is not possible, state exactly what was not tested and why. Label the result as unverified rather than compliant.
+- If dedicated accessibility testing was not requested, state that accessibility requirements were considered during planning and implementation but formal accessibility testing was not performed. Label the result as unverified rather than accessible, ADA compliant, or WCAG conformant.
+- If dedicated testing was requested but complete verification was not possible, state exactly what was not tested and why. Label the result as unverified rather than compliant.
 
 Reference standards:
 
@@ -77,11 +80,11 @@ This approval gate is a critical stop condition for new feature requests, archit
 
 ### Verification and handoff
 
-- Verify changes in proportion to their risk, including relevant accessibility checks.
+- Verify changes in proportion to their risk. Perform dedicated accessibility testing only when the repository owner explicitly requests it in the current conversation.
 - Before asking the user to review a local page, verify the exact local URL yourself. Confirm that the intended worktree or source revision, development services, ports, and target page are current and reachable.
 - If the local environment is unavailable, stale, or serving the wrong project state, report that clearly and do not provide an unverified review link.
 - Include important review caveats with any link, such as sample data, disabled integrations, incomplete accessibility verification, or unavailable production workflows.
-- Final handoffs must state what changed, what was verified, all accessibility findings and their status, any remaining risks or open questions, and the recommended next approval gate.
+- Final handoffs must state what changed, what was verified, all known or suspected accessibility findings and their status, whether dedicated accessibility testing was requested and performed, any remaining risks or open questions, and the recommended next approval gate.
 
 ## 1. Start with user needs
 

@@ -1,0 +1,79 @@
+$GOOGLE-MAP-HEIGHT-MOBILE: 400px;
+$GOOGLE-MAP-HEIGHT-TABLET: 550px;
+$GOOGLE-MAP-HEIGHT-DESKTOP: 700px;
+
+.cltv8-google-map-container {
+  .acf-map {
+    width: 100%;
+    height: $GOOGLE-MAP-HEIGHT-MOBILE;
+
+    // hide default markers
+    .marker {
+      display: none;
+    }
+
+    #mapCanvas {
+      height: 100%;
+
+      img {
+        max-width: inherit !important;
+      }
+
+      .gm-style-moc {
+        opacity: 0 !important;
+      }
+
+      .gm-style-iw-t {
+        bottom: 75px !important;
+
+        .gm-style-iw-tc {
+          filter: none !important;
+          -webkit-filter: none !important;
+        }
+      }
+
+      // marker popout style overrides
+      .gm-style-iw.gm-style-iw-c {
+        padding-left: 20px;
+        padding-right: 20px !important;
+        padding-bottom: 0 !important;
+        border-radius: 0;
+
+        .gm-style-iw-chr {
+          button.gm-ui-hover-effect {
+            width: 36px !important;
+            height: 36px !important;
+
+            > span {
+              margin-right: 0 !important;
+              position: relative !important;
+              right: -5.5px !important;
+            }
+          }
+        }
+
+        .gm-style-iw-d {
+          padding-right: 0 !important;
+          margin-right: 0 !important;
+          overflow: unset !important;
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: $MD) {
+  .cltv8-google-map-container {
+    .acf-map {
+      height: $GOOGLE-MAP-HEIGHT-TABLET;
+    }
+  }
+}
+
+@media(min-width: $LG) {
+  .cltv8-google-map-container {
+    .acf-map {
+      height: $GOOGLE-MAP-HEIGHT-DESKTOP;
+    }
+  }
+}

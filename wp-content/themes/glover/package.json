@@ -1,0 +1,16 @@
+{
+  "name": "cultivate-theme",
+  "version": "2.0.0",
+  "description": "base theme for cultivate wordpress projects.",
+  "scripts": {
+    "dev": "parcel watch src/js/app.js src/styles/app.scss --no-cache",
+    "build": "parcel build src/js/app.js src/styles/app.scss --no-cache"
+  },
+  "dependencies": {
+    "gsap": "file:gsap-bonus.tgz"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.12.0",
+    "parcel": "^2.12.0"
+  }
+}

@@ -1,0 +1,98 @@
+// This styles the filter sets defined in /components/common/cltv8-ajax-list-filter-set.php
+// The styles for checkboxes and padding/bottom margins will probably need to change for each project.
+// TODO update these colors for each project.
+$CHECKBOX-BORDER-COLOR: green;
+$CHECKBOX-CHECK-MARK-COLOR: red;
+
+.list-filter-set {
+  display: none;
+  flex-direction: column;
+  margin-bottom: 30px;
+
+  &.showing {
+    display: flex;
+  }
+
+  .list-filter-set-label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+
+  .list-filter-options {
+    display: flex;
+    flex-direction: column;
+
+    .list-filter {
+      display: none;
+      flex-direction: column;
+      transition: .15s ease-in-out;
+      cursor: pointer;
+      margin-bottom: 10px;
+
+      &.showing {
+        display: flex;
+      }
+
+      &.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+        cursor: default;
+      }
+
+      &:hover {
+        opacity: $COMMON-HOVER-OPACITY;
+      }
+
+      .list-filter-content {
+        display: flex;
+        flex-direction: row;
+
+        .list-filter-checkbox {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          border: 2px solid $CHECKBOX-BORDER-COLOR;
+          width: 18px;
+          height: 18px;
+
+          .list-filter-checkbox-mark {
+            opacity: 0;
+            background-color: $CHECKBOX-CHECK-MARK-COLOR;
+            width: 8px;
+            height: 8px;
+          }
+        }
+
+        .list-filter-label {
+          padding-left: 12px;
+        }
+      }
+
+      &.selected {
+        .list-filter-content {
+          .list-filter-checkbox {
+            .list-filter-checkbox-mark {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media(min-width: $MD) {
+  .list-filter-set {
+    .list-filter-set-label {
+      margin-bottom: 20px;
+    }
+
+    .list-filter-options {
+      .list-filter {
+        margin-bottom: 18px;
+      }
+    }
+  }
+}

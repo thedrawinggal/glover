@@ -1,0 +1,52 @@
+{
+    "key": "group_glover_department_fields",
+    "title": "Department Details",
+    "fields": [
+        {
+            "key": "field_glover_department_color",
+            "label": "Calendar Color",
+            "name": "department_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Choose the color used to distinguish this department in calendar filters and event listings.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "enable_opacity": 0,
+            "return_format": "string",
+            "show_palette": 0,
+            "palette": "",
+            "allow_in_bindings": 0,
+            "custom_palette_source": "",
+            "palette_colors": "",
+            "show_color_wheel": true
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "department"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [],
+    "active": true,
+    "description": "Calendar display settings for each department term.",
+    "show_in_rest": 1,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1785765866
+}
