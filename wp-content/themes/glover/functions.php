@@ -368,3 +368,6 @@ add_filter('acf/load_field/type=wysiwyg', function ($field) {
 
     return $field;
 });
+
+// Major features are loaded through isolated coordinator includes.
+require_once get_template_directory() . '/includes/features/event-calendar/event-calendar.php';

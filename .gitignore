@@ -1,23 +1,26 @@
-# Local operating-system and generated files.
-.DS_Store
+# This repository intentionally contains custom WordPress theme code only.
+/*
+!/.gitignore
+!/wp-content/
+
+# Exclude everything under wp-content except themes.
+/wp-content/*
+!/wp-content/themes/
+
+# WordPress default themes can be reinstalled from WordPress itself.
+/wp-content/themes/twentytwenty*/
+
+# Local metadata and generated dependencies.
 **/.DS_Store
-__pycache__/
-*.py[cod]
+**/.git/
+**/node_modules/
+**/.cache/
+**/.parcel-cache/
+**/.sass-cache/
+**/*.log
 
-# Local WordPress configuration, generated content, and logs.
-wp-config.php
-wp-content/debug.log
-wp-content/*.log
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-
-# ACF Pro is installed locally but must not be redistributed publicly.
-wp-content/plugins/advanced-custom-fields-pro/
-
-# Local working output and large downloaded source-site binaries.
-project-files/tmp/
-project-files/townofglover-content-archive/.document-organization-cache.json
-project-files/townofglover-content-archive/attachments/
-project-files/townofglover-content-archive/images/
-project-files/townofglover-content-archive/raw-html/
+# Local bundles, theme backups, and licensed package archives.
+**/*.zip
+**/*.tar
+**/*.tar.gz
+**/*.tgz

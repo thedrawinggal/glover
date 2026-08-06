@@ -51,12 +51,12 @@
             "save_options": 0
         },
         {
-            "key": "field_glover_event_department",
-            "label": "Department",
-            "name": "event_department",
+            "key": "field_glover_event_organizer",
+            "label": "Organizer",
+            "name": "event_organizer",
             "aria-label": "",
             "type": "taxonomy",
-            "instructions": "Select the department responsible for this event.",
+            "instructions": "Select the town body, office, service, or community organization responsible for this event.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -64,7 +64,7 @@
                 "class": "",
                 "id": ""
             },
-            "taxonomy": "department",
+            "taxonomy": "organizer",
             "add_term": 0,
             "save_terms": 1,
             "load_terms": 1,
@@ -140,7 +140,7 @@
             "sub_fields": [
                 {
                     "key": "field_glover_contact_name",
-                    "label": "Person or Department",
+                    "label": "Person or Organization",
                     "name": "name",
                     "aria-label": "",
                     "type": "text",
@@ -230,7 +230,7 @@
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
-                "class": "",
+                "class": "glover-event-schedule-tab",
                 "id": ""
             },
             "placement": "top",
@@ -238,24 +238,22 @@
             "selected": 0
         },
         {
-            "key": "field_glover_all_day",
-            "label": "All-Day Event",
-            "name": "all_day",
+            "key": "field_glover_schedule_date_time_section",
+            "label": "Date and time",
+            "name": "",
             "aria-label": "",
-            "type": "true_false",
-            "instructions": "Turn this on when no start or end time should be shown.",
+            "type": "message",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
-                "class": "",
+                "class": "glover-event-section-heading glover-event-date-time-section",
                 "id": ""
             },
-            "default_value": 0,
-            "ui": 1,
-            "message": "",
-            "ui_on_text": "",
-            "ui_off_text": ""
+            "message": "Set when the event starts and ends.",
+            "new_lines": "wpautop",
+            "esc_html": 0
         },
         {
             "key": "field_glover_start_date",
@@ -263,12 +261,31 @@
             "name": "start_date",
             "aria-label": "",
             "type": "date_picker",
-            "instructions": "",
+            "instructions": "For a repeating event, this is the first occurrence date.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "glover-event-start-date",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Y-m-d",
+            "first_day": 0,
+            "default_to_current_date": 0
+        },
+        {
+            "key": "field_glover_end_date",
+            "label": "End Date",
+            "name": "end_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "Leave blank when the event ends on the start date.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "glover-event-end-date",
                 "id": ""
             },
             "display_format": "F j, Y",
@@ -295,30 +312,11 @@
             ],
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "glover-event-start-time",
                 "id": ""
             },
             "display_format": "g:i a",
             "return_format": "H:i:s"
-        },
-        {
-            "key": "field_glover_end_date",
-            "label": "End Date",
-            "name": "end_date",
-            "aria-label": "",
-            "type": "date_picker",
-            "instructions": "Leave blank when the event ends on the start date.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "display_format": "F j, Y",
-            "return_format": "Y-m-d",
-            "first_day": 0,
-            "default_to_current_date": 0
         },
         {
             "key": "field_glover_end_time",
@@ -339,86 +337,57 @@
             ],
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "glover-event-end-time",
                 "id": ""
             },
             "display_format": "g:i a",
             "return_format": "H:i:s"
         },
         {
-            "key": "field_glover_is_recurring",
-            "label": "Repeating Event",
-            "name": "is_recurring",
+            "key": "field_glover_all_day",
+            "label": "All day",
+            "name": "all_day",
             "aria-label": "",
             "type": "true_false",
-            "instructions": "Turn this on for a meeting or program that follows a repeating schedule.",
+            "instructions": "Choose this when no start or end time should be shown.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
-                "class": "",
+                "width": "50",
+                "class": "glover-event-all-day",
                 "id": ""
             },
             "default_value": 0,
-            "ui": 1,
-            "ui_on_text": "Repeats",
-            "ui_off_text": "One time",
-            "message": ""
-        },
-        {
-            "key": "field_glover_tab_recurrence",
-            "label": "Recurrence",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_glover_is_recurring",
-                        "operator": "==",
-                        "value": "1"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
+            "ui": 0,
+            "message": "All day",
+            "ui_on_text": "",
+            "ui_off_text": ""
         },
         {
             "key": "field_glover_recurrence_pattern",
-            "label": "Recurrence Pattern",
+            "label": "Repeat",
             "name": "recurrence_pattern",
             "aria-label": "",
             "type": "select",
-            "instructions": "Choose the simplest pattern that matches the real schedule.",
+            "instructions": "Choose the option that best matches the schedule. Select Custom when you need a different interval, weekdays, or monthly rule.",
             "required": 1,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_glover_is_recurring",
-                        "operator": "==",
-                        "value": "1"
-                    }
-                ]
-            ],
+            "conditional_logic": 0,
             "wrapper": {
-                "width": "",
-                "class": "",
+                "width": "50",
+                "class": "glover-event-repeat",
                 "id": ""
             },
             "choices": {
+                "none": "Does not repeat",
+                "daily": "Daily",
                 "weekly": "Weekly",
-                "monthly_weekday": "Monthly by Weekday",
-                "custom_dates": "Custom Dates"
+                "monthly": "Monthly",
+                "annually": "Annually",
+                "weekdays": "Every weekday (Monday to Friday)",
+                "custom": "Custom",
+                "selected_dates": "Selected dates"
             },
-            "default_value": false,
+            "default_value": "none",
             "return_format": "value",
             "allow_null": 0,
             "ui": 1,
@@ -429,32 +398,51 @@
             "save_options": 0
         },
         {
+            "key": "field_glover_schedule_custom_repeat_section",
+            "label": "Custom recurrence",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "custom"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "glover-event-section-heading glover-event-custom-repeat-section",
+                "id": ""
+            },
+            "message": "Set the interval, days, monthly rule, and when the series ends.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
             "key": "field_glover_recurrence_interval",
-            "label": "Interval",
+            "label": "Repeat every",
             "name": "recurrence_interval",
             "aria-label": "",
             "type": "number",
-            "instructions": "Use 1 for every week or month, 2 for every other week or month.",
+            "instructions": "",
             "required": 1,
             "conditional_logic": [
                 [
                     {
                         "field": "field_glover_recurrence_pattern",
                         "operator": "==",
-                        "value": "weekly"
-                    }
-                ],
-                [
-                    {
-                        "field": "field_glover_recurrence_pattern",
-                        "operator": "==",
-                        "value": "monthly_weekday"
+                        "value": "custom"
                     }
                 ]
             ],
             "wrapper": {
-                "width": "33",
-                "class": "",
+                "width": "35",
+                "class": "glover-event-repeat-interval",
                 "id": ""
             },
             "default_value": 1,
@@ -466,35 +454,78 @@
             "append": ""
         },
         {
-            "key": "field_glover_recurrence_days",
-            "label": "Days of the Week",
-            "name": "recurrence_days",
+            "key": "field_glover_recurrence_unit",
+            "label": "Unit",
+            "name": "recurrence_unit",
             "aria-label": "",
-            "type": "checkbox",
-            "instructions": "Select every weekday on which this event occurs.",
+            "type": "select",
+            "instructions": "",
             "required": 1,
             "conditional_logic": [
                 [
                     {
                         "field": "field_glover_recurrence_pattern",
                         "operator": "==",
-                        "value": "weekly"
+                        "value": "custom"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "65",
+                "class": "glover-event-repeat-unit",
+                "id": ""
+            },
+            "choices": {
+                "day": "day",
+                "week": "week",
+                "month": "month",
+                "year": "year"
+            },
+            "default_value": "week",
+            "return_format": "value",
+            "allow_null": 0,
+            "ui": 0,
+            "multiple": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_glover_recurrence_days",
+            "label": "Repeat on",
+            "name": "recurrence_days",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "custom"
+                    },
+                    {
+                        "field": "field_glover_recurrence_unit",
+                        "operator": "==",
+                        "value": "week"
                     }
                 ]
             ],
             "wrapper": {
                 "width": "",
-                "class": "",
+                "class": "glover-event-repeat-days",
                 "id": ""
             },
             "choices": {
+                "sunday": "Sunday",
                 "monday": "Monday",
                 "tuesday": "Tuesday",
                 "wednesday": "Wednesday",
                 "thursday": "Thursday",
                 "friday": "Friday",
-                "saturday": "Saturday",
-                "sunday": "Sunday"
+                "saturday": "Saturday"
             },
             "layout": "horizontal",
             "return_format": "value",
@@ -505,11 +536,49 @@
             "custom_choice_button_text": "Add new choice"
         },
         {
-            "key": "field_glover_recurrence_week_ordinal",
-            "label": "Week of the Month",
-            "name": "recurrence_week_ordinal",
+            "key": "field_glover_recurrence_monthly_basis",
+            "label": "Repeat monthly by",
+            "name": "recurrence_monthly_basis",
             "aria-label": "",
-            "type": "select",
+            "type": "radio",
+            "instructions": "Use the event start date as the reference. For example, choose the same weekday position for the first Thursday of each month.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "custom"
+                    },
+                    {
+                        "field": "field_glover_recurrence_unit",
+                        "operator": "==",
+                        "value": "month"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "100",
+                "class": "glover-event-repeat-monthly-basis",
+                "id": ""
+            },
+            "choices": {
+                "day_of_month": "The same numbered day of the month",
+                "weekday_position": "The same weekday position in the month"
+            },
+            "default_value": "day_of_month",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "vertical",
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_glover_recurrence_end_type",
+            "label": "Ends",
+            "name": "recurrence_end_type",
+            "aria-label": "",
+            "type": "radio",
             "instructions": "",
             "required": 1,
             "conditional_logic": [
@@ -517,120 +586,52 @@
                     {
                         "field": "field_glover_recurrence_pattern",
                         "operator": "==",
-                        "value": "monthly_weekday"
+                        "value": "custom"
                     }
                 ]
             ],
             "wrapper": {
-                "width": "50",
-                "class": "",
+                "width": "100",
+                "class": "glover-event-repeat-ends",
                 "id": ""
             },
             "choices": {
-                "first": "First",
-                "second": "Second",
-                "third": "Third",
-                "fourth": "Fourth",
-                "last": "Last"
+                "never": "Never",
+                "on_date": "On",
+                "after_count": "After"
             },
+            "default_value": "never",
             "return_format": "value",
             "allow_null": 0,
-            "ui": 0,
-            "multiple": 0,
-            "default_value": false,
-            "ajax": 0,
-            "placeholder": "",
-            "create_options": 0,
-            "save_options": 0
-        },
-        {
-            "key": "field_glover_recurrence_weekday",
-            "label": "Weekday",
-            "name": "recurrence_weekday",
-            "aria-label": "",
-            "type": "select",
-            "instructions": "",
-            "required": 1,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_glover_recurrence_pattern",
-                        "operator": "==",
-                        "value": "monthly_weekday"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "monday": "Monday",
-                "tuesday": "Tuesday",
-                "wednesday": "Wednesday",
-                "thursday": "Thursday",
-                "friday": "Friday",
-                "saturday": "Saturday",
-                "sunday": "Sunday"
-            },
-            "return_format": "value",
-            "allow_null": 0,
-            "ui": 0,
-            "multiple": 0,
-            "default_value": false,
-            "ajax": 0,
-            "placeholder": "",
-            "create_options": 0,
-            "save_options": 0
-        },
-        {
-            "key": "field_glover_recurrence_start_date",
-            "label": "Recurrence Start Date",
-            "name": "recurrence_start_date",
-            "aria-label": "",
-            "type": "date_picker",
-            "instructions": "The first date covered by this repeating schedule.",
-            "required": 1,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_glover_is_recurring",
-                        "operator": "==",
-                        "value": "1"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "display_format": "F j, Y",
-            "return_format": "Y-m-d",
-            "first_day": 0,
-            "default_to_current_date": 0
+            "layout": "horizontal",
+            "other_choice": 0,
+            "save_other_choice": 0
         },
         {
             "key": "field_glover_recurrence_end_date",
-            "label": "Recurrence End Date",
+            "label": "End date",
             "name": "recurrence_end_date",
             "aria-label": "",
             "type": "date_picker",
-            "instructions": "Optional. Leave blank for an ongoing series.",
-            "required": 0,
+            "instructions": "The last date that may contain an occurrence.",
+            "required": 1,
             "conditional_logic": [
                 [
                     {
-                        "field": "field_glover_is_recurring",
+                        "field": "field_glover_recurrence_pattern",
                         "operator": "==",
-                        "value": "1"
+                        "value": "custom"
+                    },
+                    {
+                        "field": "field_glover_recurrence_end_type",
+                        "operator": "==",
+                        "value": "on_date"
                     }
                 ]
             ],
             "wrapper": {
                 "width": "50",
-                "class": "",
+                "class": "glover-event-repeat-end-date",
                 "id": ""
             },
             "display_format": "F j, Y",
@@ -639,19 +640,80 @@
             "default_to_current_date": 0
         },
         {
-            "key": "field_glover_custom_dates",
-            "label": "Custom Dates",
-            "name": "custom_dates",
+            "key": "field_glover_recurrence_end_count",
+            "label": "Number of occurrences",
+            "name": "recurrence_end_count",
             "aria-label": "",
-            "type": "repeater",
-            "instructions": "Add each occurrence date when the event does not follow a weekly or monthly pattern.",
+            "type": "number",
+            "instructions": "Count the first occurrence on the start date.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "custom"
+                    },
+                    {
+                        "field": "field_glover_recurrence_end_type",
+                        "operator": "==",
+                        "value": "after_count"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "glover-event-repeat-end-count",
+                "id": ""
+            },
+            "default_value": 10,
+            "min": 1,
+            "step": 1,
+            "max": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "occurrences"
+        },
+        {
+            "key": "field_glover_schedule_selected_dates_section",
+            "label": "Selected dates",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
             "required": 0,
             "conditional_logic": [
                 [
                     {
                         "field": "field_glover_recurrence_pattern",
                         "operator": "==",
-                        "value": "custom_dates"
+                        "value": "selected_dates"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "glover-event-section-heading glover-event-selected-dates-section",
+                "id": ""
+            },
+            "message": "Add dates that do not follow a regular pattern.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_glover_selected_dates",
+            "label": "Additional dates",
+            "name": "selected_dates",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "The Start Date above is the first occurrence. Add each additional date in the series.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "selected_dates"
                     }
                 ]
             ],
@@ -662,14 +724,14 @@
             },
             "layout": "table",
             "pagination": 0,
-            "min": 0,
+            "min": 1,
             "max": 0,
             "collapsed": "",
             "button_label": "Add Date",
             "rows_per_page": 20,
             "sub_fields": [
                 {
-                    "key": "field_glover_custom_date",
+                    "key": "field_glover_selected_date",
                     "label": "Date",
                     "name": "date",
                     "aria-label": "",
@@ -686,56 +748,56 @@
                     "return_format": "Y-m-d",
                     "first_day": 0,
                     "default_to_current_date": 0,
-                    "parent_repeater": "field_glover_custom_dates"
+                    "parent_repeater": "field_glover_selected_dates"
                 }
             ]
         },
         {
-            "key": "field_glover_tab_exceptions",
-            "label": "Exceptions",
+            "key": "field_glover_schedule_exceptions_section",
+            "label": "Changes to individual dates",
             "name": "",
             "aria-label": "",
-            "type": "tab",
+            "type": "message",
             "instructions": "",
             "required": 0,
             "conditional_logic": [
                 [
                     {
-                        "field": "field_glover_is_recurring",
-                        "operator": "==",
-                        "value": "1"
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "!=",
+                        "value": "none"
                     }
                 ]
             ],
             "wrapper": {
                 "width": "",
-                "class": "",
+                "class": "glover-event-section-heading glover-event-exceptions-section",
                 "id": ""
             },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
+            "message": "Cancel, reschedule, move, or add a public note to one occurrence without changing the rest of the series.",
+            "new_lines": "wpautop",
+            "esc_html": 0
         },
         {
             "key": "field_glover_occurrence_exceptions",
-            "label": "Occurrence Exceptions",
+            "label": "Changed dates",
             "name": "occurrence_exceptions",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Add only the date that changes. The repeating schedule remains intact.",
+            "instructions": "Add only the date that changes. The original repeating schedule remains intact.",
             "required": 0,
             "conditional_logic": [
                 [
                     {
-                        "field": "field_glover_is_recurring",
-                        "operator": "==",
-                        "value": "1"
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "!=",
+                        "value": "none"
                     }
                 ]
             ],
             "wrapper": {
                 "width": "",
-                "class": "",
+                "class": "glover-event-occurrence-exceptions",
                 "id": ""
             },
             "layout": "block",
@@ -743,7 +805,7 @@
             "min": 0,
             "max": 0,
             "collapsed": "field_glover_exception_date",
-            "button_label": "Add Exception",
+            "button_label": "Add Changed Date",
             "rows_per_page": 20,
             "sub_fields": [
                 {
@@ -768,7 +830,7 @@
                 },
                 {
                     "key": "field_glover_exception_status",
-                    "label": "Status",
+                    "label": "What changed?",
                     "name": "status",
                     "aria-label": "",
                     "type": "select",
@@ -782,9 +844,9 @@
                     },
                     "choices": {
                         "cancelled": "Cancelled",
-                        "rescheduled": "Rescheduled",
-                        "moved": "Moved",
-                        "note": "Note"
+                        "rescheduled": "Rescheduled to another date or time",
+                        "moved": "Moved to another location",
+                        "note": "Public note only"
                     },
                     "return_format": "value",
                     "allow_null": 0,
@@ -897,6 +959,43 @@
                     "display_format": "g:i a",
                     "return_format": "H:i:s",
                     "parent_repeater": "field_glover_occurrence_exceptions"
+                },
+                {
+                    "key": "field_glover_exception_new_location",
+                    "label": "New Location",
+                    "name": "new_location",
+                    "aria-label": "",
+                    "type": "post_object",
+                    "instructions": "Select the location where this occurrence will be held instead.",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_exception_status",
+                                "operator": "==",
+                                "value": "moved"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "100",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "location"
+                    ],
+                    "post_status": [
+                        "publish"
+                    ],
+                    "taxonomy": "",
+                    "return_format": "id",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "bidirectional": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_glover_occurrence_exceptions"
                 }
             ]
         },
@@ -927,12 +1026,316 @@
             "selected": 0
         },
         {
+            "key": "field_glover_schedule_meeting_records_section",
+            "label": "Meeting records by date",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_event_type",
+                        "operator": "==",
+                        "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "!=",
+                        "value": "none"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "glover-event-section-heading glover-event-meeting-records-section",
+                "id": ""
+            },
+            "message": "Attach public notice status, an agenda, and minutes to a specific occurrence in a repeating meeting series.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_glover_occurrence_meeting_records",
+            "label": "Meeting records by date",
+            "name": "occurrence_meeting_records",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "For a repeating meeting, add one row for each occurrence that needs its own public notice status, agenda, or minutes. The recurrence schedule creates the dates; these rows attach records to a scheduled date.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_event_type",
+                        "operator": "==",
+                        "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "!=",
+                        "value": "none"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_glover_occurrence_meeting_date",
+            "button_label": "Add Meeting Record",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glover_occurrence_meeting_date",
+                    "label": "Meeting Date",
+                    "name": "date",
+                    "aria-label": "",
+                    "type": "date_picker",
+                    "instructions": "Choose a date generated by this event's recurrence schedule.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "display_format": "F j, Y",
+                    "return_format": "Y-m-d",
+                    "first_day": 0,
+                    "default_to_current_date": 0,
+                    "parent_repeater": "field_glover_occurrence_meeting_records"
+                },
+                {
+                    "key": "field_glover_occurrence_warning_status",
+                    "label": "Public Notice Status",
+                    "name": "warning_status",
+                    "aria-label": "",
+                    "type": "button_group",
+                    "instructions": "Indicate whether the legally required meeting notice and agenda have been posted. Review the <a href=\"https:\/\/legislature.vermont.gov\/statutes\/section\/01\/005\/00312\">Vermont Open Meeting Law<\/a> and <a href=\"https:\/\/legislature.vermont.gov\/statutes\/section\/17\/055\/02641\">Town Meeting warning requirements<\/a>.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "not_yet_warned": "Not Yet Posted",
+                        "warned": "Posted"
+                    },
+                    "default_value": "not_yet_warned",
+                    "return_format": "value",
+                    "layout": "horizontal",
+                    "allow_null": 0,
+                    "parent_repeater": "field_glover_occurrence_meeting_records"
+                },
+                {
+                    "key": "field_glover_occurrence_agenda",
+                    "label": "Agenda",
+                    "name": "agenda",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "Choose one source. Before publication, confirm the public document is accessible or provide an equivalent accessible path.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "parent_repeater": "field_glover_occurrence_meeting_records",
+                    "sub_fields": [
+                        {
+                            "key": "field_glover_occurrence_agenda_source",
+                            "label": "Agenda Source",
+                            "name": "source",
+                            "aria-label": "",
+                            "type": "button_group",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "none": "Not Posted",
+                                "file": "Upload File",
+                                "url": "External Link"
+                            },
+                            "default_value": "none",
+                            "return_format": "value",
+                            "layout": "horizontal",
+                            "allow_null": 0
+                        },
+                        {
+                            "key": "field_glover_occurrence_agenda_file",
+                            "label": "Agenda File",
+                            "name": "file",
+                            "aria-label": "",
+                            "type": "file",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_glover_occurrence_agenda_source",
+                                        "operator": "==",
+                                        "value": "file"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "mime_types": "pdf,doc,docx",
+                            "min_size": 0,
+                            "max_size": 0
+                        },
+                        {
+                            "key": "field_glover_occurrence_agenda_url",
+                            "label": "Agenda Link",
+                            "name": "url",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_glover_occurrence_agenda_source",
+                                        "operator": "==",
+                                        "value": "url"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        }
+                    ]
+                },
+                {
+                    "key": "field_glover_occurrence_minutes",
+                    "label": "Minutes",
+                    "name": "minutes",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "Choose one source. Before publication, confirm the public document is accessible or provide an equivalent accessible path.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "parent_repeater": "field_glover_occurrence_meeting_records",
+                    "sub_fields": [
+                        {
+                            "key": "field_glover_occurrence_minutes_source",
+                            "label": "Minutes Source",
+                            "name": "source",
+                            "aria-label": "",
+                            "type": "button_group",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "none": "Not Posted",
+                                "file": "Upload File",
+                                "url": "External Link"
+                            },
+                            "default_value": "none",
+                            "return_format": "value",
+                            "layout": "horizontal",
+                            "allow_null": 0
+                        },
+                        {
+                            "key": "field_glover_occurrence_minutes_file",
+                            "label": "Minutes File",
+                            "name": "file",
+                            "aria-label": "",
+                            "type": "file",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_glover_occurrence_minutes_source",
+                                        "operator": "==",
+                                        "value": "file"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "id",
+                            "library": "all",
+                            "mime_types": "pdf,doc,docx",
+                            "min_size": 0,
+                            "max_size": 0
+                        },
+                        {
+                            "key": "field_glover_occurrence_minutes_url",
+                            "label": "Minutes Link",
+                            "name": "url",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 1,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_glover_occurrence_minutes_source",
+                                        "operator": "==",
+                                        "value": "url"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "100",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": ""
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "key": "field_glover_warning_status",
-            "label": "Warning Status",
+            "label": "Public Notice Status",
             "name": "warning_status",
             "aria-label": "",
             "type": "button_group",
-            "instructions": "Record whether the meeting has been legally warned.",
+            "instructions": "Indicate whether the legally required meeting notice and agenda have been posted. Review the <a href=\"https:\/\/legislature.vermont.gov\/statutes\/section\/01\/005\/00312\">Vermont Open Meeting Law<\/a> and <a href=\"https:\/\/legislature.vermont.gov\/statutes\/section\/17\/055\/02641\">Town Meeting warning requirements<\/a>.",
             "required": 1,
             "conditional_logic": [
                 [
@@ -940,6 +1343,11 @@
                         "field": "field_glover_event_type",
                         "operator": "==",
                         "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "none"
                     }
                 ]
             ],
@@ -949,8 +1357,8 @@
                 "id": ""
             },
             "choices": {
-                "not_yet_warned": "Not Yet Warned",
-                "warned": "Warned"
+                "not_yet_warned": "Not Yet Posted",
+                "warned": "Posted"
             },
             "default_value": "not_yet_warned",
             "return_format": "value",
@@ -1032,7 +1440,7 @@
             "name": "agenda",
             "aria-label": "",
             "type": "group",
-            "instructions": "Upload an agenda or provide an external link.",
+            "instructions": "Choose one source for the agenda. Before publication, confirm the public document is accessible or provide an equivalent accessible path.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -1040,6 +1448,11 @@
                         "field": "field_glover_event_type",
                         "operator": "==",
                         "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "none"
                     }
                 ]
             ],
@@ -1051,16 +1464,48 @@
             "layout": "block",
             "sub_fields": [
                 {
+                    "key": "field_glover_agenda_source",
+                    "label": "Agenda Source",
+                    "name": "source",
+                    "aria-label": "",
+                    "type": "button_group",
+                    "instructions": "Choose one source. Only the selected source will be used.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "100",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "none": "Not Posted",
+                        "file": "Upload File",
+                        "url": "External Link"
+                    },
+                    "default_value": "none",
+                    "return_format": "value",
+                    "layout": "horizontal",
+                    "allow_null": 0
+                },
+                {
                     "key": "field_glover_agenda_file",
                     "label": "Agenda File",
                     "name": "file",
                     "aria-label": "",
                     "type": "file",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_agenda_source",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "100",
                         "class": "",
                         "id": ""
                     },
@@ -1077,10 +1522,18 @@
                     "aria-label": "",
                     "type": "url",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_agenda_source",
+                                "operator": "==",
+                                "value": "url"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "100",
                         "class": "",
                         "id": ""
                     },
@@ -1095,7 +1548,7 @@
             "name": "minutes",
             "aria-label": "",
             "type": "group",
-            "instructions": "Upload approved minutes or provide an external link.",
+            "instructions": "Choose one source for the approved minutes. Before publication, confirm the public document is accessible or provide an equivalent accessible path.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -1103,6 +1556,11 @@
                         "field": "field_glover_event_type",
                         "operator": "==",
                         "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "none"
                     }
                 ]
             ],
@@ -1114,16 +1572,48 @@
             "layout": "block",
             "sub_fields": [
                 {
+                    "key": "field_glover_minutes_source",
+                    "label": "Minutes Source",
+                    "name": "source",
+                    "aria-label": "",
+                    "type": "button_group",
+                    "instructions": "Choose one source. Only the selected source will be used.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "100",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "none": "Not Posted",
+                        "file": "Upload File",
+                        "url": "External Link"
+                    },
+                    "default_value": "none",
+                    "return_format": "value",
+                    "layout": "horizontal",
+                    "allow_null": 0
+                },
+                {
                     "key": "field_glover_minutes_file",
                     "label": "Minutes File",
                     "name": "file",
                     "aria-label": "",
                     "type": "file",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_minutes_source",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "100",
                         "class": "",
                         "id": ""
                     },
@@ -1140,10 +1630,18 @@
                     "aria-label": "",
                     "type": "url",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_minutes_source",
+                                "operator": "==",
+                                "value": "url"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "50",
+                        "width": "100",
                         "class": "",
                         "id": ""
                     },
@@ -1158,7 +1656,7 @@
             "name": "supporting_documents",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "Choose one source per document. Before publication, confirm each public document is accessible or provide an equivalent accessible path.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -1166,6 +1664,11 @@
                         "field": "field_glover_event_type",
                         "operator": "==",
                         "value": "meeting"
+                    },
+                    {
+                        "field": "field_glover_recurrence_pattern",
+                        "operator": "==",
+                        "value": "none"
                     }
                 ]
             ],
@@ -1204,16 +1707,53 @@
                     "parent_repeater": "field_glover_supporting_documents"
                 },
                 {
+                    "key": "field_glover_supporting_document_source",
+                    "label": "Document Source",
+                    "name": "source",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Choose one source for this document.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "file": "Upload File",
+                        "url": "External Link"
+                    },
+                    "default_value": "file",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "ui": 0,
+                    "multiple": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_glover_supporting_documents"
+                },
+                {
                     "key": "field_glover_supporting_document_file",
                     "label": "File",
                     "name": "file",
                     "aria-label": "",
                     "type": "file",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_supporting_document_source",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "",
+                        "width": "35",
                         "class": "",
                         "id": ""
                     },
@@ -1231,10 +1771,18 @@
                     "aria-label": "",
                     "type": "url",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_supporting_document_source",
+                                "operator": "==",
+                                "value": "url"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "",
+                        "width": "35",
                         "class": "",
                         "id": ""
                     },
@@ -1392,7 +1940,7 @@
             "name": "related_documents",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "Choose one source per document. Before publication, confirm each public document is accessible or provide an equivalent accessible path.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -1438,16 +1986,53 @@
                     "parent_repeater": "field_glover_related_documents"
                 },
                 {
+                    "key": "field_glover_related_document_source",
+                    "label": "Document Source",
+                    "name": "source",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Choose one source for this document.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "file": "Upload File",
+                        "url": "External Link"
+                    },
+                    "default_value": "file",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "ui": 0,
+                    "multiple": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_glover_related_documents"
+                },
+                {
                     "key": "field_glover_related_document_file",
                     "label": "File",
                     "name": "file",
                     "aria-label": "",
                     "type": "file",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_related_document_source",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "",
+                        "width": "35",
                         "class": "",
                         "id": ""
                     },
@@ -1465,10 +2050,18 @@
                     "aria-label": "",
                     "type": "url",
                     "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_related_document_source",
+                                "operator": "==",
+                                "value": "url"
+                            }
+                        ]
+                    ],
                     "wrapper": {
-                        "width": "",
+                        "width": "35",
                         "class": "",
                         "id": ""
                     },
@@ -1542,10 +2135,10 @@
         "tags"
     ],
     "active": true,
-    "description": "Structured fields for meetings, programs, community events, closures, recurrence, exceptions, and optional event landing pages.",
+    "description": "Structured fields for meetings, programs, community events, closures, repeat schedules, changed dates, and optional event landing pages.",
     "show_in_rest": 1,
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785765866
+    "modified": 1786046097
 }
