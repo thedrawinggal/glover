@@ -6,9 +6,11 @@ Phase 1 (the core library) is built and verified locally. It includes the field 
 
 Phases 2 and 3 are built and verified live on the local site: passwordless sign-in at `/sign-in/`, Drive backup, and site email through the Gmail API. Setup and details: [Google Workspace integration](google-workspace.md).
 
+Full-text search is built and verified locally (2026-10-20): the library's search box matches titles and the text inside published PDF, Word and Excel files, ranks title matches first, and shows snippets with page numbers. Approved from [the search proposal](document-search-proposal.md) and its mock-up (`project-files/mockups/document-search-results.html`, untracked). See "Full-text search" below.
+
 The approved proposal, with its decision log and diagrams, is the Claude Doc "Glover Document Library Proposal" (https://claude.ai/code/artifact/f145edb5-b20d-4e67-b148-91b6b7a4ef7d). Jenny approved it in chat on 2026-10-19. This file is the maintained spec from here on.
 
-Last updated: 2026-10-19.
+Last updated: 2026-10-20.
 
 ## User need and purpose
 
@@ -26,13 +28,15 @@ The website, meaning the WordPress database and uploads, is the home of every do
 - A "Latest documents" feed on every Departments & Boards page.
 - One-way backup of approved documents to a town-owned Google Shared Drive (Phase 3).
 - Site email sent through the town's Google Workspace.
+- Full-text search inside published PDF, Word and Excel files, with an approver's text check and settings for what search leaves out.
 - No new paid licenses or add-ons. Anything a paid add-on would do is written in-house.
 
 ## Current non-goals
 
 - Anonymous or public uploads.
 - Drive as the public file host, or any sync from Drive back to the site.
-- Searching inside PDF text.
+- OCR of scanned PDFs (decided 2026-10-20). Scans are found by title only.
+- Removing names, street addresses or phone numbers from search automatically. Specific ones can be listed as excluded words.
 - Remediating inaccessible PDFs.
 - Linking documents to Meetings or meeting dates (deferred, unscheduled).
 - Bulk migration of legacy documents (a later phase with its own sign-off).
@@ -80,6 +84,7 @@ The website, meaning the WordPress database and uploads, is the home of every do
 | `document_accessibility_confirmed` | True/false | Yes | |
 | `document_legal_confirmed` | True/false | Yes | |
 | `document_reviewer_note` | Textarea | No | |
+| `document_exclude_from_text_search` | True/false | No | Approvers and administrators only (hidden from everyone else, and protected on save). Keeps the file's text out of search; the title is still searched. Not on the submission form |
 
 System meta, written by code and never edited by hand:
 
@@ -93,6 +98,9 @@ System meta, written by code and never edited by hand:
 | `_glover_merged_into` | On a retired replacement, the document it updated |
 | `_glover_audit_log` | Time, user, action, note for every step |
 | `_glover_drive_backup_status`, `_glover_drive_backup_note`, `_glover_drive_file_id` | Drive backup tracking. The ID, never a URL |
+| `_glover_text_index_status` | Text search: `queued`, `indexed`, `no_text`, `failed`, `excluded`. Absent when not published |
+| `_glover_text_index_note` | How the file was read and how many pages, or the error |
+| `_glover_text_index_hash` | SHA-1 of the indexed file plus the settings signature, so unchanged files are skipped and a settings change re-indexes |
 
 ### Taxonomies
 
@@ -114,6 +122,11 @@ Document Library > Settings (`acf-json/group_glover_document_library_settings.js
 | Help contact name, phone, email | `document_library_help_contact_*` | Shown in the help dialog and empty results. The email also receives accessible-copy requests |
 | Requirements guide page | `document_library_requirements_page` | The page the requirements dialog shows. The clerk keeps it current |
 | Turnstile site and secret keys | `document_library_turnstile_*` | Optional bot check for the request form |
+| Remove email addresses (Search tab) | `document_library_search_remove_emails` | On unless turned off. Addresses at the town's domain are always kept |
+| Excluded words and phrases (Search tab) | `document_library_search_excluded_terms` | Commas or new lines. Whole words, any capitals, entries under three characters ignored. Never shown publicly |
+| Search status (Search tab) | message field, no value | Counts by status linking to filtered lists, which PDF reader is in use, and Re-index all |
+
+The fields sit under General and Search tabs.
 
 ### Submitters
 
@@ -136,6 +149,63 @@ Both are now used by the [Google Workspace integration](google-workspace.md).
 - **Backup:** register on `glover_document_library/backup_handlers`, handle `glover_document_library/backup_requested ($post_id, $attachment_id)`, and record progress with `glover_document_library_set_backup_status()`. `document-library-drive.php` does this when Drive is configured; otherwise the status is "Not configured".
 - **Lifecycle actions:** `glover_document_library/document_published`, `document_unpublished`, and `document_replaced ($post_id, $new_attachment_id, $previous_attachment_id)`.
 
+## Full-text search
+
+### How it works
+
+1. A document is published or replaced. `document-library-search-index.php` sets its status to Queued and schedules a WP-Cron job for it.
+2. The job checks that the document is still published, not excluded, not a retired replacement, and that its current file is out of the private folder. Otherwise it removes any rows and stops.
+3. It reads the file (`document-library-search-extract.php`): PDFs page by page with poppler's `pdftotext` when the host can run it, otherwise with the bundled smalot/pdfparser; Word files as one block; spreadsheets one part per sheet. Whitespace is collapsed.
+4. It removes email addresses outside the town's domain (`GLOVER_GOOGLE_DOMAIN`, default townofglover.com) and the excluded words and phrases, then replaces the document's rows in one transaction.
+5. A PDF averaging under 25 characters a page gets No text (almost always a scan) and no rows. Read errors give Failed with the message.
+
+Pending, returned, draft, private and previous-version files are never read for the index. Every search query is also limited to published posts by `WP_Query`.
+
+### Data contract: `{prefix}glover_document_text`
+
+Created by `dbDelta` on `init` once per `GLOVER_DOCUMENT_SEARCH_DB_VERSION` (option `glover_document_search_db_version`), with MySQL's built-in stopword list turned off for the session so words like "will" are kept.
+
+| Column | Notes |
+| --- | --- |
+| `post_id` | The document |
+| `attachment_id` | The file the text came from |
+| `part` | 0 = the title plus all the text, used for matching; 1 and up = pages or sheets, used for snippets |
+| `part_label` | "Page 4", a sheet name, or empty for Word files |
+| `source` | `pdftotext`, `pdfparser`, `docx` or `xlsx` |
+| `content` | Clean, scrubbed text with a FULLTEXT index |
+
+### Matching, ranking and snippets
+
+- `document-library-search-query.php` replaces the old title-only search. A document matches when every search word is in its title (`LIKE`, as before) or its part 0 text matches a MySQL Boolean-mode query in which each word is `+word*` and each quoted phrase is `+"a phrase"`. Operator characters are stripped, words under three characters are left to the title match, and curly quotes are treated as straight ones.
+- Sort `relevance` ("Best match") is the default whenever there is a search, and is left out of URLs then. It orders by every word in the title, some words in the title, the text score, then the date order. Most recent, Oldest and Title work as before. `library.js` keeps the Sort menu in step until someone picks a sort.
+- The category and topic counts include text matches, because facets reuse the same query arguments.
+- Each result on the page gets up to two snippets from its best-matching pages, in page order: about 110 characters before and 150 after the first match, cut at word boundaries, escaped, with the search words in `<mark>`. Titles are highlighted the same way. PDF page labels link to the file with `#page=N` in the same tab; sheet names and "In the document" (Word) are plain text.
+- The REST endpoint `glover/v1/documents` returns the same markup, plus the effective `sort`.
+
+### Staff tools
+
+- **Review details:** a Check text button (approvers), and on published documents the text search status, its note and a Re-index text button.
+- **Check text** (`admin.php?page=glover-document-text-check&post=ID`, approvers only): the file's text page by page, read on the spot and never stored, with non-town email addresses and excluded words marked "(email address)" or "(excluded word)", a list of everything flagged, a warning when the file has almost no text, and an error when a PDF has redaction marks that were never applied. Approve and Return buttons for pending documents. Optional: approving doesn't require it.
+- **Settings > Search:** status counts, linked to list views (`glover_view=search_<status>`), and Re-index all.
+- **Saving the Search settings** compares a signature of the settings with option `glover_document_search_signature`; when it changes, documents whose stored hash doesn't match are queued and processed by `glover_document_search_batch` 20 at a time, every 30 seconds, until none are left.
+- **WP-CLI:** `wp glover documents index` (new or changed files), `--all` (everything), `--post=<id>`; `wp glover documents status`.
+
+### Lifecycle
+
+| Event | What happens |
+| --- | --- |
+| `document_published` | Queue |
+| `document_replaced` | Delete rows, queue the new file |
+| `document_unpublished` | Delete rows, clear status |
+| Trash or permanent delete | Delete rows, clear status |
+| Exclusion turned on or off | Delete rows and mark Excluded, or queue |
+| File changed on a published document in wp-admin | Queue |
+| Search settings changed | Queue every document whose hash no longer matches |
+
+### Bundled PDF reader
+
+`includes/vendor/smalot-pdfparser/` holds an unmodified copy of smalot/pdfparser 2.13.0 (LGPL-3.0), loaded by a small autoloader, with no Composer (decided 2026-10-20). It is used only when `pdftotext` isn't found at `/usr/bin`, `/usr/local/bin` or `/opt/homebrew/bin` (filter `glover_document_search/pdftotext_paths`) or PHP can't run programs. Files over 30 MB are not read by it. The note on each document says which reader was used, and a host move to one with `pdftotext` should be followed by `wp glover documents index --all`.
+
 ## Pages (database content, recreate on production)
 
 - Submit a Document: template `template-document-submission.php`.
@@ -154,8 +224,14 @@ Both are now used by the [Google Workspace integration](google-workspace.md).
 - `document-library-notifications.php`: emails.
 - `document-library-lifecycle.php`: publishing guard, publish and unpublish handling, replacement merge, duplicate detection.
 - `document-library-submission.php`: submission form, title and file field adjustments, replaces choices, validation, completing a submission.
+- `document-library-review-screen.php` and `assets/review-admin.css`: the Document Library > Documents screen, which replaces WordPress's All Documents list in the menu (Pending, Approved and Returned tabs; replacements grouped and compared). The classic list stays reachable from a link on the Approved tab for bulk actions, drafts and the trash.
 - `document-library-review.php`: list columns, Approve and Return, Published without review view, pending count, Review details box.
-- `document-library-query.php`: filter parsing, query building, title-only search, facet counts, library URLs, REST endpoint `glover/v1/documents`.
+- `document-library-query.php`: filter parsing (including the Best match default sort), query building, facet counts, library URLs, REST endpoint `glover/v1/documents`.
+- `document-library-search-extract.php`: reading PDF, Word and Excel text; the smalot autoloader; unapplied-redaction detection.
+- `document-library-search-index.php`: the index table, scrubbing, the background jobs and batch runner, lifecycle hooks, status counts.
+- `document-library-search-query.php`: title-or-text matching, Best match ranking, highlighting and snippets.
+- `document-library-search-admin.php`: Review details lines, Re-index, Check text, the settings status message, list views, the exclusion field's permissions, and the `wp glover documents` command.
+- `includes/vendor/smalot-pdfparser/`: the bundled PDF reader, with its license and a README recording the version and checksum.
 - `document-library-public.php`: asset loading, download links, dates, board feed query, help contact.
 - `document-library-requests.php`: accessible-copy request handler.
 - `assets/library.js` (live filtering, year slider, topics and filters toggles), `assets/dialogs.js` (help and requirements dialogs), `assets/submission.js` (minutes status toggle). These load directly from the feature folder; styles do not (see Styles).
@@ -167,7 +243,7 @@ Both are now used by the [Google Workspace integration](google-workspace.md).
 
 All styles are Sass in `src/styles/`, compiled by Parcel into `dist/styles/app.css`, which `functions.php` loads on every page. The library has no stylesheet of its own.
 
-- `base/_colors.scss`: the color palette as Sass variables and `--color-*` custom properties. Rules use the custom properties.
+- `base/_colors.scss`: the color palette as Sass variables and `--color-*` custom properties. Rules use the custom properties. `--color-highlight` marks search matches; `--color-line-subtle` is the faint divider above snippets on stacked cards.
 - `base/_typography.scss`: typefaces, h1 to h6 sizes, body text, the `.rich-text` wrapper for editor content, and the `eyebrow` mixin.
 - `base/_core.scss`: page background, links, focus ring, `.container`, `.content-narrow`, `.visually-hidden`, `.skip-link`, reduced motion.
 - `components/`: `_page-banner`, `_breadcrumb`, `_button`, `_chip`, `_dialog`, `_form`, `_badge`, `_pagination`, `_document-feed`. Shared across pages.
@@ -179,6 +255,8 @@ Build the CSS alone with `npx parcel build src/styles/app.scss --dist-dir dist/s
 
 - WordPress and ACF Pro (already licensed), with Local JSON loading from the theme.
 - The theme's Parcel and Sass build for styles. The library's scripts load directly from the feature folder.
+- MySQL 5.6 or later with InnoDB FULLTEXT (local: MySQL 8.0). PHP `zip`, `xml`, `mbstring`, `iconv` and `zlib`.
+- Bundled smalot/pdfparser 2.13.0. Optional and preferred on the host: poppler's `pdftotext`, with PHP allowed to run it.
 - Planned, no new cost: Google Workspace (sign-in, Shared Drive, email), a town-owned Google Cloud project, and Cloudflare Turnstile.
 
 ## Accessibility considerations
@@ -188,7 +266,9 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 - Filters are a plain GET form and work without JavaScript. Live updates announce the results count in a polite live region, keep focus on the changed control, and wait for a pause in typing. After a chip or pagination link, focus moves to the results count.
 - Year range: two labeled dropdowns, plus a slider built from two native range inputs labeled "From year" and "To year" that can't pass each other.
 - Topic chips are real checkboxes. Active filters are links, so they work without JavaScript.
-- Results are a real table with explicit roles kept for the stacked phone layout. Each Download link includes the document title, format and size for screen readers.
+- Results are a real table with explicit roles kept for the stacked phone layout. Each result is its own `<tbody>`. The column headings are visually hidden at every width but stay for screen readers, and each date carries a visible "Effective Date" label (hidden from screen readers, which hear the "Effective date" heading). Each Download link includes the document title, format and size for screen readers.
+- Search matches are `<mark>`, bold as well as colored (`--color-highlight`, 10:1 with ink), so they don't rely on color. Most screen readers don't announce `<mark>`; the snippet text and its "Page 4:" lead-in carry the meaning.
+- Snippets appear twice in the markup (their own row on the full table, inside the Title cell on stacked cards); the hidden copy is `display: none`, so it is read once. Page links have unique names, for example "Page 4 of Select Board Minutes (PDF)". The live region still announces only the count.
 - Dialogs use the native `<dialog>` element. Without JavaScript they are ordinary page sections reached by their links.
 - The request form has visible labels, `autocomplete` on personal fields, and errors announced with `role="alert"` and focus.
 - Draft minutes are labeled with text, not color.
@@ -210,6 +290,12 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 12. At 375px wide, confirm the Filters button, the stacked result cards, and no sideways scrolling.
 13. Open a board page and confirm Latest documents and the "See all" link.
 14. Submit the accessible-copy request form, and confirm the saved request under Document Library and the thank-you message.
+15. Publish a text PDF. Within a minute (or after `wp cron event run --due-now`), confirm Review details shows "Text search: Searchable", then search for a word from its second page and confirm the snippet, its page link and the highlighted word.
+16. Confirm the Sort menu switches to Best match while searching and back to Most recent when the box is cleared, and that a title match ranks above a text match.
+17. Add a phrase to Settings > Search > Excluded words and phrases and save. Confirm the counts show documents queued, then that the phrase can't be found or seen in snippets.
+18. On a pending document, open Check text. Confirm the text shows page by page, and non-town email addresses and excluded words are flagged.
+19. Turn on "Exclude this file's text from search" on a document. Confirm it is still found by title but not by its text, and that a non-approver can't see the switch.
+20. Replace, unpublish and trash documents, and confirm their old text can't be found.
 
 ## Verification approach
 
@@ -218,6 +304,7 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 - End-to-end WP-CLI script covering private storage and HTTP blocking, approval, slug assignment, replacement merge, duplicate detection, the publishing guard, submitter board limits, search and facets, and the board feed. 22 of 22 checks passed on 2026-10-19 with all test content removed afterward.
 - HTTP checks of every template and the REST endpoint, and an HTTP submission of the request form.
 - Browser checks of live filtering, focus, dialogs and the phone layout.
+- Full-text search: a WP-CLI end-to-end script that builds PDF, Word and Excel files, then checks private and pending files are never indexed, page rows and statuses, email and excluded-term removal (town email kept), page-ordered snippets with highlighting, phrases (straight and curly quotes), words across pages and title plus text, operator characters, No text for a blank PDF, title-first ranking, facet totals, the results markup and REST response, exclusion on and off, a settings change re-indexing through the batch runner, replacement, unpublish, trash, and redaction detection. 48 of 48 checks passed on 2026-10-20 with all test content removed and nothing sent to Drive or email. Browser checks the same day: live search on the real test minutes (Best match switching, a chosen sort kept, clearing), the 1400px table and 375px cards with no sideways scrolling, Review details, Check text and the Search settings tab.
 
 ## Known limitations and risks
 
@@ -231,6 +318,15 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 - Results show as stacked cards below 1200px wide, including beside the filters at 992 to 1199px, because the full table needs about 760px for its columns.
 - Terms, pages and settings are database content and must be recreated or migrated on the production site.
 - Hosting is undecided. Scheduled jobs for Drive retries, upload limits and virus scanning all depend on it.
+- **Text search protects search, not files.** Removed email addresses and excluded words are still in the downloadable file. Text hidden under drawn black boxes is still in the file too; Check text is how the approver catches it.
+- Redaction-mark detection reads the raw PDF bytes, so marks stored inside compressed object streams are missed.
+- Scanned PDFs are searchable by title only. How many legacy PDFs are scans is still unknown.
+- InnoDB ignores words under three characters in the text (`innodb_ft_min_token_size`), so "R1" or "VT" only match titles. MariaDB, if the host uses it, should be re-tested.
+- Word files show "In the document" rather than page numbers, because Word pages depend on how the file is displayed.
+- The bundled PDF reader is slower and less accurate than `pdftotext` with unusual fonts and columns, and skips files over 30 MB.
+- `#page=` links are a browser convention; phones often open the PDF at page 1 or download it.
+- Indexing runs on WP-Cron, which needs site visits; production should run a real cron, as for Drive backup.
+- Search help copy now mentions searching inside documents, quotes for phrases, scans, short words and email addresses; Jenny's final copy should keep those points.
 
 ## Open questions
 
@@ -240,9 +336,14 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 - Final search help copy (Jenny is writing it).
 - Google Workspace admin access (Jenny is requesting it), whether the plan allows SMTP relay and includes Shared Drives, and who controls DNS for townofglover.com.
 - How many submitters are outside townofglover.com.
+- Whether the town (and Olivia) is comfortable with names and street addresses in old minutes becoming easy to find once legacy files are migrated.
+- Whether the chosen host can run `pdftotext`.
 
 ## Material change history
 
+- 2026-10-20: Renamed Review to Documents and made it the only document list in the menu (WordPress's All Documents item is hidden; the classic list is linked from the Approved tab). Review tables now use plain alternating white and light gray rows; only the Changed and New file tags are highlighted, yellow on yellow. Comparison columns are labeled Currently published and Proposed replacement.
+- 2026-10-20: Added Document Library > Review, now the menu's first item, with the pending count. **Pending** groups each replacement with the published document it replaces in a side-by-side comparison (title, document date, minutes status, boards, category, topics, file), labels changed details with the word "Changed" plus a highlight, warns when more than one replacement was submitted for the same document, then lists new submissions oldest first. **Approved** lists published documents, newest document date first, with title search, backup status and a "Replaced N times" tag. **Returned** lists returned documents with the reason and date. Approve and Return started from this screen come back to it.
+- 2026-10-20: Full-text search. Added the `glover_document_text` table, background indexing of published PDF, Word and Excel files (pdftotext or the bundled smalot/pdfparser 2.13.0), removal of non-town email addresses and excluded words, the Search settings tab, the approver-only "Exclude from text search" field, Check text, Re-index, status list views, and `wp glover documents`. Search now matches titles or text with Best match ranking and page-numbered snippets. Restyled result rows to the approved mock-up: larger forest-green titles, outlined topic pills, an "Effective Date" label, visually hidden column headings, an outlined Download button, and snippet rows. Updated the help copy, the search box label and placeholder, and `library.js` for the Best match default.
 - 2026-10-20: Phases 2 and 3: sign-in links now go to `/sign-in/` (Google or emailed code), and approved documents back up to the Shared Drive through `document-library-drive.php`. Added a "failed backups" list view, the backup note and a Retry button in Review details, and a helper so empty meta lists aren't counted as one item.
 - 2026-10-19: Moved all library styles into the theme's Sass build: shared colors, typography and core styles in `base/`, reusable pieces (page banner, breadcrumb, buttons, chips, dialog, forms, badges, pagination, document feed) in `components/`, and page-specific styles in `pages/`. Replaced the hand-written banners with `components/common/page-banner.php`, renamed `glover-*` classes to component and page names, and removed `assets/library.css`.
 - 2026-10-19: Phase 1. Built the field contract, settings screen, submitter role and profile fields, the ACF front-end submission form with private pending storage, the review queue with Approve and Return, replacement merging with stable addresses, duplicate detection, email notices, the public library with live filtering and facets, single document and board pages, the search help and requirements dialogs, and the accessible-copy request form with its private post type. Added extension points for Google sign-in and Drive backup without building either.

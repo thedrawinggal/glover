@@ -20,18 +20,36 @@ function glover_document_library_parse_filters($source)
         return array_values(array_filter(array_map('sanitize_title', array_map('wp_unslash', $value))));
     };
 
-    $sort = isset($source['sort']) ? sanitize_key($source['sort']) : 'recent';
+    $q = isset($source['q']) ? sanitize_text_field(wp_unslash($source['q'])) : '';
+    // Phones type curly quotes; WordPress only groups phrases in straight ones.
+    $q = str_replace(array('“', '”', '„'), '"', $q);
+    $sort = isset($source['sort']) ? sanitize_key($source['sort']) : '';
+
+    if (!in_array($sort, array('relevance', 'recent', 'oldest', 'title'), true)) {
+        $sort = glover_document_library_default_sort($q);
+    }
 
     return array(
-        'q' => isset($source['q']) ? sanitize_text_field(wp_unslash($source['q'])) : '',
+        'q' => $q,
         'board' => isset($source['board']) ? absint($source['board']) : 0,
         'from' => isset($source['from']) ? absint($source['from']) : 0,
         'to' => isset($source['to']) ? absint($source['to']) : 0,
         'category' => $list('category'),
         'topic' => $list('topic'),
-        'sort' => in_array($sort, array('recent', 'oldest', 'title'), true) ? $sort : 'recent',
+        'sort' => $sort,
         'pg' => isset($source['pg']) ? max(1, absint($source['pg'])) : 1,
     );
+}
+
+/**
+ * The sort used when none is chosen: Best match while searching, otherwise
+ * most recent first.
+ *
+ * @param string $q Search text.
+ */
+function glover_document_library_default_sort($q)
+{
+    return $q !== '' ? 'relevance' : 'recent';
 }
 
 /**
@@ -76,6 +94,7 @@ function glover_document_library_query_args($filters, $skip = array())
         'tax_query' => array('relation' => 'AND'),
         'meta_query' => array('relation' => 'AND', 'document_date' => array('key' => 'document_date', 'compare' => 'EXISTS')),
         'glover_title_search' => true,
+        'glover_sort' => $filters['sort'],
     );
 
     if ($filters['q'] !== '' && !in_array('q', $skip, true)) {
@@ -106,6 +125,8 @@ function glover_document_library_query_args($filters, $skip = array())
         }
     }
 
+    // Best match ranks in posts_orderby (document-library-search-query.php)
+    // and falls back to most recent first, which is also its tie-breaker.
     if ($filters['sort'] === 'title') {
         $args['orderby'] = 'title';
         $args['order'] = 'ASC';
@@ -115,32 +136,6 @@ function glover_document_library_query_args($filters, $skip = array())
 
     return $args;
 }
-
-/**
- * Limit library searches to document titles, so a word buried in another
- * field never produces a confusing match.
- *
- * @param string   $search SQL search clause.
- * @param WP_Query $query  Query.
- * @return string
- */
-function glover_document_library_title_search($search, $query)
-{
-    global $wpdb;
-
-    if (!$query->get('glover_title_search') || $query->get('s') === '') {
-        return $search;
-    }
-
-    $clauses = array();
-
-    foreach ((array) $query->get('search_terms') as $term) {
-        $clauses[] = $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like($term) . '%');
-    }
-
-    return $clauses ? ' AND (' . implode(' AND ', $clauses) . ') ' : $search;
-}
-add_filter('posts_search', 'glover_document_library_title_search', 10, 2);
 
 /**
  * Count matching documents per term in one facet, applying every other filter.
@@ -185,7 +180,9 @@ function glover_document_library_url($filters = array())
     $params = array();
 
     foreach ($filters as $key => $value) {
-        if ($value === '' || $value === 0 || $value === array() || ($key === 'sort' && $value === 'recent') || ($key === 'pg' && (int) $value === 1)) {
+        $default_sort = glover_document_library_default_sort(isset($filters['q']) ? $filters['q'] : '');
+
+        if ($value === '' || $value === 0 || $value === array() || ($key === 'sort' && $value === $default_sort) || ($key === 'pg' && (int) $value === 1)) {
             continue;
         }
         $params[$key] = $value;
@@ -260,6 +257,7 @@ function glover_document_library_register_rest()
 
             return rest_ensure_response(array(
                 'total' => $results['total'],
+                'sort' => $results['filters']['sort'],
                 'summary' => wp_strip_all_tags(glover_document_library_component('summary', $results)),
                 'results' => glover_document_library_component('results', $results),
                 'chips' => glover_document_library_component('active-filters', $results),

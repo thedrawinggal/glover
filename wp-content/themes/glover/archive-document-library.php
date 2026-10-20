@@ -36,8 +36,8 @@ get_header();
 
         <div class="documents__main">
             <div class="search-bar" role="search">
-                <label class="visually-hidden" for="glover-library-search">Search documents by title</label>
-                <input type="search" id="glover-library-search" class="form-input" name="q" form="glover-library-filters" value="<?php echo esc_attr($filters['q']); ?>" placeholder="Search all public documents by title" autocomplete="off">
+                <label class="visually-hidden" for="glover-library-search">Search document titles and text</label>
+                <input type="search" id="glover-library-search" class="form-input" name="q" form="glover-library-filters" value="<?php echo esc_attr($filters['q']); ?>" placeholder="Search titles and the text inside documents" autocomplete="off">
                 <button type="submit" form="glover-library-filters" class="button button--primary">Search</button>
             </div>
 
@@ -48,6 +48,7 @@ get_header();
                 <div class="documents__sort">
                     <label for="glover-library-sort">Sort</label>
                     <select id="glover-library-sort" name="sort" form="glover-library-filters" class="form-select">
+                        <option value="relevance" <?php selected($filters['sort'], 'relevance'); ?>>Best match</option>
                         <option value="recent" <?php selected($filters['sort'], 'recent'); ?>>Most recent</option>
                         <option value="oldest" <?php selected($filters['sort'], 'oldest'); ?>>Oldest</option>
                         <option value="title" <?php selected($filters['sort'], 'title'); ?>>Title, A to Z</option>

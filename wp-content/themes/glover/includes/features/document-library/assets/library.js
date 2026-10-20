@@ -25,6 +25,14 @@
     var maxYear = yearFieldset ? yearFieldset.getAttribute('data-max') : '';
     var searchTimer = null;
     var requestId = 0;
+    var sortSelect = document.getElementById('glover-library-sort');
+    // Until someone picks a sort, it follows the search: Best match while
+    // searching, Most recent otherwise.
+    var sortChosen = false;
+
+    function defaultSort(query) {
+        return query && query.trim() !== '' ? 'relevance' : 'recent';
+    }
 
     library.classList.add('is-enhanced');
 
@@ -39,7 +47,7 @@
             if ((key === 'from' && value === minYear) || (key === 'to' && value === maxYear)) {
                 return;
             }
-            if (key === 'sort' && value === 'recent') {
+            if (key === 'sort' && value === defaultSort(data.get('q') || '')) {
                 return;
             }
             params.append(key, value);
@@ -75,7 +83,7 @@
             } else if (name === 'to') {
                 element.value = values[0] || maxYear;
             } else if (name === 'sort') {
-                element.value = values[0] || 'recent';
+                element.value = values[0] || defaultSort(params.get('q') || '');
             } else {
                 element.value = values[0] || '';
             }
@@ -120,6 +128,10 @@
                 results.innerHTML = data.results;
                 chips.innerHTML = data.chips;
                 summary.textContent = data.summary.replace(/\s+/g, ' ').trim();
+
+                if (sortSelect && data.sort) {
+                    sortSelect.value = data.sort;
+                }
                 updateCounts(data.counts);
 
                 if (options.history === 'push') {
@@ -159,6 +171,9 @@
     });
 
     document.addEventListener('change', function (event) {
+        if (event.target === sortSelect) {
+            sortChosen = true;
+        }
         if (belongsToForm(event.target) && event.target.type !== 'search') {
             refresh('push');
         }
@@ -169,6 +184,9 @@
             return;
         }
         window.clearTimeout(searchTimer);
+        if (sortSelect && !sortChosen) {
+            sortSelect.value = defaultSort(event.target.value);
+        }
         // Wait for a pause in typing so screen readers aren't flooded.
         searchTimer = window.setTimeout(function () {
             refresh('replace');

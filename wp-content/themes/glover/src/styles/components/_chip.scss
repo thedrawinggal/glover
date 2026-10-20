@@ -43,6 +43,15 @@ a.chip--active,
   cursor: default;
 }
 
+.chip--outline {
+  min-height: 1.9rem;
+  padding: 0.15rem 0.85rem;
+  background: transparent;
+  font-size: 0.9375rem;
+  font-weight: $FONT-WEIGHT-SEMIBOLD;
+  cursor: default;
+}
+
 .chip__remove {
   font-size: 1.1em;
   line-height: 1;

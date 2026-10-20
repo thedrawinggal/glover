@@ -254,6 +254,27 @@
             "placeholder": "",
             "new_lines": "",
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_exclude_from_text_search",
+            "label": "Text search",
+            "name": "document_exclude_from_text_search",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Approvers only. Turn on to keep this file's contents out of library search and snippets, for example when it contains personal details. The document is still found by its title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Exclude this file's text from search",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
         }
     ],
     "location": [
@@ -279,5 +300,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792423210
+    "modified": 1792513026
 }

@@ -396,6 +396,10 @@ function glover_document_library_render_review_box($post)
         printf('<p><a class="button" href="%s">Retry backup</a></p>', esc_url(glover_document_library_drive_retry_url($post->ID)));
     }
 
+    if (function_exists('glover_document_search_render_review_details')) {
+        glover_document_search_render_review_details($post);
+    }
+
     if ($post->post_status === 'pending' && glover_document_library_user_can_review()) {
         printf(
             '<p><a class="button button-primary" href="%s">Approve and publish</a> <a class="button" href="%s">Return</a></p>',

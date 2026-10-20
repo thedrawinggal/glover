@@ -3,6 +3,24 @@
     "title": "Document Library Settings",
     "fields": [
         {
+            "key": "field_glover_document_settings_tab_general",
+            "label": "General",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
             "key": "field_glover_document_settings_approver",
             "label": "Approver",
             "name": "document_library_approver",
@@ -199,6 +217,84 @@
             "prepend": "",
             "append": "",
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_tab_search",
+            "label": "Search",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_document_settings_search_remove_emails",
+            "label": "Email addresses",
+            "name": "document_library_search_remove_emails",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Email addresses inside documents can't be searched for and never appear in search results. Addresses at the town's own domain (townofglover.com) are always kept.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Remove email addresses outside the town from search",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_glover_document_settings_search_excluded_terms",
+            "label": "Excluded words and phrases",
+            "name": "document_library_search_excluded_terms",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Separate entries with commas or new lines, for example: jenny@example.com, 123 Main Street, John Q. Smith. Capitals don't matter, and only whole words match, so \"Smith\" does not remove \"Smithfield\". Entries shorter than three characters are ignored. Saving a change updates every document in the background. This list is never shown on the public site.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_search_status",
+            "label": "Search status",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "new_lines": "",
+            "esc_html": 0
         }
     ],
     "location": [
@@ -222,5 +318,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792422101
+    "modified": 1792513026
 }

@@ -13,6 +13,8 @@ $COLOR-SURFACE-ALT: #f4efe3;   // table headers, striped rows
 $COLOR-LINE: #cfc6b2;          // dividers (decorative only)
 $COLOR-BORDER: #8a8270;        // form control borders (3:1 on surface)
 $COLOR-CHIP: #e6dfcd;          // badges
+$COLOR-HIGHLIGHT: #efd673;     // search matches (10:1 with ink)
+$COLOR-LINE-SUBTLE: #e4ddcc;   // faint dividers (decorative only)
 $COLOR-GOLD: #f0c96b;          // focus ring on forest
 $COLOR-FOCUS: #1b4fd6;         // focus ring on light backgrounds
 $COLOR-ERROR: #a12a1e;
@@ -31,6 +33,8 @@ $COLOR-BACKDROP: rgba(13, 26, 20, 0.6);
   --color-line: #{$COLOR-LINE};
   --color-border: #{$COLOR-BORDER};
   --color-chip: #{$COLOR-CHIP};
+  --color-highlight: #{$COLOR-HIGHLIGHT};
+  --color-line-subtle: #{$COLOR-LINE-SUBTLE};
   --color-gold: #{$COLOR-GOLD};
   --color-focus: #{$COLOR-FOCUS};
   --color-error: #{$COLOR-ERROR};

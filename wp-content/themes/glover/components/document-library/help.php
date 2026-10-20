@@ -15,7 +15,8 @@ $contact = glover_document_library_help_contact();
     <h2 id="glover-library-help-title" tabindex="-1">How to find a document</h2>
 
     <h3>Start with a word or two</h3>
-    <p>Type something from the title, like “budget” or “minutes.” You don't need the exact title.</p>
+    <p>Type a word or two, like “budget” or “culvert.” Search looks in titles and in the text inside documents, and shows the page where each match was found. Put a phrase in quotes, like “public hearing,” to find those words together.</p>
+    <p>Scanned documents can only be found by their titles. Words shorter than three letters and email addresses aren't searched inside documents.</p>
 
     <h3>Narrow it down</h3>
     <p>Use the choices beside the results: pick a board, set the years, or tick a category such as Minutes. The list updates as you go. On a phone, select Filters to see these choices.</p>
