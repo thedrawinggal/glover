@@ -4,7 +4,7 @@
 
 Drafted 2026-08-18, awaiting town approval. Not yet implemented, because the public frontend has not been built.
 
-Last updated: 2026-10-19.
+Last updated: 2026-10-20.
 
 ## The federal rule that applies
 
@@ -68,6 +68,7 @@ So the honest framing is not "we cannot afford the good solution, so we need a c
 
 - The **public-facing town website** conforms to WCAG 2.1 Level AA by 2028-04-26.
 - Conformance is achieved through the theme's own markup, styles, scripts, and editorial process. No third-party accessibility overlay, widget, or remediation service is used.
+- Conformance is measured with optional enhancements switched off. The first-party [Accessibility Options](../features/accessibility-options.md) panel is a bonus layer above AA, not part of how the site conforms (see below).
 - Accessibility is treated as a build requirement for every new feature, verified before merge, not as a remediation phase at the end.
 - Public documents the town publishes on or after the compliance date are accessible, or an accessible equivalent is published alongside them.
 - An accessibility statement page is published with a named contact and a feedback mechanism.
@@ -140,6 +141,17 @@ Municipal sites fail Title II on PDFs more than on anything else, and this proje
 - Where a PDF must be posted, it needs real text, a document title, a language, tagged structure, and heading order. Word's "Check Accessibility" plus a correct export to PDF handles most of this at no cost.
 - Link text states the format and, where useful, the size. Example: "Select Board minutes, 2026-03-04 (PDF, 240 KB)".
 - Uploaded documents do not become accessible merely because they are linked. The Document Library asks submitters to confirm accessibility, links a requirements guide from the submission page, and offers a public request form for accessible copies.
+
+## Beyond AA: Accessibility Options
+
+The site will also offer an [Accessibility Options](../features/accessibility-options.md) panel: a button on every public page that lets a visitor choose larger text, wider spacing, an easy-to-read font, high contrast, a color blindness mode, and link highlighting. It is approved as a bonus on top of AA, and these rules bind it:
+
+- **Every page meets AA without it.** Templates are built and verified to this document with the feature switched off. Nothing AA requires may depend on the panel; for example, text must still resize to 200% through the browser, and contrast must pass in the default palette.
+- **A failure is fixed at its source.** If a page fails AA, the fix goes in that page's markup or styles, never in a panel mode.
+- **The panel and its modes are in scope.** The panel is public content and must itself meet AA, and pages must still meet AA with any combination of its settings on.
+- **It is not an overlay.** It is theme code, it changes only presentation the visitor asks for, and it never alters markup, reading order, or what assistive technology announces. It does not change the conclusion in "Why an overlay plugin is not the answer".
+- **It can be switched off.** An administrator can turn the whole feature, or any one setting, off in wp-admin. Switching it off must never reduce conformance.
+- **The accessibility statement describes it as an extra,** not as a conformance measure.
 
 ## Achieving this without a paid plugin
 
@@ -224,6 +236,7 @@ Record results per feature in that feature's document, in the style already used
 
 ## Material change history
 
+- 2026-10-20 - Added "Beyond AA: Accessibility Options": the approved first-party preferences panel is a bonus layer, conformance is measured with it switched off, and it must itself meet AA.
 - 2026-10-19 - Added the skip link, `<header>` landmark, and a single `<main id="main-content">` on every template, and gave `index.php` its missing header and footer. Deleted the base theme's blank `templates/index.html`, which had made WordPress treat the theme as a block theme and render plain pages and posts empty; the classic PHP template hierarchy now applies. Verified by curl across the front page, pages, a post, search, 404, the Documents archive, both Document Library forms, and board pages, and by a keyboard pass on a page.
 - 2026-10-19 - Pointed the Documents section at the Document Library, since Meetings no longer store agendas, minutes, or supporting documents, and noted that no HTML path for agendas and minutes exists yet.
 - 2026-08-18 - Created the accessibility requirement. Established WCAG 2.1 AA and the 2028-04-26 deadline, recorded the DOJ 2026 one-year extension, rejected overlay widgets as a compliance strategy, and set the no-plugin standards-based approach.
