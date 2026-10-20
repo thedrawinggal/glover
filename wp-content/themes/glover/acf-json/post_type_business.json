@@ -1,6 +1,6 @@
 {
     "key": "post_type_business",
-    "title": "Businesses",
+    "title": "Business Directory",
     "menu_order": 0,
     "active": true,
     "post_type": "business",
@@ -10,16 +10,17 @@
     "allow_ai_access": false,
     "ai_description": "",
     "labels": {
-        "name": "Businesses",
-        "singular_name": "Business",
-        "menu_name": "Businesses",
+        "name": "Business Directory",
+        "singular_name": "Business Directory",
+        "menu_name": "Business Directory",
         "all_items": "All Businesses",
-        "add_new": "Add New",
-        "add_new_item": "Add New Business",
         "edit_item": "Edit Business",
-        "new_item": "New Business",
         "view_item": "View Business",
         "view_items": "View Businesses",
+        "add_new_item": "Add New Business",
+        "add_new": "Add New",
+        "new_item": "New Business",
+        "parent_item_colon": "Parent Business Directory:",
         "search_items": "Search Businesses",
         "not_found": "No businesses found",
         "not_found_in_trash": "No businesses found in Trash",
@@ -32,6 +33,7 @@
         "insert_into_item": "Insert into business",
         "uploaded_to_this_item": "Uploaded to this business",
         "filter_items_list": "Filter businesses list",
+        "filter_by_date": "Filter business directory by date",
         "items_list_navigation": "Businesses list navigation",
         "items_list": "Businesses list",
         "item_published": "Business published.",
@@ -56,8 +58,11 @@
     "rest_base": "",
     "rest_namespace": "wp\/v2",
     "rest_controller_class": "WP_REST_Posts_Controller",
-    "menu_position": null,
-    "menu_icon": "dashicons-store",
+    "menu_position": "",
+    "menu_icon": {
+        "type": "dashicons",
+        "value": "dashicons-store"
+    },
     "rename_capabilities": false,
     "singular_capability_name": "post",
     "plural_capability_name": "posts",
@@ -75,9 +80,9 @@
     "rewrite": {
         "permalink_rewrite": "custom_permalink",
         "slug": "businesses",
-        "feeds": false,
-        "pages": true,
-        "with_front": false
+        "with_front": "0",
+        "feeds": "0",
+        "pages": "1"
     },
     "query_var": "post_type_key",
     "query_var_name": "",
@@ -85,5 +90,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "Enter business name",
-    "modified": 1785770800
+    "modified": 1792419085
 }

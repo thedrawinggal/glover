@@ -1,0 +1,97 @@
+// Core site styles that apply everywhere: page background, links, focus,
+// layout containers, and accessibility helpers.
+
+$CONTAINER-WIDTH: 82rem;
+$CONTENT-WIDTH: 48rem;
+$GUTTER: 1rem;
+$RADIUS: 0.5rem;
+$RADIUS-LARGE: 0.75rem;
+
+body {
+  background: var(--color-page);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+// Never remove focus outlines without this replacement (WCAG 2.4.7).
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.container {
+  max-width: $CONTAINER-WIDTH;
+  margin: 0 auto;
+  padding-left: $GUTTER;
+  padding-right: $GUTTER;
+}
+
+.content-narrow {
+  max-width: $CONTENT-WIDTH;
+  margin: 0 auto;
+  padding: 1.5rem $GUTTER 3rem;
+}
+
+// Hidden visually, still read by screen readers.
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// First focusable element on every page (WCAG 2.4.1). Hidden until focused.
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+  font-weight: 700;
+  border-radius: $RADIUS;
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+    outline-color: var(--color-gold);
+  }
+}
+
+// Landmark targets of the skip link shouldn't show a ring when focused by script.
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,22 @@
+// Submit a Document page. Template: template-document-submission.php.
+// Keeps ACF's own field markup and only adjusts spacing and label weight.
+
+.document-form {
+  .acf-fields > .acf-field {
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .acf-label label {
+    font-size: $FONT-SIZE-BASE;
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  .acf-label .description {
+    color: var(--color-muted);
+  }
+
+  .acf-form-submit {
+    padding-top: 1rem;
+  }
+}

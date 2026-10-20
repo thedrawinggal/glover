@@ -9,9 +9,9 @@ if (!defined('ABSPATH')) {
  */
 function glover_event_calendar_get_archive_event_url($event_id)
 {
-    $calendar_url = get_post_type_archive_link('event');
+    $calendar_url = get_post_type_archive_link('community-events');
     if (!$calendar_url) {
-        $calendar_url = home_url('/calendar/');
+        $calendar_url = home_url('/events/');
     }
 
     return add_query_arg('event_id', absint($event_id), $calendar_url);
@@ -22,7 +22,7 @@ function glover_event_calendar_get_archive_event_url($event_id)
  */
 function glover_event_calendar_filter_event_permalink($permalink, $post)
 {
-    if ('event' !== $post->post_type || !function_exists('get_field')) {
+    if ('community-events' !== $post->post_type || !function_exists('get_field')) {
         return $permalink;
     }
 
@@ -40,7 +40,7 @@ add_filter('post_type_link', 'glover_event_calendar_filter_event_permalink', 10,
  */
 function glover_event_calendar_redirect_non_landing_event()
 {
-    if (!is_singular('event') || !function_exists('get_field')) {
+    if (!is_singular('community-events') || !function_exists('get_field')) {
         return;
     }
 

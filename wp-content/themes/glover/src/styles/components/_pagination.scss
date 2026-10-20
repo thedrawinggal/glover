@@ -1,0 +1,29 @@
+// Numbered pagination inside nav[aria-label]; the current page has aria-current.
+
+.pagination {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  a,
+  .pagination__current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0 0.5rem;
+    border-radius: 999px;
+  }
+}
+
+.pagination__current {
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+  font-weight: $FONT-WEIGHT-BOLD;
+}

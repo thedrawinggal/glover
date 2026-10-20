@@ -1,0 +1,283 @@
+{
+    "key": "group_6a7b16a4deb17",
+    "title": "Document Fields",
+    "fields": [
+        {
+            "key": "field_glover_document_file",
+            "label": "Document file",
+            "name": "document_file",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Upload a PDF, Word (.docx) or Excel (.xlsx) file. Scans and photos of paper are not accepted.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "uploadedTo",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "pdf, docx, xlsx",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_boards",
+            "label": "Board",
+            "name": "document_boards",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Choose the board this document belongs to. Choose more than one only if it truly belongs to several.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {},
+            "default_value": [],
+            "return_format": "value",
+            "allow_custom": 0,
+            "layout": "vertical",
+            "toggle": 0,
+            "save_custom": 0,
+            "custom_choice_button_text": "Add new choice",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_category",
+            "label": "Category",
+            "name": "document_category",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "document-category",
+            "add_term": 0,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "id",
+            "field_type": "radio",
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_topics",
+            "label": "Topics",
+            "name": "document_topics",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Optional. Pick any topics that fit.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "document-subject",
+            "add_term": 0,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "id",
+            "field_type": "checkbox",
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_suggested_topic",
+            "label": "Suggest a new topic",
+            "name": "document_suggested_topic",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional. If no topic fits, suggest one. The approver decides whether to add it.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 60,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_date",
+            "label": "Date of the document",
+            "name": "document_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "The date printed on the document. For agendas and minutes, use the meeting date.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "F j, Y",
+            "return_format": "Ymd",
+            "first_day": 0,
+            "default_to_current_date": 0,
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_minutes_status",
+            "label": "Minutes status",
+            "name": "document_minutes_status",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "Required for minutes. Draft minutes are labeled Draft on the website until approved minutes replace them.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "draft": "Draft",
+                "approved": "Approved by the board"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "other_choice": 0,
+            "save_other_choice": 0,
+            "layout": "vertical",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_replaces",
+            "label": "This replaces an earlier version",
+            "name": "document_replaces",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Optional. Choose the document this one replaces, such as draft minutes. When approved, the earlier document's web address shows this new file.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {},
+            "default_value": false,
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_glover_document_accessibility_confirmed",
+            "label": "Accessibility",
+            "name": "document_accessibility_confirmed",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "This is a text-based file, not a scan, and it has passed an accessibility check.",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_glover_document_legal_confirmed",
+            "label": "Public record",
+            "name": "document_legal_confirmed",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "This document contains nothing confidential and is ready to be public.",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_glover_document_reviewer_note",
+            "label": "Note to the reviewer",
+            "name": "document_reviewer_note",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional. Anything the approver should know.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": "",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "document-library"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792423210
+}

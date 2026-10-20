@@ -1,0 +1,17 @@
+<?php
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+require_once __DIR__ . '/document-library-config.php';
+require_once __DIR__ . '/document-library-boards.php';
+require_once __DIR__ . '/document-library-storage.php';
+require_once __DIR__ . '/document-library-integrations.php';
+require_once __DIR__ . '/document-library-notifications.php';
+require_once __DIR__ . '/document-library-lifecycle.php';
+require_once __DIR__ . '/document-library-submission.php';
+require_once __DIR__ . '/document-library-review.php';
+require_once __DIR__ . '/document-library-query.php';
+require_once __DIR__ . '/document-library-public.php';
+require_once __DIR__ . '/document-library-requests.php';

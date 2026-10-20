@@ -369,5 +369,22 @@ add_filter('acf/load_field/type=wysiwyg', function ($field) {
     return $field;
 });
 
+
+//////////////////////////////////////////
+/// Classic editor for custom post types
+//////////////////////////////////////////
+
+// Use the classic editor for every custom post type; posts and pages keep the block editor.
+add_filter('use_block_editor_for_post_type', function ($use_block_editor, $post_type) {
+    $post_type_object = get_post_type_object($post_type);
+
+    if ($post_type_object && !$post_type_object->_builtin) {
+        return false;
+    }
+
+    return $use_block_editor;
+}, 10, 2);
+
 // Major features are loaded through isolated coordinator includes.
 require_once get_template_directory() . '/includes/features/event-calendar/event-calendar.php';
+require_once get_template_directory() . '/includes/features/document-library/document-library.php';

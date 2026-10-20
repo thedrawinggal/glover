@@ -1,0 +1,39 @@
+// Site color palette. Every text/background pairing used on the site must meet
+// WCAG 2.1 AA contrast (4.5:1 for body text, 3:1 for large text and UI borders).
+// Rules use the CSS custom properties so colors can be remapped in one place.
+
+$COLOR-FOREST: #163a2c;        // banners, primary buttons, active states
+$COLOR-FOREST-INK: #f6f1e4;    // text on forest
+$COLOR-INK: #1d2a23;           // body text
+$COLOR-MUTED: #4e5a52;         // secondary text (6.4:1 on surface)
+$COLOR-LINK: #1f5a3d;          // links on light backgrounds
+$COLOR-PAGE: #f3eee2;          // page background
+$COLOR-SURFACE: #fbf8f1;       // cards and panels
+$COLOR-SURFACE-ALT: #f4efe3;   // table headers, striped rows
+$COLOR-LINE: #cfc6b2;          // dividers (decorative only)
+$COLOR-BORDER: #8a8270;        // form control borders (3:1 on surface)
+$COLOR-CHIP: #e6dfcd;          // badges
+$COLOR-GOLD: #f0c96b;          // focus ring on forest
+$COLOR-FOCUS: #1b4fd6;         // focus ring on light backgrounds
+$COLOR-ERROR: #a12a1e;
+$COLOR-WHITE: #ffffff;
+$COLOR-BACKDROP: rgba(13, 26, 20, 0.6);
+
+:root {
+  --color-forest: #{$COLOR-FOREST};
+  --color-forest-ink: #{$COLOR-FOREST-INK};
+  --color-ink: #{$COLOR-INK};
+  --color-muted: #{$COLOR-MUTED};
+  --color-link: #{$COLOR-LINK};
+  --color-page: #{$COLOR-PAGE};
+  --color-surface: #{$COLOR-SURFACE};
+  --color-surface-alt: #{$COLOR-SURFACE-ALT};
+  --color-line: #{$COLOR-LINE};
+  --color-border: #{$COLOR-BORDER};
+  --color-chip: #{$COLOR-CHIP};
+  --color-gold: #{$COLOR-GOLD};
+  --color-focus: #{$COLOR-FOCUS};
+  --color-error: #{$COLOR-ERROR};
+  --color-white: #{$COLOR-WHITE};
+  --color-backdrop: #{$COLOR-BACKDROP};
+}

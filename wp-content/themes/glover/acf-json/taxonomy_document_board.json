@@ -1,0 +1,68 @@
+{
+    "key": "taxonomy_document_board",
+    "title": "Document Boards",
+    "menu_order": 0,
+    "active": true,
+    "taxonomy": "document-board",
+    "object_type": [
+        "document-library"
+    ],
+    "advanced_configuration": true,
+    "import_source": "",
+    "import_date": "",
+    "labels": {
+        "name": "Document Boards",
+        "singular_name": "Document Board",
+        "menu_name": "Document Boards",
+        "search_items": "Search Document Boards",
+        "all_items": "All Document Boards",
+        "parent_item": "Parent Document Board",
+        "edit_item": "Edit Document Board",
+        "view_item": "View Document Board",
+        "update_item": "Update Document Board",
+        "add_new_item": "Add New Document Board",
+        "new_item_name": "New Document Board Name",
+        "not_found": "No document boards found"
+    },
+    "description": "Hidden mirror of Departments & Boards so a document can belong to several boards. Managed by code, not by hand.",
+    "capabilities": {
+        "manage_terms": "manage_categories",
+        "edit_terms": "manage_categories",
+        "delete_terms": "manage_categories",
+        "assign_terms": "edit_posts"
+    },
+    "public": false,
+    "publicly_queryable": false,
+    "hierarchical": false,
+    "show_ui": false,
+    "show_in_menu": false,
+    "show_in_nav_menus": false,
+    "show_in_rest": true,
+    "rest_base": "",
+    "rest_namespace": "wp/v2",
+    "rest_controller_class": "WP_REST_Terms_Controller",
+    "show_tagcloud": false,
+    "show_in_quick_edit": false,
+    "show_admin_column": false,
+    "rewrite": {
+        "permalink_rewrite": "no_permalink",
+        "slug": "",
+        "with_front": false,
+        "rewrite_hierarchical": false
+    },
+    "query_var": "none",
+    "query_var_name": "",
+    "default_term": {
+        "default_term_enabled": false,
+        "default_term_name": "",
+        "default_term_slug": "",
+        "default_term_description": ""
+    },
+    "sort": null,
+    "meta_box": "disabled",
+    "meta_box_cb": "",
+    "meta_box_sanitize_cb": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792421356
+}
