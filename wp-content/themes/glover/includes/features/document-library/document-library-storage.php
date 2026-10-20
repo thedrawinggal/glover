@@ -172,9 +172,7 @@ function glover_document_library_sync_file_visibility($post_id)
         }
     }
 
-    $previous = get_post_meta($post_id, '_glover_previous_files', true);
-
-    foreach ((array) $previous as $version) {
+    foreach (glover_document_library_meta_list($post_id, '_glover_previous_files') as $version) {
         if (!empty($version['attachment'])) {
             glover_document_library_move_attachment((int) $version['attachment'], true);
         }
@@ -227,7 +225,7 @@ function glover_document_library_stream_file()
 
     $allowed = array(glover_document_library_file_id($post_id));
 
-    foreach ((array) get_post_meta($post_id, '_glover_previous_files', true) as $version) {
+    foreach (glover_document_library_meta_list($post_id, '_glover_previous_files') as $version) {
         $allowed[] = isset($version['attachment']) ? (int) $version['attachment'] : 0;
     }
 

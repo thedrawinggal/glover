@@ -4,6 +4,12 @@ function cultivate_theme_setup()
 {
     add_theme_support('post-thumbnails');
     add_theme_support('title-tag');
+
+    // One content stylesheet for every editor: the block editor (Posts, Pages)
+    // and TinyMCE (custom post types, ACF WYSIWYG fields). Built from
+    // src/styles/admin-editor.scss; WordPress skips it until the file exists.
+    add_theme_support('editor-styles');
+    add_editor_style('dist/styles/admin-editor.css');
     load_theme_textdomain('cltv8', get_template_directory() . '/languages');
 
     // Register menus
@@ -81,17 +87,21 @@ function enqueue_admin_styles()
     wp_enqueue_style('admin-style', get_stylesheet_directory_uri() . '/style-admin.css', array(), filemtime($admin_style));
 }
 
-// Add custom styles to WYSIWYG editor
-add_filter('mce_css', 'add_editor_styles');
-function add_editor_styles($mce_css)
+// TinyMCE caches editor stylesheets by WordPress version only, so version the
+// theme's by file date to show changes as soon as it is rebuilt.
+add_filter('editor_stylesheets', 'cltv8_version_editor_stylesheets');
+function cltv8_version_editor_stylesheets($stylesheets)
 {
-    $editor_style = 'dist/styles/admin-editor.css?v=1.0.0';
-    if (!empty($mce_css)) {
-        $mce_css .= ',' . $editor_style;
-    } else {
-        $mce_css = $editor_style;
+    $path = get_stylesheet_directory() . '/dist/styles/admin-editor.css';
+    $url = get_stylesheet_directory_uri() . '/dist/styles/admin-editor.css';
+
+    if (!file_exists($path)) {
+        return $stylesheets;
     }
-    return $mce_css;
+
+    return array_map(function ($stylesheet) use ($url, $path) {
+        return $stylesheet === $url ? add_query_arg('v', filemtime($path), $url) : $stylesheet;
+    }, $stylesheets);
 }
 
 // add support for acf options page

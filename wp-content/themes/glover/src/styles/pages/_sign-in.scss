@@ -1,0 +1,22 @@
+// Sign-in page (/sign-in/), rendered by the Glover Google Workspace must-use plugin.
+
+.sign-in__heading {
+  margin: 2rem 0 0.75rem;
+  font-size: $FONT-SIZE-H4;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.sign-in__help {
+  margin: 0.35rem 0 0;
+  color: var(--color-muted);
+  font-size: $FONT-SIZE-SMALL;
+}
+
+.sign-in__code {
+  max-width: 10rem;
+  font-size: 1.25rem;
+  letter-spacing: 0.3em;
+}

@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "base theme for cultivate wordpress projects.",
   "scripts": {
-    "dev": "parcel watch src/js/app.js src/styles/app.scss --no-cache",
-    "build": "parcel build src/js/app.js src/styles/app.scss --no-cache"
+    "dev": "parcel watch src/js/app.js src/styles/app.scss src/styles/admin-editor.scss --no-cache",
+    "build": "parcel build src/js/app.js src/styles/app.scss src/styles/admin-editor.scss --no-cache"
   },
   "dependencies": {
     "gsap": "file:gsap-bonus.tgz"

@@ -76,7 +76,8 @@ small {
 }
 
 // Editor-entered content (the_content, guide pages) gets real lists back.
-.rich-text {
+// Shared with the content editors through admin-editor.scss.
+@mixin rich-text-content {
   ul,
   ol {
     margin: 0 0 1em;
@@ -100,6 +101,10 @@ small {
   h4 {
     margin-top: 1.25em;
   }
+}
+
+.rich-text {
+  @include rich-text-content;
 }
 
 // Small uppercase label used above form groups and table columns.

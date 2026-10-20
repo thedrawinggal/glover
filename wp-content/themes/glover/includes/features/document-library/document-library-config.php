@@ -222,6 +222,21 @@ add_filter('acf/update_value/key=field_glover_document_submitter_boards', 'glove
 add_filter('acf/update_value/key=field_glover_document_submitter_auto_approve', 'glover_document_library_protect_submitter_fields', 10, 3);
 
 /**
+ * A list stored in post meta. get_post_meta() returns '' when nothing is
+ * saved, and (array) '' would count as one item.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $key     Meta key.
+ * @return array
+ */
+function glover_document_library_meta_list($post_id, $key)
+{
+    $value = get_post_meta($post_id, $key, true);
+
+    return is_array($value) ? $value : array();
+}
+
+/**
  * Append an entry to a document's audit log.
  *
  * @param int    $post_id Document ID.

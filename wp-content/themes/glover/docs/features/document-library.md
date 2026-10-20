@@ -2,13 +2,9 @@
 
 ## Status
 
-Phase 1 (the core library) is built and verified locally. It includes the field contract, settings screen, submitter permissions, submission form with private pending storage, review queue, public library with live filtering, single document pages, board feeds, and the accessible-copy request form. Sign-in uses the standard WordPress login for now.
+Phase 1 (the core library) is built and verified locally. It includes the field contract, settings screen, submitter permissions, submission form with private pending storage, review queue, public library with live filtering, single document pages, board feeds, and the accessible-copy request form.
 
-Built as architecture only, waiting for Google Workspace admin access:
-
-- Phase 2: Google and emailed-code sign-in.
-- Phase 3: Drive backup.
-- Site email delivery through Workspace. Notices are sent with `wp_mail()`, so they only arrive once mail is configured.
+Phases 2 and 3 are built and verified live on the local site: passwordless sign-in at `/sign-in/`, Drive backup, and site email through the Gmail API. Setup and details: [Google Workspace integration](google-workspace.md).
 
 The approved proposal, with its decision log and diagrams, is the Claude Doc "Glover Document Library Proposal" (https://claude.ai/code/artifact/f145edb5-b20d-4e67-b148-91b6b7a4ef7d). Jenny approved it in chat on 2026-10-19. This file is the maintained spec from here on.
 
@@ -132,10 +128,12 @@ Only users who can `promote_users` can change these, even on their own profile.
 
 `access-copy-request` (`acf-json/post_type_glover_access_copy_request.json`), private, listed under Document Library. Each request is saved before it is emailed, so a mail failure never loses it. The form has a honeypot, a five-per-hour limit per IP address, and an optional Turnstile check.
 
-## Extension points for Google (not built)
+## Extension points for Google
 
-- **Sign-in:** filter `glover_document_library/sign_in_url`.
-- **Backup:** register on `glover_document_library/backup_handlers`, handle `glover_document_library/backup_requested ($post_id, $attachment_id)`, and record progress with `glover_document_library_set_backup_status()`. With no handler registered, status is "Not configured".
+Both are now used by the [Google Workspace integration](google-workspace.md).
+
+- **Sign-in:** filter `glover_document_library/sign_in_url`. The must-use plugin points it at `/sign-in/`.
+- **Backup:** register on `glover_document_library/backup_handlers`, handle `glover_document_library/backup_requested ($post_id, $attachment_id)`, and record progress with `glover_document_library_set_backup_status()`. `document-library-drive.php` does this when Drive is configured; otherwise the status is "Not configured".
 - **Lifecycle actions:** `glover_document_library/document_published`, `document_unpublished`, and `document_replaced ($post_id, $new_attachment_id, $previous_attachment_id)`.
 
 ## Pages (database content, recreate on production)
@@ -152,6 +150,7 @@ Only users who can `promote_users` can change these, even on their own profile.
 - `document-library-boards.php`: board taxonomy sync, board choices and validation.
 - `document-library-storage.php`: private folder, moving files on publish and unpublish, permission-checked file streaming, file details.
 - `document-library-integrations.php`: Google extension points and backup status.
+- `document-library-drive.php`: Google Drive backup (folders, resumable upload, retries, failure notice, Retry button).
 - `document-library-notifications.php`: emails.
 - `document-library-lifecycle.php`: publishing guard, publish and unpublish handling, replacement merge, duplicate detection.
 - `document-library-submission.php`: submission form, title and file field adjustments, replaces choices, validation, completing a submission.
@@ -244,6 +243,7 @@ The public library, board feeds, document pages, signed-out forms, both dialogs,
 
 ## Material change history
 
+- 2026-10-20: Phases 2 and 3: sign-in links now go to `/sign-in/` (Google or emailed code), and approved documents back up to the Shared Drive through `document-library-drive.php`. Added a "failed backups" list view, the backup note and a Retry button in Review details, and a helper so empty meta lists aren't counted as one item.
 - 2026-10-19: Moved all library styles into the theme's Sass build: shared colors, typography and core styles in `base/`, reusable pieces (page banner, breadcrumb, buttons, chips, dialog, forms, badges, pagination, document feed) in `components/`, and page-specific styles in `pages/`. Replaced the hand-written banners with `components/common/page-banner.php`, renamed `glover-*` classes to component and page names, and removed `assets/library.css`.
 - 2026-10-19: Phase 1. Built the field contract, settings screen, submitter role and profile fields, the ACF front-end submission form with private pending storage, the review queue with Approve and Return, replacement merging with stable addresses, duplicate detection, email notices, the public library with live filtering and facets, single document and board pages, the search help and requirements dialogs, and the accessible-copy request form with its private post type. Added extension points for Google sign-in and Drive backup without building either.
 - 2026-10-19: Created this spec from the approved proposal. Phase 0: pointed Document Fields at `document-library`, renamed `document_cateogry` to `document_category`, made both taxonomy fields save real term relationships without in-field term creation, defined the `document-category`, `document-subject`, and hidden `document-board` taxonomies, gave the post type `/documents/` URLs and Document labels, and removed document uploads from Meetings.

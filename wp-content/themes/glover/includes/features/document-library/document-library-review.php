@@ -249,6 +249,7 @@ function glover_document_library_review_notice()
     $messages = array(
         'approved' => 'Document approved and published.',
         'returned' => 'Document returned to its submitter.',
+        'backup_retry' => 'Drive backup queued. It runs in the background within a few minutes.',
     );
     $key = sanitize_key($_GET['glover_notice']);
 
@@ -302,6 +303,11 @@ function glover_document_library_filter_admin_list($query)
     if (isset($_GET['glover_view']) && $_GET['glover_view'] === 'auto') {
         $query->set('meta_key', '_glover_auto_published');
         $query->set('meta_value', '1');
+    }
+
+    if (isset($_GET['glover_view']) && $_GET['glover_view'] === 'backup_failed') {
+        $query->set('meta_key', '_glover_drive_backup_status');
+        $query->set('meta_value', 'failed');
     }
 }
 add_action('pre_get_posts', 'glover_document_library_filter_admin_list');
@@ -365,7 +371,7 @@ function glover_document_library_render_review_box($post)
         echo '</ul>';
     }
 
-    foreach ((array) get_post_meta($post->ID, '_glover_possible_duplicates', true) as $duplicate_id) {
+    foreach (glover_document_library_meta_list($post->ID, '_glover_possible_duplicates') as $duplicate_id) {
         if ($duplicate_id && get_post($duplicate_id)) {
             printf('<p>Possible duplicate of <a href="%s">%s</a></p>', esc_url(get_edit_post_link($duplicate_id)), esc_html(get_the_title($duplicate_id)));
         }
@@ -378,6 +384,17 @@ function glover_document_library_render_review_box($post)
     }
 
     echo '<p><strong>Drive backup:</strong> ' . esc_html(isset($statuses[$backup]) ? $statuses[$backup] : 'Not yet requested') . '</p>';
+
+    $backup_note = get_post_meta($post->ID, '_glover_drive_backup_note', true);
+
+    if ($backup_note) {
+        echo '<p class="description">' . esc_html($backup_note) . '</p>';
+    }
+
+    if ($post->post_status === 'publish' && in_array($backup, array('failed', 'not_configured'), true)
+        && function_exists('glover_document_library_drive_ready') && glover_document_library_drive_ready() && glover_document_library_user_can_review()) {
+        printf('<p><a class="button" href="%s">Retry backup</a></p>', esc_url(glover_document_library_drive_retry_url($post->ID)));
+    }
 
     if ($post->post_status === 'pending' && glover_document_library_user_can_review()) {
         printf(

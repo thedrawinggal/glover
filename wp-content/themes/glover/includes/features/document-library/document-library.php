@@ -8,6 +8,7 @@ require_once __DIR__ . '/document-library-config.php';
 require_once __DIR__ . '/document-library-boards.php';
 require_once __DIR__ . '/document-library-storage.php';
 require_once __DIR__ . '/document-library-integrations.php';
+require_once __DIR__ . '/document-library-drive.php';
 require_once __DIR__ . '/document-library-notifications.php';
 require_once __DIR__ . '/document-library-lifecycle.php';
 require_once __DIR__ . '/document-library-submission.php';

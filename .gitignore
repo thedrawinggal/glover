@@ -7,6 +7,12 @@
 /wp-content/*
 !/wp-content/themes/
 
+# Must-use plugins: only the Glover Google Workspace plugin is project code.
+!/wp-content/mu-plugins/
+/wp-content/mu-plugins/*
+!/wp-content/mu-plugins/glover-google.php
+!/wp-content/mu-plugins/glover-google/
+
 # WordPress default themes can be reinstalled from WordPress itself.
 /wp-content/themes/twentytwenty*/
 
