@@ -1,0 +1,380 @@
+// Documents page (/documents/): the Document Library's filter panel, search,
+// results table and footer. Template: archive-document-library.php.
+// Mobile first: the two-column layout starts at $LG, the real table at $XL.
+
+.documents__layout {
+  max-width: $CONTAINER-WIDTH;
+  margin: 0 auto;
+  padding: 1.5rem $GUTTER 3rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem 2rem;
+  align-items: start;
+}
+
+// Shown only once library.js has loaded, and only on narrow screens.
+.documents__filters-toggle {
+  display: none;
+}
+
+.documents.is-enhanced {
+  .documents__filters-toggle {
+    display: inline-flex;
+    justify-self: start;
+  }
+
+  .documents__sidebar[data-collapsed] {
+    display: none;
+  }
+
+  .filters__submit {
+    display: none;
+  }
+}
+
+// Refine panel
+
+.filters {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: $RADIUS-LARGE;
+  padding: 1.25rem 1.5rem;
+}
+
+.filters__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.filters__title {
+  margin: 0;
+  font-size: $FONT-SIZE-H3;
+}
+
+.filters__group {
+  margin: 0;
+  padding: 1rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  min-width: 0;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+}
+
+.filters__label {
+  @include eyebrow;
+  display: block;
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+.filters__submit {
+  padding-top: 1rem;
+}
+
+.topic-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+// Year range: two dropdowns, plus a two-handle slider added by library.js.
+
+.year-range__fields {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.year-range__slider {
+  --range-start: 0%;
+  --range-end: 100%;
+  position: relative;
+  height: 2.75rem;
+  margin-top: 0.5rem;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+
+  &::before {
+    left: 0;
+    right: 0;
+    background: var(--color-line);
+  }
+
+  &::after {
+    left: var(--range-start);
+    right: calc(100% - var(--range-end));
+    background: var(--color-forest);
+  }
+
+  input[type="range"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    margin: 0;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+    z-index: 1;
+
+    &::-webkit-slider-runnable-track {
+      background: transparent;
+    }
+
+    &::-moz-range-track {
+      background: transparent;
+    }
+
+    &::-webkit-slider-thumb {
+      pointer-events: auto;
+      -webkit-appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: var(--color-forest);
+      border: 2px solid var(--color-surface);
+      box-shadow: 0 0 0 1px var(--color-forest);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      pointer-events: auto;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: var(--color-forest);
+      border: 2px solid var(--color-surface);
+      cursor: pointer;
+    }
+  }
+}
+
+// Search, results summary and sort
+
+.search-bar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: $RADIUS;
+
+  .form-input {
+    flex: 1;
+    border: 0;
+  }
+}
+
+.documents__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.documents__summary {
+  margin: 0;
+}
+
+.documents__sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .form-select {
+    width: auto;
+  }
+}
+
+.documents__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.documents__results[aria-busy="true"] {
+  opacity: 0.6;
+}
+
+// Results: stacked cards until $XL, then a real table. Explicit ARIA
+// roles in the markup keep table semantics when cells are display: block.
+
+.results-table {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: $RADIUS-LARGE;
+  overflow: hidden;
+
+  &,
+  tbody,
+  tr,
+  td {
+    display: block;
+  }
+
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  tr {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  td {
+    padding: 0.25rem 0;
+  }
+
+  td[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  td.results-table__title::before,
+  td[data-label="Type"]::before {
+    content: none;
+  }
+
+  tbody tr:nth-child(even) {
+    background: var(--color-surface-alt);
+  }
+}
+
+.results-table__title a {
+  color: var(--color-ink);
+  font-family: $FONT-SERIF;
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+.results-table__action {
+  padding-top: 0.5rem;
+}
+
+.results-table__empty-cell {
+  display: none !important;
+}
+
+@media (min-width: $LG) {
+  .documents__layout {
+    grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
+  }
+
+  .documents.is-enhanced {
+    .documents__filters-toggle {
+      display: none;
+    }
+
+    .documents__sidebar[data-collapsed] {
+      display: block;
+    }
+  }
+}
+
+// The full table needs about 760px for its columns; below $XL the results stay stacked cards.
+@media (min-width: $XL) {
+  .results-table {
+    display: table;
+    border-collapse: collapse;
+
+    thead {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      display: table-header-group;
+    }
+
+    tbody {
+      display: table-row-group;
+    }
+
+    tr {
+      display: table-row;
+      padding: 0;
+    }
+
+    th {
+      @include eyebrow;
+      padding: 0.75rem 1rem;
+      background: var(--color-surface-alt);
+      border-bottom: 1px solid var(--color-line);
+      text-align: left;
+    }
+
+    td {
+      display: table-cell;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--color-line);
+      vertical-align: middle;
+    }
+
+    td[data-label]::before {
+      content: none;
+    }
+  }
+
+  .results-table__action {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .results-table__date {
+    white-space: nowrap;
+  }
+
+  .results-table__title {
+    min-width: 14rem;
+  }
+
+  .results-table__empty-cell {
+    display: table-cell !important;
+  }
+}
+
+// Footer and empty state
+
+.documents__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  color: var(--color-muted);
+
+  p {
+    margin: 0;
+  }
+}
+
+.documents__empty {
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: $RADIUS-LARGE;
+}

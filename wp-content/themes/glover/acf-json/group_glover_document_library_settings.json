@@ -1,0 +1,226 @@
+{
+    "key": "group_glover_document_library_settings",
+    "title": "Document Library Settings",
+    "fields": [
+        {
+            "key": "field_glover_document_settings_approver",
+            "label": "Approver",
+            "name": "document_library_approver",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "Reviews and approves submitted documents, and receives an email when one is waiting.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_backup_approver",
+            "label": "Backup approver",
+            "name": "document_library_backup_approver",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "Optional. Also receives review emails and can approve, so deadlines are covered when the approver is away.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_upload_cap",
+            "label": "Upload size cap (MB)",
+            "name": "document_library_upload_cap",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Optional. Leave blank for no cap. The web host's own upload limit always applies.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 1,
+            "max": "",
+            "step": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": "MB",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contact_name",
+            "label": "Help contact name",
+            "name": "document_library_help_contact_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown in the library's help window as the person or office to contact.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Town Clerk's Office",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contact_phone",
+            "label": "Help contact phone",
+            "name": "document_library_help_contact_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "802-525-6227",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contact_email",
+            "label": "Help contact email",
+            "name": "document_library_help_contact_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Also receives requests for accessible copies.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_requirements_page",
+            "label": "Requirements guide page",
+            "name": "document_library_requirements_page",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "The page holding the accessibility and legal requirements for uploaded documents. The clerk keeps it current.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_turnstile_site_key",
+            "label": "Cloudflare Turnstile site key",
+            "name": "document_library_turnstile_site_key",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional bot check for the public request form. Leave blank to rely on the built-in honeypot.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_turnstile_secret_key",
+            "label": "Cloudflare Turnstile secret key",
+            "name": "document_library_turnstile_secret_key",
+            "aria-label": "",
+            "type": "password",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "glover-document-library-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792422101
+}

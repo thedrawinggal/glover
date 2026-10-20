@@ -1,9 +1,28 @@
-// base
+// base: tools first, then the reset, then site-wide colors, type and core styles
 @import "./base/mixins.scss";
 @import "./base/reset.scss";
 @import "./base/breakpoints.scss";
 @import "./base/root.scss";
+@import "./base/colors";
+@import "./base/typography";
+@import "./base/core";
 
-// components
+// components: reusable pieces shared across pages
 @import "./components/common/_cltv8-single-image.scss";
 @import "./components/common/_cltv8-image-banner.scss";
+@import "./components/page-banner";
+@import "./components/breadcrumb";
+@import "./components/button";
+@import "./components/chip";
+@import "./components/dialog";
+@import "./components/form";
+@import "./components/badge";
+@import "./components/pagination";
+@import "./components/document-feed";
+
+// pages: overrides and styles unique to one page
+@import "./pages/documents";
+@import "./pages/document";
+@import "./pages/submit-document";
+@import "./pages/department-board";
+@import "./pages/sign-in";

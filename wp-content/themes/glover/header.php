@@ -26,6 +26,7 @@
     <?php wp_head(); ?>
 </head>
 <body class="app">
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <!-- Google Tag Manager (noscript) -->
 <?php if ($google_tag_id) : ?>
     <noscript>
@@ -38,9 +39,11 @@
         </iframe>
     </noscript>
 <?php endif; ?>
-<a href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_html(get_bloginfo('name')); ?>" rel="home">
-    logo
-</a>
-<nav>
-    <?php wp_nav_menu(array('theme_location' => 'main-menu')); ?>
-</nav>
+<header class="site-header">
+    <a href="<?php echo esc_url(home_url('/')); ?>" title="<?php echo esc_html(get_bloginfo('name')); ?>" rel="home">
+        logo
+    </a>
+    <nav>
+        <?php wp_nav_menu(array('theme_location' => 'main-menu')); ?>
+    </nav>
+</header>

@@ -1,0 +1,25 @@
+// "Latest documents" list for Departments & Boards pages.
+// Markup: components/document-library/latest-documents.php.
+
+.document-feed {
+  margin-top: 2rem;
+}
+
+.document-feed__list {
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.document-feed__item {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.document-feed__title {
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+.document-feed__meta {
+  margin: 0.2rem 0;
+  color: var(--color-muted);
+}

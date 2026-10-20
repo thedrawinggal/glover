@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<main class="front-page">
+<main id="main-content" class="front-page" tabindex="-1">
     front page
 </main>
 <?php get_footer(); ?>

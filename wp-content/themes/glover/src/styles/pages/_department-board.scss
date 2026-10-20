@@ -1,0 +1,11 @@
+// Departments & Boards page. Template: single-department-board.php.
+// The "Latest documents" list is the shared document-feed component.
+
+.department-board__members {
+  margin: 0 0 1.5rem;
+  padding: 0;
+
+  li {
+    padding: 0.25rem 0;
+  }
+}

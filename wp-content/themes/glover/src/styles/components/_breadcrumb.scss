@@ -1,0 +1,19 @@
+// Breadcrumb trail: an ordered list inside nav[aria-label="Breadcrumb"].
+// The current page carries aria-current="page".
+
+.breadcrumb {
+  font-size: $FONT-SIZE-SMALL;
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  li + li::before {
+    content: "\2192";
+    margin-right: 0.5rem;
+  }
+}

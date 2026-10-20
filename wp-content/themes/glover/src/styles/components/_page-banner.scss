@@ -1,0 +1,42 @@
+// Page banner: the dark green band at the top of every interior page, holding
+// the breadcrumb, the page title (the page's only h1), an optional action
+// button and an optional note. Markup: components/common/page-banner.php.
+
+.page-banner {
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+  padding: 1.5rem 0 1.75rem;
+
+  a {
+    color: var(--color-forest-ink);
+  }
+
+  :focus-visible {
+    outline-color: var(--color-gold);
+  }
+}
+
+.page-banner__inner {
+  max-width: $CONTAINER-WIDTH;
+  margin: 0 auto;
+  padding: 0 $GUTTER;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1.5rem;
+}
+
+.page-banner__breadcrumb {
+  flex: 1 1 100%;
+}
+
+.page-banner__title {
+  flex: 1 1 20rem;
+  margin: 0;
+}
+
+.page-banner__note {
+  flex: 1 1 100%;
+  margin: 0;
+  font-weight: $FONT-WEIGHT-BOLD;
+}

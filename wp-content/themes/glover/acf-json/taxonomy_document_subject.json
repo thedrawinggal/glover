@@ -1,30 +1,30 @@
 {
-    "key": "taxonomy_organizer",
-    "title": "Organizers",
+    "key": "taxonomy_document_subject",
+    "title": "Topics",
     "menu_order": 0,
     "active": true,
-    "taxonomy": "organizer",
+    "taxonomy": "document-subject",
     "object_type": [
-        "event"
+        "document-library"
     ],
     "advanced_configuration": true,
     "import_source": "",
     "import_date": "",
     "labels": {
-        "name": "Organizers",
-        "singular_name": "Organizer",
-        "menu_name": "Organizers",
-        "search_items": "Search Organizers",
-        "all_items": "All Organizers",
-        "parent_item": "Parent Organizer",
-        "edit_item": "Edit Organizer",
-        "view_item": "View Organizer",
-        "update_item": "Update Organizer",
-        "add_new_item": "Add New Organizer",
-        "new_item_name": "New Organizer Name",
-        "not_found": "No organizers found"
+        "name": "Topics",
+        "singular_name": "Topic",
+        "menu_name": "Topics",
+        "search_items": "Search Topics",
+        "all_items": "All Topics",
+        "parent_item": "Parent Topic",
+        "edit_item": "Edit Topic",
+        "view_item": "View Topic",
+        "update_item": "Update Topic",
+        "add_new_item": "Add New Topic",
+        "new_item_name": "New Topic Name",
+        "not_found": "No topics found"
     },
-    "description": "Town body, office, service, or community organization responsible for an event.",
+    "description": "Informal tags shown as chips in the library filters. A controlled list; submitters pick from it.",
     "capabilities": {
         "manage_terms": "manage_categories",
         "edit_terms": "manage_categories",
@@ -39,7 +39,7 @@
     "show_in_nav_menus": false,
     "show_in_rest": true,
     "rest_base": "",
-    "rest_namespace": "wp\/v2",
+    "rest_namespace": "wp/v2",
     "rest_controller_class": "WP_REST_Terms_Controller",
     "show_tagcloud": false,
     "show_in_quick_edit": true,
@@ -64,5 +64,5 @@
     "meta_box_sanitize_cb": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1785789587
+    "modified": 1792421356
 }

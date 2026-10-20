@@ -1,0 +1,68 @@
+{
+    "key": "taxonomy_document_category",
+    "title": "Document Categories",
+    "menu_order": 0,
+    "active": true,
+    "taxonomy": "document-category",
+    "object_type": [
+        "document-library"
+    ],
+    "advanced_configuration": true,
+    "import_source": "",
+    "import_date": "",
+    "labels": {
+        "name": "Document Categories",
+        "singular_name": "Document Category",
+        "menu_name": "Document Categories",
+        "search_items": "Search Document Categories",
+        "all_items": "All Document Categories",
+        "parent_item": "Parent Document Category",
+        "edit_item": "Edit Document Category",
+        "view_item": "View Document Category",
+        "update_item": "Update Document Category",
+        "add_new_item": "Add New Document Category",
+        "new_item_name": "New Document Category Name",
+        "not_found": "No document categories found"
+    },
+    "description": "The formal grouping for library documents. One per document; only admins add terms.",
+    "capabilities": {
+        "manage_terms": "manage_categories",
+        "edit_terms": "manage_categories",
+        "delete_terms": "manage_categories",
+        "assign_terms": "edit_posts"
+    },
+    "public": false,
+    "publicly_queryable": false,
+    "hierarchical": false,
+    "show_ui": true,
+    "show_in_menu": true,
+    "show_in_nav_menus": false,
+    "show_in_rest": true,
+    "rest_base": "",
+    "rest_namespace": "wp/v2",
+    "rest_controller_class": "WP_REST_Terms_Controller",
+    "show_tagcloud": false,
+    "show_in_quick_edit": true,
+    "show_admin_column": true,
+    "rewrite": {
+        "permalink_rewrite": "no_permalink",
+        "slug": "",
+        "with_front": false,
+        "rewrite_hierarchical": false
+    },
+    "query_var": "none",
+    "query_var_name": "",
+    "default_term": {
+        "default_term_enabled": false,
+        "default_term_name": "",
+        "default_term_slug": "",
+        "default_term_description": ""
+    },
+    "sort": null,
+    "meta_box": "disabled",
+    "meta_box_cb": "",
+    "meta_box_sanitize_cb": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792421356
+}

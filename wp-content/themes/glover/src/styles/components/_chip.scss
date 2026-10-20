@@ -1,0 +1,71 @@
+// Chips: small rounded labels for tags and active filters.
+// A .chip-toggle checkbox followed by a .chip label makes a selectable chip
+// that stays a real, keyboard-operable checkbox.
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: $FONT-SIZE-SMALL;
+  text-decoration: none;
+  cursor: pointer;
+
+  .count {
+    color: inherit;
+  }
+}
+
+a.chip--active,
+.chip--active {
+  background: var(--color-forest);
+  border-color: var(--color-forest);
+  color: var(--color-forest-ink);
+}
+
+.chip--small {
+  min-height: 1.6rem;
+  padding: 0.1rem 0.6rem;
+  font-size: $FONT-SIZE-XSMALL;
+  cursor: default;
+}
+
+.chip__remove {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.chip-toggle {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+
+  &:checked + .chip {
+    background: var(--color-forest);
+    border-color: var(--color-forest);
+    color: var(--color-forest-ink);
+
+    &::after {
+      content: "\2713";
+    }
+  }
+
+  &:focus-visible + .chip {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}

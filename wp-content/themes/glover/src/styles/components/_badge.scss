@@ -1,0 +1,22 @@
+// .badge: small file-type label (PDF, Word).
+// .status-label: a text status such as "Draft", never shown by color alone.
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--color-chip);
+  font-size: $FONT-SIZE-EYEBROW;
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+.status-label {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 0.25rem;
+  font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-XSMALL;
+  font-weight: $FONT-WEIGHT-BOLD;
+}
