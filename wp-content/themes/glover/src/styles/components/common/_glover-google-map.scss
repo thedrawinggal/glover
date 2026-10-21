@@ -2,7 +2,7 @@ $GOOGLE-MAP-HEIGHT-MOBILE: 400px;
 $GOOGLE-MAP-HEIGHT-TABLET: 550px;
 $GOOGLE-MAP-HEIGHT-DESKTOP: 700px;
 
-.cltv8-google-map-container {
+.glover-google-map-container {
   .acf-map {
     width: 100%;
     height: $GOOGLE-MAP-HEIGHT-MOBILE;
@@ -63,7 +63,7 @@ $GOOGLE-MAP-HEIGHT-DESKTOP: 700px;
 }
 
 @media(min-width: $MD) {
-  .cltv8-google-map-container {
+  .glover-google-map-container {
     .acf-map {
       height: $GOOGLE-MAP-HEIGHT-TABLET;
     }
@@ -71,7 +71,7 @@ $GOOGLE-MAP-HEIGHT-DESKTOP: 700px;
 }
 
 @media(min-width: $LG) {
-  .cltv8-google-map-container {
+  .glover-google-map-container {
     .acf-map {
       height: $GOOGLE-MAP-HEIGHT-DESKTOP;
     }

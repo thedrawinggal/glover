@@ -14,5 +14,6 @@ if (!defined('ABSPATH')) {
 
 require_once __DIR__ . '/glover-google/client.php';
 require_once __DIR__ . '/glover-google/mail.php';
+require_once __DIR__ . '/glover-google/email.php';
 require_once __DIR__ . '/glover-google/sign-in.php';
 require_once __DIR__ . '/glover-google/status.php';

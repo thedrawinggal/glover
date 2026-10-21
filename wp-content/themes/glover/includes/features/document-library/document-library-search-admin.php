@@ -30,42 +30,6 @@ function glover_document_search_check_url($post_id)
 }
 
 /**
- * Index status lines for the Review details box.
- *
- * @param WP_Post $post Document.
- */
-function glover_document_search_render_review_details($post)
-{
-    if (!glover_document_library_file_id($post->ID)) {
-        return;
-    }
-
-    if (glover_document_library_user_can_review()) {
-        printf(
-            '<p><a class="button" href="%s">Check text</a></p><p class="description">See the text inside the file, with email addresses and excluded words flagged, before you approve.</p>',
-            esc_url(glover_document_search_check_url($post->ID))
-        );
-    }
-
-    if ($post->post_status !== 'publish') {
-        return;
-    }
-
-    $status = get_post_meta($post->ID, '_glover_text_index_status', true);
-    $note = get_post_meta($post->ID, '_glover_text_index_note', true);
-
-    echo '<p><strong>Text search:</strong> ' . esc_html(isset(GLOVER_DOCUMENT_SEARCH_STATUSES[$status]) ? GLOVER_DOCUMENT_SEARCH_STATUSES[$status] : 'Not yet indexed') . '</p>';
-
-    if ($note) {
-        echo '<p class="description">' . esc_html($note) . '</p>';
-    }
-
-    if (glover_document_library_user_can_review() && $status !== 'excluded') {
-        printf('<p><a class="button" href="%s">Re-index text</a></p>', esc_url(glover_document_search_reindex_url($post->ID)));
-    }
-}
-
-/**
  * Re-index one document now.
  */
 function glover_document_search_handle_reindex()
@@ -147,7 +111,7 @@ function glover_document_search_status_message($field)
             continue;
         }
 
-        $url = admin_url('edit.php?post_type=' . GLOVER_DOCUMENT_LIBRARY_POST_TYPE . '&post_status=publish&glover_view=search_' . $status);
+        $url = glover_document_library_review_screen_url('approved', array('view' => 'search_' . $status));
         $items[] = sprintf('<li><a href="%s">%s: %s</a></li>', esc_url($url), esc_html($label), esc_html(number_format_i18n($counts[$status])));
     }
 
@@ -278,18 +242,37 @@ function glover_document_search_render_check_page()
     if (!glover_document_library_user_can_review() || get_post_type($post_id) !== GLOVER_DOCUMENT_LIBRARY_POST_TYPE) {
         wp_die('You do not have permission to check documents.');
     }
+    ?>
+    <div class="wrap">
+        <h1>Check text: <?php echo esc_html(get_the_title($post_id)); ?></h1>
+        <?php glover_document_search_render_check_body($post_id, 2, true); ?>
+    </div>
+    <?php
+}
 
+/**
+ * The Check text report, shared by the page and the compare dialog.
+ *
+ * @param int  $post_id   Document ID.
+ * @param int  $level     Heading level for its sections (2 on the page, 3 in the dialog).
+ * @param bool $show_page Whether to add the page's own links and buttons.
+ */
+function glover_document_search_render_check_body($post_id, $level = 2, $show_page = true)
+{
     $attachment_id = glover_document_library_file_id($post_id);
     $file = $attachment_id ? get_attached_file($attachment_id) : '';
     $result = glover_document_search_extract($file);
     $redactions = glover_document_search_has_unapplied_redactions($file);
+    $h = 'h' . (int) $level;
+    $h_part = 'h' . (int) ($level + 1);
     ?>
-    <div class="wrap glover-text-check">
-        <h1>Check text: <?php echo esc_html(get_the_title($post_id)); ?></h1>
+    <div class="glover-text-check">
         <p>
-            This is all the text inside the file, read just now. Look for anything that should have been blacked out:
-            text hidden under black boxes still shows here, and anyone who downloads the file can copy it.
-            <a href="<?php echo esc_url(get_edit_post_link($post_id)); ?>">Back to the document</a>
+            All searchable text within the document is displayed below. This tool is intended to surface any text
+            that should be redacted or removed before posting.
+            <?php if ($show_page) : ?>
+                <a href="<?php echo esc_url(get_edit_post_link($post_id)); ?>">Back to the document</a>
+            <?php endif; ?>
         </p>
 
         <?php if ($redactions) : ?>
@@ -314,7 +297,7 @@ function glover_document_search_render_check_page()
                 <div class="notice notice-warning inline"><p>This file has almost no text. It is probably a scan, so it can't be read by screen readers or searched. Consider asking for a text-based version.</p></div>
             <?php endif; ?>
 
-            <h2>Flagged</h2>
+            <<?php echo $h; ?>>Flagged</<?php echo $h; ?>>
             <?php if ($flags) : ?>
                 <p>These are left out of search, but they stay in the downloadable file:</p>
                 <ul class="ul-disc">
@@ -326,9 +309,9 @@ function glover_document_search_render_check_page()
                 <p>No email addresses or excluded words found.</p>
             <?php endif; ?>
 
-            <h2>Text</h2>
+            <<?php echo $h; ?>>Text</<?php echo $h; ?>>
             <?php foreach ($result['parts'] as $index => $part) : ?>
-                <h3><?php echo esc_html($part['label'] !== '' ? $part['label'] : 'Document text'); ?></h3>
+                <<?php echo $h_part; ?>><?php echo esc_html($part['label'] !== '' ? $part['label'] : 'Document text'); ?></<?php echo $h_part; ?>>
                 <div class="glover-text-check__text">
                     <?php if ($part['text'] === '') : ?>
                         <p><em>No text on this page.</em></p>
@@ -339,7 +322,7 @@ function glover_document_search_render_check_page()
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <?php if (get_post_status($post_id) === 'pending') : ?>
+        <?php if ($show_page && get_post_status($post_id) === 'pending') : ?>
             <p>
                 <a class="button button-primary" href="<?php echo esc_url(glover_document_library_approve_url($post_id)); ?>">Approve and publish</a>
                 <a class="button" href="<?php echo esc_url(glover_document_library_return_url($post_id)); ?>">Return</a>
@@ -354,6 +337,23 @@ function glover_document_search_render_check_page()
     </style>
     <?php
 }
+
+/**
+ * The Check text report for the compare dialog, fetched when it opens.
+ */
+function glover_document_search_ajax_check_text()
+{
+    check_ajax_referer('glover_document_check_text');
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+
+    if (!glover_document_library_user_can_review() || get_post_type($post_id) !== GLOVER_DOCUMENT_LIBRARY_POST_TYPE) {
+        wp_die('You do not have permission to check documents.', 'Forbidden', array('response' => 403));
+    }
+
+    glover_document_search_render_check_body($post_id, 3, false);
+    wp_die();
+}
+add_action('wp_ajax_glover_document_check_text', 'glover_document_search_ajax_check_text');
 
 if (defined('WP_CLI') && WP_CLI) {
     /**

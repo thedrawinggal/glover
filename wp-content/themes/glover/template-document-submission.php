@@ -43,10 +43,10 @@ get_header();
             <?php if ($submitted) : ?>
                 <div class="notice" role="status" tabindex="-1" data-focus-on-load>
                     <?php if ($submitted->post_status === 'publish') : ?>
-                        <p><strong>Published.</strong> “<?php echo esc_html(get_the_title($submitted)); ?>” is now on the website. <a href="<?php echo esc_url(get_permalink($submitted)); ?>">View it</a>.</p>
+                        <p><strong>Published.</strong> “<?php echo esc_html(get_the_title($submitted)); ?>” is now on the website. <a href="<?php echo esc_url(get_permalink($submitted)); ?>">Open the document</a>.</p>
                     <?php elseif ($submitted->post_status === 'trash' && get_post_meta($submitted->ID, '_glover_merged_into', true)) : ?>
                         <?php $original = (int) get_post_meta($submitted->ID, '_glover_merged_into', true); ?>
-                        <p><strong>Published.</strong> The new version replaced the earlier one. <a href="<?php echo esc_url(get_permalink($original)); ?>">View it</a>.</p>
+                        <p><strong>Published.</strong> The new version replaced the earlier one. <a href="<?php echo esc_url(get_permalink($original)); ?>">Open the document</a>.</p>
                     <?php else : ?>
                         <p><strong>Thank you.</strong> “<?php echo esc_html(get_the_title($submitted)); ?>” was sent for review. You'll get an email when it's published or if it needs changes.</p>
                     <?php endif; ?>
@@ -65,6 +65,22 @@ get_header();
             <?php endwhile; ?>
 
             <?php glover_document_library_render_submission_form(); ?>
+
+            <?php
+            $clerk_email = glover_document_library_help_contact()['email'];
+            $webmaster_email = defined('GLOVER_GOOGLE_MAIL_FROM') ? GLOVER_GOOGLE_MAIL_FROM : '';
+            ?>
+            <?php if ($clerk_email || $webmaster_email) : ?>
+                <p class="submit-document__contact">
+                    Do you have any questions or concerns?
+                    <?php if ($clerk_email) : ?>
+                        Town Clerk: <a href="mailto:<?php echo esc_attr($clerk_email); ?>"><?php echo esc_html($clerk_email); ?></a><?php echo $webmaster_email ? '.' : ''; ?>
+                    <?php endif; ?>
+                    <?php if ($webmaster_email) : ?>
+                        Webmaster: <a href="mailto:<?php echo esc_attr($webmaster_email); ?>"><?php echo esc_html($webmaster_email); ?></a>
+                    <?php endif; ?>
+                </p>
+            <?php endif; ?>
 
             <?php get_template_part('components/document-library/requirements'); ?>
         <?php endif; ?>

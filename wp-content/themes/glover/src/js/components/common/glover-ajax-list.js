@@ -1,7 +1,7 @@
 // JS Logic for list that loads its contents with AJAX calls.
 //
 // See https://docs.google.com/document/d/1qQzwOHLRsMRzdC3ZvTDTfPBs8raXK-8fPp_CP0SHcLo for more info on this list
-// approach. Using this approach requires this file and _cltv8-ajax-list.scss.
+// approach. Using this approach requires this file and _glover-ajax-list.scss.
 
 const showingClass = 'showing';
 const disabledClass = 'disabled';
@@ -9,7 +9,7 @@ const loadMorePageUrlParam = 'load-more-page-number';
 
 const setUpLists = () => {
     // for each list, set up event handlers and call reloadList() on it
-    document.querySelectorAll('.cltv8-ajax-list-wrapper').forEach(function (listElement) {
+    document.querySelectorAll('.glover-ajax-list-wrapper').forEach(function (listElement) {
         // back/forward history change handling
         addEventListener("popstate", (event) => {
             removeLoadMorePageUrlParam();
@@ -17,7 +17,7 @@ const setUpLists = () => {
         });
 
         // filter option setup
-        listElement.querySelectorAll('.cltv8-ajax-list-filter').forEach(function (filterOption) {
+        listElement.querySelectorAll('.glover-ajax-list-filter').forEach(function (filterOption) {
             const optionParamName = filterOption.getAttribute('data-parameter-name');
             const optionParamValue = filterOption.getAttribute('data-parameter-value');
 
@@ -46,10 +46,10 @@ const setUpLists = () => {
         });
 
         // clear all option setup
-        listElement.querySelectorAll('.cltv8-clear-all-filters-option').forEach(function (clearAllOption) {
+        listElement.querySelectorAll('.glover-clear-all-filters-option').forEach(function (clearAllOption) {
             clearAllOption.addEventListener("click", function () {
                 let urlWithoutFilters = new URL(window.location);
-                listElement.querySelectorAll('.cltv8-ajax-list-filter').forEach(function (filterOption) {
+                listElement.querySelectorAll('.glover-ajax-list-filter').forEach(function (filterOption) {
                     const optionParamName = filterOption.getAttribute('data-parameter-name');
                     const optionParamValue = filterOption.getAttribute('data-parameter-value');
                     urlWithoutFilters.searchParams.delete(optionParamName, optionParamValue);
@@ -91,7 +91,7 @@ const setUpLists = () => {
         // details as JSON in a hidden element. Load those details here so that we can process them the same way we do
         // for AJAX list loads. Processing this here instead of in PHP means we don't duplicate this logic in PHP and
         // JS.
-        let jsonDetailsElement = document.querySelector('.cltv8-ajax-list-initial-details-json');
+        let jsonDetailsElement = document.querySelector('.glover-ajax-list-initial-details-json');
         if (jsonDetailsElement) {
             let jsonString = jsonDetailsElement.innerHTML;
             let initialListDetails = JSON.parse(jsonString);
@@ -106,10 +106,10 @@ const refreshFilterDisplay = (listElement) => {
     let currentUrl = new URL(window.location);
     let totalSelectedFiltersCount = 0;
 
-    listElement.querySelectorAll('.cltv8-filter-group').forEach(function (filterGroup) {
+    listElement.querySelectorAll('.glover-filter-group').forEach(function (filterGroup) {
         let groupSelectedFiltersCount = 0;
 
-        filterGroup.querySelectorAll('.cltv8-ajax-list-filter').forEach(function (filterOption) {
+        filterGroup.querySelectorAll('.glover-ajax-list-filter').forEach(function (filterOption) {
             const optionParamName = filterOption.getAttribute('data-parameter-name');
             const optionParamValue = filterOption.getAttribute('data-parameter-value');
 
@@ -123,7 +123,7 @@ const refreshFilterDisplay = (listElement) => {
             }
         });
 
-        filterGroup.querySelectorAll('.cltv8-label-with-filter-count').forEach(function (labelWithFilterCount) {
+        filterGroup.querySelectorAll('.glover-label-with-filter-count').forEach(function (labelWithFilterCount) {
             let baseLabel = labelWithFilterCount.getAttribute('data-base-label');
             if (groupSelectedFiltersCount > 0) {
                 labelWithFilterCount.innerHTML = baseLabel + ' (' + groupSelectedFiltersCount + ')';
@@ -133,7 +133,7 @@ const refreshFilterDisplay = (listElement) => {
         });
     });
 
-    listElement.querySelectorAll('.cltv8-clear-all-filters-option-section').forEach(function (clearAllSection) {
+    listElement.querySelectorAll('.glover-clear-all-filters-option-section').forEach(function (clearAllSection) {
         if (totalSelectedFiltersCount > 0) {
             clearAllSection.classList.add(showingClass)
         } else {
@@ -164,12 +164,12 @@ const processFetchedListDetails = (listElement, listDetails) => {
 
     // enable/disable filter options if API returns counts for each filter option
     if (listDetails.resultCountsForFilters) {
-        document.querySelectorAll('.cltv8-list-filter-set').forEach(function (filterSet) {
+        document.querySelectorAll('.glover-list-filter-set').forEach(function (filterSet) {
             let setHasVisibleOptions = false;
             let filterName = filterSet.getAttribute('data-parameter-name');
             let countsForFilterSet = listDetails.resultCountsForFilters[filterName];
             if (countsForFilterSet) {
-                document.querySelectorAll(`.cltv8-ajax-list-filter[data-parameter-name="${filterName}"]`)
+                document.querySelectorAll(`.glover-ajax-list-filter[data-parameter-name="${filterName}"]`)
                     .forEach(function (filterOption) {
                         let filterOptionValue = filterOption.getAttribute('data-parameter-value');
                         let baseCountForOption = parseInt(countsForFilterSet[filterOptionValue]['base']);
@@ -208,7 +208,7 @@ const processFetchedListDetails = (listElement, listDetails) => {
             listDetails.resultCount < desktopScrollToTopThreshold
         ) || window.scrollY > (listElement.offsetTop + listElement.clientHeight)
     ) {
-        let listWrapper = listElement.closest('.cltv8-ajax-list-wrapper')
+        let listWrapper = listElement.closest('.glover-ajax-list-wrapper')
         let listWrapperTopOffset = listWrapper.getBoundingClientRect().top;
         let headerHeight = 0
         let headerSelector = '.' + listWrapper.getAttribute("data-header-wrapper-class");
@@ -262,7 +262,7 @@ const reloadList = (listElement, loadMore) => {
             formData.append(key + '[]', value);
         }
     })
-    listElement.querySelectorAll('.cltv8-ajax-list-arg').forEach(function (listArg) {
+    listElement.querySelectorAll('.glover-ajax-list-arg').forEach(function (listArg) {
         formData.append(listArg.getAttribute('data-arg-label'), listArg.textContent);
     });
 
@@ -283,12 +283,12 @@ const reloadList = (listElement, loadMore) => {
                     // append list items in returned HTML to displayed list items
                     let virtualDiv = document.createElement('div')
                     virtualDiv.innerHTML = responseData.data.listHtml
-                    listElement.querySelector('.cltv8-ajax-list-content .ajax-list-items').innerHTML =
-                        listElement.querySelector('.cltv8-ajax-list-content .ajax-list-items').innerHTML +
+                    listElement.querySelector('.glover-ajax-list-content .ajax-list-items').innerHTML =
+                        listElement.querySelector('.glover-ajax-list-content .ajax-list-items').innerHTML +
                         virtualDiv.querySelector('.ajax-list-items').innerHTML
                 } else {
                     // replace list body with returned HTML
-                    listElement.querySelector('.cltv8-ajax-list-content').innerHTML = responseData.data.listHtml;
+                    listElement.querySelector('.glover-ajax-list-content').innerHTML = responseData.data.listHtml;
                 }
 
                 // process additional returned details

@@ -96,10 +96,6 @@ function glover_document_library_review_flags($post_id)
         $flags[] = 'Replaces "' . get_the_title($replaces) . '"';
     }
 
-    if (get_post_meta($post_id, 'document_suggested_topic', true)) {
-        $flags[] = 'Suggests a topic';
-    }
-
     if (get_post_meta($post_id, '_glover_returned_reason', true) && get_post_status($post_id) !== 'publish') {
         $flags[] = 'Returned';
     }
@@ -136,19 +132,43 @@ function glover_document_library_row_actions($actions, $post)
 add_filter('post_row_actions', 'glover_document_library_row_actions', 10, 2);
 
 /**
- * @param int $post_id Document ID.
+ * @param int    $post_id Document ID.
+ * @param string $back    'review' to come back to the Review screen afterwards.
  */
-function glover_document_library_approve_url($post_id)
+function glover_document_library_approve_url($post_id, $back = '')
 {
-    return wp_nonce_url(admin_url('admin-post.php?action=glover_document_approve&post=' . (int) $post_id), 'glover_document_approve_' . (int) $post_id);
+    $url = admin_url('admin-post.php?action=glover_document_approve&post=' . (int) $post_id . ($back === 'review' ? '&back=review' : ''));
+
+    return wp_nonce_url($url, 'glover_document_approve_' . (int) $post_id);
 }
 
 /**
- * @param int $post_id Document ID.
+ * @param int    $post_id Document ID.
+ * @param string $back    'review' to come back to the Review screen afterwards.
  */
-function glover_document_library_return_url($post_id)
+function glover_document_library_return_url($post_id, $back = '')
 {
-    return admin_url('admin.php?page=glover-document-return&post=' . (int) $post_id);
+    return admin_url('admin.php?page=glover-document-return&post=' . (int) $post_id . ($back === 'review' ? '&back=review' : ''));
+}
+
+/**
+ * Where to go after Approve or Return.
+ *
+ * @param string $notice approved or returned.
+ */
+function glover_document_library_after_review_url($notice)
+{
+    $back = isset($_REQUEST['back']) ? sanitize_key($_REQUEST['back']) : '';
+
+    if ($back === 'review' && function_exists('glover_document_library_review_screen_url')) {
+        return glover_document_library_review_screen_url('pending', array('glover_notice' => $notice));
+    }
+
+    if (function_exists('glover_document_library_review_screen_url')) {
+        return glover_document_library_review_screen_url('pending', array('glover_notice' => $notice));
+    }
+
+    return add_query_arg('glover_notice', $notice, admin_url('edit.php?post_type=' . GLOVER_DOCUMENT_LIBRARY_POST_TYPE . '&post_status=pending'));
 }
 
 /**
@@ -166,7 +186,7 @@ function glover_document_library_handle_approve()
     glover_document_library_log($post_id, 'approved');
     wp_publish_post($post_id);
 
-    wp_safe_redirect(add_query_arg('glover_notice', 'approved', admin_url('edit.php?post_type=' . GLOVER_DOCUMENT_LIBRARY_POST_TYPE . '&post_status=pending')));
+    wp_safe_redirect(glover_document_library_after_review_url('approved'));
     exit;
 }
 add_action('admin_post_glover_document_approve', 'glover_document_library_handle_approve');
@@ -193,10 +213,13 @@ function glover_document_library_render_return_page()
     ?>
     <div class="wrap">
         <h1>Return "<?php echo esc_html(get_the_title($post_id)); ?>"</h1>
-        <p>The document stays off the website. Its submitter gets an email with your reason.</p>
+        <p>Return the document to the submitter and state the reason it was rejected. The submitter will receive an email notifying them to resubmit their document. The document will not be posted to the website.</p>
         <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
             <input type="hidden" name="action" value="glover_document_return">
             <input type="hidden" name="post" value="<?php echo (int) $post_id; ?>">
+            <?php if (isset($_GET['back']) && $_GET['back'] === 'review') : ?>
+                <input type="hidden" name="back" value="review">
+            <?php endif; ?>
             <?php wp_nonce_field('glover_document_return_' . $post_id); ?>
             <p>
                 <label for="glover-return-reason"><strong>Reason for returning it</strong></label><br>
@@ -227,15 +250,26 @@ function glover_document_library_handle_return()
         wp_die('Please give a reason for returning the document.', 'Reason required', array('back_link' => true));
     }
 
+    glover_document_library_return_document($post_id, $reason);
+
+    wp_safe_redirect(glover_document_library_after_review_url('returned'));
+    exit;
+}
+add_action('admin_post_glover_document_return', 'glover_document_library_handle_return');
+
+/**
+ * Move a document to Draft with the reason, and email its submitter.
+ *
+ * @param int    $post_id Document ID.
+ * @param string $reason  Plain-text reason.
+ */
+function glover_document_library_return_document($post_id, $reason)
+{
     update_post_meta($post_id, '_glover_returned_reason', $reason);
     wp_update_post(array('ID' => $post_id, 'post_status' => 'draft'));
     glover_document_library_log($post_id, 'returned', $reason);
     glover_document_library_notify_returned($post_id, $reason);
-
-    wp_safe_redirect(add_query_arg('glover_notice', 'returned', admin_url('edit.php?post_type=' . GLOVER_DOCUMENT_LIBRARY_POST_TYPE . '&post_status=pending')));
-    exit;
 }
-add_action('admin_post_glover_document_return', 'glover_document_library_handle_return');
 
 /**
  * Confirmation after Approve or Return.
@@ -249,7 +283,15 @@ function glover_document_library_review_notice()
     $messages = array(
         'approved' => 'Document approved and published.',
         'returned' => 'Document returned to its submitter.',
+        'replacement_approved' => 'Replacement approved and published.',
+        'replacements_returned' => 'Replacements returned to their submitters.',
         'backup_retry' => 'Drive backup queued. It runs in the background within a few minutes.',
+        'trashed' => 'Document moved to the Trash.',
+        'restored' => 'Document restored.',
+        'deleted' => 'Document permanently deleted.',
+        'returned_trashed' => 'Returned documents moved to the Trash.',
+        'moved_back' => 'Document moved back to Pending. It is off the public site until it is approved again.',
+        'replacement_undone' => 'Replacement undone. The document has its previous file and details back, and the replacement is in Pending.',
     );
     $key = sanitize_key($_GET['glover_notice']);
 
@@ -340,103 +382,3 @@ function glover_document_library_menu_count()
 }
 add_action('admin_menu', 'glover_document_library_menu_count', 99);
 
-/**
- * Review details box on the document edit screen.
- */
-function glover_document_library_add_review_box()
-{
-    add_meta_box('glover-document-review', 'Review details', 'glover_document_library_render_review_box', GLOVER_DOCUMENT_LIBRARY_POST_TYPE, 'side', 'high');
-}
-add_action('add_meta_boxes', 'glover_document_library_add_review_box');
-
-/**
- * Print the Review details box.
- *
- * @param WP_Post $post Document.
- */
-function glover_document_library_render_review_box($post)
-{
-    $submitter = get_userdata((int) get_post_meta($post->ID, '_glover_submitted_by', true));
-    $flags = glover_document_library_review_flags($post->ID);
-    $backup = get_post_meta($post->ID, '_glover_drive_backup_status', true);
-    $statuses = GLOVER_DOCUMENT_LIBRARY_BACKUP_STATUSES;
-
-    echo '<p><strong>Submitted by:</strong> ' . esc_html($submitter ? $submitter->display_name : 'Added in wp-admin') . '</p>';
-
-    if ($flags) {
-        echo '<ul>';
-        foreach ($flags as $flag) {
-            echo '<li>' . esc_html($flag) . '</li>';
-        }
-        echo '</ul>';
-    }
-
-    foreach (glover_document_library_meta_list($post->ID, '_glover_possible_duplicates') as $duplicate_id) {
-        if ($duplicate_id && get_post($duplicate_id)) {
-            printf('<p>Possible duplicate of <a href="%s">%s</a></p>', esc_url(get_edit_post_link($duplicate_id)), esc_html(get_the_title($duplicate_id)));
-        }
-    }
-
-    $reason = get_post_meta($post->ID, '_glover_returned_reason', true);
-
-    if ($reason && $post->post_status !== 'publish') {
-        echo '<p><strong>Returned because:</strong> ' . esc_html($reason) . '</p>';
-    }
-
-    echo '<p><strong>Drive backup:</strong> ' . esc_html(isset($statuses[$backup]) ? $statuses[$backup] : 'Not yet requested') . '</p>';
-
-    $backup_note = get_post_meta($post->ID, '_glover_drive_backup_note', true);
-
-    if ($backup_note) {
-        echo '<p class="description">' . esc_html($backup_note) . '</p>';
-    }
-
-    if ($post->post_status === 'publish' && in_array($backup, array('failed', 'not_configured'), true)
-        && function_exists('glover_document_library_drive_ready') && glover_document_library_drive_ready() && glover_document_library_user_can_review()) {
-        printf('<p><a class="button" href="%s">Retry backup</a></p>', esc_url(glover_document_library_drive_retry_url($post->ID)));
-    }
-
-    if (function_exists('glover_document_search_render_review_details')) {
-        glover_document_search_render_review_details($post);
-    }
-
-    if ($post->post_status === 'pending' && glover_document_library_user_can_review()) {
-        printf(
-            '<p><a class="button button-primary" href="%s">Approve and publish</a> <a class="button" href="%s">Return</a></p>',
-            esc_url(glover_document_library_approve_url($post->ID)),
-            esc_url(glover_document_library_return_url($post->ID))
-        );
-    }
-
-    $history = get_post_meta($post->ID, '_glover_previous_files', true);
-
-    if ($history) {
-        echo '<p><strong>Previous versions</strong></p><ul>';
-        foreach ((array) $history as $version) {
-            $url = add_query_arg(array(
-                'action' => 'glover_document_file',
-                'document' => $post->ID,
-                'attachment' => (int) $version['attachment'],
-            ), admin_url('admin-post.php'));
-            printf('<li><a href="%s" target="_blank" rel="noopener">Replaced %s</a></li>', esc_url($url), esc_html(wp_date('M j, Y', (int) $version['replaced_at'])));
-        }
-        echo '</ul>';
-    }
-
-    $log = get_post_meta($post->ID, '_glover_audit_log', true);
-
-    if ($log) {
-        echo '<details><summary>Activity</summary><ul>';
-        foreach (array_reverse((array) $log) as $entry) {
-            $user = get_userdata((int) $entry['user']);
-            printf(
-                '<li>%s: %s%s%s</li>',
-                esc_html(wp_date('M j, Y g:i a', (int) $entry['time'])),
-                esc_html($entry['action']),
-                $user ? esc_html(' by ' . $user->display_name) : '',
-                $entry['note'] !== '' ? esc_html(' (' . $entry['note'] . ')') : ''
-            );
-        }
-        echo '</ul></details>';
-    }
-}

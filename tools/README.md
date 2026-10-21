@@ -14,10 +14,10 @@ This saves the database and `wp-content/uploads` (including the private document
 
 **Automatic daily backup.** A macOS LaunchAgent runs `tools/backup-local.sh` every day at 5:30 PM, or as soon as the Mac wakes if it was asleep then. MAMP must be running; if it isn't, the run is skipped and logged. Check the log at `~/Library/Logs/glover-backup.log`.
 
-- Installed copy: `~/Library/LaunchAgents/com.cultivate.glover-backup.plist` (a copy is kept in `tools/`; its paths assume this Mac's user folder)
-- Run it now: `launchctl kickstart gui/$(id -u)/com.cultivate.glover-backup`
-- Turn it off: `launchctl bootout gui/$(id -u)/com.cultivate.glover-backup`
-- Turn it back on, or install it on a new Mac: copy the plist into `~/Library/LaunchAgents/` and run `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.cultivate.glover-backup.plist`
+- Installed copy: `~/Library/LaunchAgents/org.townofglover.backup.plist` (a copy is kept in `tools/`; its paths assume this Mac's user folder)
+- Run it now: `launchctl kickstart gui/$(id -u)/org.townofglover.backup`
+- Turn it off: `launchctl bootout gui/$(id -u)/org.townofglover.backup`
+- Turn it back on, or install it on a new Mac: copy the plist into `~/Library/LaunchAgents/` and run `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/org.townofglover.backup.plist`
 
 **Not in backups, on purpose:** `wp-config.php` and the Google key file at `~/Sites/glover-secrets/`. They hold secrets. Keep them in your password manager or another safe place as well, since losing them means redoing parts of the Google setup.
 
@@ -38,6 +38,15 @@ Open the hosting account **in the town's name with the town's payment method**, 
 - An upload limit of at least 64 MB
 - Free SSL, daily backups, a staging copy, and a temporary address before the domain moves
 - Ideally `pdftotext` installed, for full-text search later
+
+## Before launch: high priority
+
+**Finalize the site's sending mailbox.** All site email (sign-in codes, Document Library notices, WordPress's own emails) is sent through the Gmail API from one Google Workspace mailbox, currently `jenny@townofglover.com` with webmaster@ as a "Send mail as" alias. Before launch, settle which mailbox that is for good (for example, Jenny's address becomes webmaster@ and the town changes who reads it later), then:
+
+1. Set `GLOVER_GOOGLE_MAIL_SENDER` and `GLOVER_GOOGLE_MAIL_FROM` in the server's `wp-config.php` to match. If the mailbox is webmaster@ itself, both are webmaster@ and no alias is needed.
+2. On the server, use *Settings > Google Workspace > Send a test email to me*, then request a sign-in code at `/sign-in/` and confirm it arrives.
+
+See `docs/features/google-workspace.md` for the full setup.
 
 ## The move to the server
 

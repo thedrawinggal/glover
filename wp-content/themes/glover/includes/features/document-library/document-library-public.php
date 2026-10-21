@@ -38,14 +38,6 @@ function glover_document_library_enqueue_public_assets()
         ));
     }
 
-    if (is_page_template(GLOVER_DOCUMENT_LIBRARY_SUBMIT_TEMPLATE)) {
-        $minutes = get_term_by('slug', 'minutes', GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY);
-        wp_enqueue_script('glover-document-submission', $url . '/submission.js', array('acf-input'), (string) filemtime($dir . '/submission.js'), true);
-        wp_localize_script('glover-document-submission', 'gloverDocumentSubmission', array(
-            'minutesTermId' => $minutes ? (int) $minutes->term_id : 0,
-        ));
-    }
-
     if (is_page_template(GLOVER_DOCUMENT_LIBRARY_REQUEST_TEMPLATE) && glover_document_library_setting('turnstile_site_key')) {
         wp_enqueue_script('cloudflare-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, array('strategy' => 'defer'));
     }
@@ -69,6 +61,34 @@ function glover_document_library_enqueue_dialog_script()
 add_action('wp_enqueue_scripts', 'glover_document_library_enqueue_dialog_script', 20);
 
 /**
+ * Documents have no page of their own. A document's permanent address
+ * (/documents/<slug>/) goes straight to its current file, so links keep
+ * working when a replacement brings a new file. Unpublished documents go to
+ * the permission-checked preview link; a document with no file is a 404.
+ */
+function glover_document_library_redirect_to_file()
+{
+    if (!is_singular(GLOVER_DOCUMENT_LIBRARY_POST_TYPE)) {
+        return;
+    }
+
+    $url = glover_document_library_file_url(get_queried_object_id());
+
+    if (!$url) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+        return;
+    }
+
+    nocache_headers();
+    wp_safe_redirect($url, 302);
+    exit;
+}
+add_action('template_redirect', 'glover_document_library_redirect_to_file', 1);
+
+/**
  * A Download link whose accessible name says which document, its format and size.
  *
  * @param int    $post_id Document ID.
@@ -87,13 +107,26 @@ function glover_document_library_download_link($post_id, $class = 'button button
     $meta = trim($details['label'] . ($details['size'] ? ', ' . $details['size'] : ''));
 
     return sprintf(
-        '<a class="%s" href="%s">%s<span class="visually-hidden"> %s%s</span></a>',
+        '<a class="%s" href="%s" download>%s<span class="visually-hidden"> %s%s</span></a>',
         esc_attr($class),
         esc_url($url),
         esc_html($text),
         esc_html(get_the_title($post_id)),
         $meta ? esc_html(' (' . $meta . ')') : ''
     );
+}
+
+/**
+ * Hidden text naming a document link's format and size, e.g. " (PDF, 240 KB)".
+ *
+ * @param int $post_id Document ID.
+ */
+function glover_document_library_link_format_text($post_id)
+{
+    $details = glover_document_library_file_details($post_id);
+    $meta = trim($details['label'] . ($details['size'] ? ', ' . $details['size'] : ''));
+
+    return $meta ? '<span class="visually-hidden"> (' . esc_html($meta) . ')</span>' : '';
 }
 
 /**

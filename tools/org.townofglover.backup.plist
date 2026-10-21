@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.cultivate.glover-backup</string>
+    <string>org.townofglover.backup</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/sh</string>

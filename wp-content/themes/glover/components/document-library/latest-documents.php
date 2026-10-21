@@ -23,7 +23,7 @@ $board_name = get_the_title($board_id);
             <?php foreach ($documents as $document) : ?>
                 <?php $categories = get_the_terms($document, GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY); ?>
                 <li class="document-feed__item">
-                    <a class="document-feed__title" href="<?php echo esc_url(get_permalink($document)); ?>"><?php echo esc_html(get_the_title($document)); ?></a>
+                    <a class="document-feed__title" href="<?php echo esc_url(get_permalink($document)); ?>"><?php echo esc_html(get_the_title($document)); ?><?php echo glover_document_library_link_format_text($document->ID); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></a>
                     <?php if (glover_document_library_is_draft_minutes($document->ID)) : ?>
                         <span class="status-label">Draft</span>
                     <?php endif; ?>

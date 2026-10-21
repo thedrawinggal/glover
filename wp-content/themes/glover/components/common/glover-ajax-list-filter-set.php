@@ -1,9 +1,9 @@
 <?php
 // This template renders a set of checkboxes that can filter a list. This is an optional feature of the AJAX lists
-// supported by cltv8-ajax-list.js and its supporting files, but it's likely we'll need a version of this in each
+// supported by glover-ajax-list.js and its supporting files, but it's likely we'll need a version of this in each
 // project that uses AJAX lists.
 //
-// cltv8-ajax-list.js sets which boxes are checked based on the page URL query string. It also sets which filter sets
+// glover-ajax-list.js sets which boxes are checked based on the page URL query string. It also sets which filter sets
 // and individual filter options are visible and/or disabled.
 //
 // API:
@@ -22,14 +22,14 @@ $filter_set_args = wp_parse_args(
 );
 ?>
 <div
-        class="list-filter-set cltv8-list-filter-set"
+        class="list-filter-set glover-list-filter-set"
         data-parameter-name="<?= $filter_set_args['filter_parameter_name'] ?>"
 >
     <div class="list-filter-set-label"><?= $filter_set_args['filter_set_label'] ?></div>
     <div class="list-filter-options">
         <?php foreach ($filter_set_args['filter_parameter_options'] as $value => $label) { ?>
             <div
-                    class="list-filter cltv8-ajax-list-filter showing"
+                    class="list-filter glover-ajax-list-filter showing"
                     data-parameter-name="<?= $filter_set_args['filter_parameter_name'] ?>"
                     data-parameter-value="<?= $value ?>"
             >

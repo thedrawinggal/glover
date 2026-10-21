@@ -1,0 +1,17 @@
+.glover-ajax-list-wrapper {
+  .glover-ajax-list-initial-details-json {
+    display: none;
+  }
+
+  .glover-ajax-list-additional-args {
+    display: none;
+  }
+}
+
+.glover-clear-all-filters-option-section {
+  display: none;
+
+  &.showing {
+    display: flex;
+  }
+}

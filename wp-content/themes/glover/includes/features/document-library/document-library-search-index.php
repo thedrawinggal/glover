@@ -350,6 +350,13 @@ function glover_document_search_index_document($post_id, $force = false)
         return $status;
     }
 
+    if (in_array(strtolower((string) pathinfo((string) $file, PATHINFO_EXTENSION)), array('jpg', 'jpeg'), true)) {
+        glover_document_search_delete_rows($post_id);
+        glover_document_search_set_status($post_id, 'no_text', 'This is an image, so it has no text to search. It can still be found by its title.');
+        update_post_meta($post_id, '_glover_text_index_hash', $hash);
+        return 'no_text';
+    }
+
     $result = glover_document_search_extract($file);
 
     if (is_wp_error($result)) {

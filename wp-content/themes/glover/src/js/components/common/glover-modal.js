@@ -1,5 +1,5 @@
 // Basic setup for a modal with support for buttons that open and close it.
-// Basic modal style is in _cltv8-modal.scss.
+// Basic modal style is in _glover-modal.scss.
 
 const openClass = 'open';
 const modalOpenClass = 'modal-open';
@@ -8,9 +8,9 @@ const setUpModals = () => {
     let htmlTag = document.querySelector('html');
 
     // open buttons
-    document.querySelectorAll('.cltv8-modal-opener').forEach(function (modalOpenerElement) {
+    document.querySelectorAll('.glover-modal-opener').forEach(function (modalOpenerElement) {
         const modalId = modalOpenerElement.getAttribute('data-modal-id');
-        let modalElement = document.querySelector(`.cltv8-modal[data-modal-id="${modalId}"]`);
+        let modalElement = document.querySelector(`.glover-modal[data-modal-id="${modalId}"]`);
         if (modalElement) {
             modalOpenerElement.addEventListener("click", function () {
                 if (modalElement.classList.contains(openClass)) {
@@ -25,8 +25,8 @@ const setUpModals = () => {
     });
 
     // close buttons
-    document.querySelectorAll('.cltv8-modal').forEach(function (modalElement) {
-        let closeButtonElement = modalElement.querySelector('.cltv8-modal-closer');
+    document.querySelectorAll('.glover-modal').forEach(function (modalElement) {
+        let closeButtonElement = modalElement.querySelector('.glover-modal-closer');
         if (closeButtonElement) {
             closeButtonElement.addEventListener("click", function () {
                 modalElement.classList.remove(openClass)

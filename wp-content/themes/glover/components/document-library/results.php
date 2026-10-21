@@ -105,7 +105,7 @@ $print_snippets = function ($snippets, $modifier, $file_url, $name) {
             <tr role="row">
                 <td role="cell" data-label="Type"><span class="badge"><?php echo esc_html($details['label']); ?></span></td>
                 <td role="cell" data-label="Title" class="results-table__title">
-                    <a href="<?php the_permalink(); ?>"><?php echo glover_document_search_highlight(get_the_title(), $terms); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></a>
+                    <a href="<?php the_permalink(); ?>"><?php echo glover_document_search_highlight(get_the_title(), $terms); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?><?php echo glover_document_library_link_format_text($post_id); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></a>
                     <?php if (glover_document_library_is_draft_minutes($post_id)) : ?>
                         <span class="status-label">Draft</span>
                     <?php endif; ?>

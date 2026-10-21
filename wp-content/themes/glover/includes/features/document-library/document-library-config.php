@@ -34,16 +34,13 @@ function glover_document_library_setting($name, $default = '')
 }
 
 /**
- * User IDs allowed to approve documents: the approver and the backup approver.
+ * User IDs allowed to approve documents: everyone in the Approvers setting.
  *
  * @return int[]
  */
 function glover_document_library_approver_ids()
 {
-    $ids = array(
-        (int) glover_document_library_setting('approver', 0),
-        (int) glover_document_library_setting('backup_approver', 0),
-    );
+    $ids = array_map('intval', (array) glover_document_library_setting('approver', array()));
 
     return array_values(array_unique(array_filter($ids)));
 }
@@ -65,7 +62,32 @@ function glover_document_library_user_can_review($user_id = null)
 }
 
 /**
- * Whether a user may submit documents through the submission form.
+ * A person's row in Settings > Uploaders, or null if they aren't listed.
+ *
+ * @param int $user_id User ID.
+ * @return array{user:int,all_boards:bool,boards:int[],auto_approve:bool}|null
+ */
+function glover_document_library_uploader($user_id)
+{
+    $rows = (array) glover_document_library_setting('uploaders', array());
+
+    foreach ($rows as $row) {
+        if ((int) ($row['user'] ?? 0) === (int) $user_id) {
+            return array(
+                'user' => (int) $row['user'],
+                'all_boards' => !empty($row['all_boards']),
+                'boards' => array_map('intval', (array) ($row['boards'] ?? array())),
+                'auto_approve' => !empty($row['auto_approve']),
+            );
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Whether a user may submit documents: approvers, administrators, and
+ * everyone in Settings > Uploaders.
  *
  * @param int|null $user_id Defaults to the current user.
  */
@@ -73,23 +95,21 @@ function glover_document_library_user_can_submit($user_id = null)
 {
     $user_id = $user_id ? (int) $user_id : get_current_user_id();
 
-    return $user_id && (user_can($user_id, GLOVER_DOCUMENT_LIBRARY_SUBMIT_CAP) || glover_document_library_user_can_review($user_id));
+    return $user_id && (glover_document_library_user_can_review($user_id) || glover_document_library_uploader($user_id));
 }
 
 /**
- * Whether a user's submissions publish without review.
+ * Whether a user's submissions publish without review (Auto-approve in
+ * Settings > Uploaders).
  *
  * @param int|null $user_id Defaults to the current user.
  */
 function glover_document_library_user_auto_approves($user_id = null)
 {
     $user_id = $user_id ? (int) $user_id : get_current_user_id();
+    $uploader = $user_id ? glover_document_library_uploader($user_id) : null;
 
-    if (!$user_id || !function_exists('get_field')) {
-        return false;
-    }
-
-    return (bool) get_field('document_submitter_auto_approve', 'user_' . $user_id);
+    return $uploader ? $uploader['auto_approve'] : false;
 }
 
 /**
@@ -118,8 +138,8 @@ function glover_document_library_all_boards()
 }
 
 /**
- * Boards a user may post for. Reviewers, and submitters with no boards set
- * who can edit others' posts, may post for every board.
+ * Boards a user may post for: every board for approvers, administrators and
+ * uploaders with All boards on, otherwise the boards on their Uploaders row.
  *
  * @param int|null $user_id Defaults to the current user.
  * @return array<int, string>
@@ -133,14 +153,17 @@ function glover_document_library_allowed_boards($user_id = null)
         return array();
     }
 
-    $assigned = function_exists('get_field') ? get_field('document_submitter_boards', 'user_' . $user_id) : array();
-    $assigned = array_map('intval', (array) $assigned);
-
-    if (!$assigned && (glover_document_library_user_can_review($user_id) || user_can($user_id, 'edit_others_posts'))) {
+    if (glover_document_library_user_can_review($user_id)) {
         return $all;
     }
 
-    return array_intersect_key($all, array_flip($assigned));
+    $uploader = glover_document_library_uploader($user_id);
+
+    if (!$uploader) {
+        return array();
+    }
+
+    return $uploader['all_boards'] ? $all : array_intersect_key($all, array_flip($uploader['boards']));
 }
 
 /**
@@ -200,26 +223,6 @@ function glover_document_library_register_settings_page()
     ));
 }
 add_action('acf/init', 'glover_document_library_register_settings_page');
-
-/**
- * Only people who can manage users may change a submitter's boards or
- * Auto-approve, even on their own profile.
- *
- * @param mixed      $value   New value.
- * @param int|string $post_id ACF post ID, e.g. user_12.
- * @param array      $field   Field definition.
- * @return mixed
- */
-function glover_document_library_protect_submitter_fields($value, $post_id, $field)
-{
-    if (current_user_can('promote_users')) {
-        return $value;
-    }
-
-    return get_field($field['name'], $post_id, false);
-}
-add_filter('acf/update_value/key=field_glover_document_submitter_boards', 'glover_document_library_protect_submitter_fields', 10, 3);
-add_filter('acf/update_value/key=field_glover_document_submitter_auto_approve', 'glover_document_library_protect_submitter_fields', 10, 3);
 
 /**
  * A list stored in post meta. get_post_meta() returns '' when nothing is

@@ -8,8 +8,8 @@
 @import "./base/core";
 
 // components: reusable pieces shared across pages
-@import "./components/common/_cltv8-single-image.scss";
-@import "./components/common/_cltv8-image-banner.scss";
+@import "./components/common/_glover-single-image.scss";
+@import "./components/common/_glover-image-banner.scss";
 @import "./components/page-banner";
 @import "./components/breadcrumb";
 @import "./components/button";
@@ -22,7 +22,6 @@
 
 // pages: overrides and styles unique to one page
 @import "./pages/documents";
-@import "./pages/document";
 @import "./pages/submit-document";
 @import "./pages/department-board";
 @import "./pages/sign-in";

@@ -1,8 +1,8 @@
 _updated 3.17.24_
 
-# set up a cultivate wordpress project
+# set up the glover wordpress project
 
-this guide will help you set up the cultivate wordpress stack for development.
+this guide will help you set up the wordpress stack for development.
 
 ## backend
 
@@ -15,7 +15,7 @@ you will need [MAMP](https://www.mamp.info/en/mac/) to set up and run the local 
 5. navigate to `localhost:8888/wp-admin`, and run through the install
    1. use the database name you just created in phpMyAdmin
    2. use `root` for Username and Password
-6. move the `cltv8-base-theme-v2` theme into `wp-content > themes` - you can delete any other themes in the folder
+6. move the `glover-base-theme-v2` theme into `wp-content > themes` - you can delete any other themes in the folder
 7. activate the theme in wordpress
 
 ## git and acf workflow
@@ -44,7 +44,7 @@ the frontend uses [parcel](https://parceljs.org/) to bundle. It will serve an `a
 `npm 10.5.0`
 
 **install**
-run `npm install` from the root of the theme directory. besides parcel, the only other package included by default is a custom gsap file, `gsap-bonus.tgz`, which adds gsap, as well as other [premium plugins we pay for](https://gsap.com/pricing/).
+run `npm install` from the root of the theme directory. the only packages are parcel and its sass transformer. the base theme's `gsap-bonus.tgz` dependency was removed for glover because nothing uses it; if animation is needed later, `npm install gsap` (the public package is free and includes the formerly paid plugins).
 
 **available scripts:**
 `npm run dev` is an alias for `parcel watch`

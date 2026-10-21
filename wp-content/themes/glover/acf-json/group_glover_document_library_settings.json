@@ -22,11 +22,11 @@
         },
         {
             "key": "field_glover_document_settings_approver",
-            "label": "Approver",
+            "label": "Approvers",
             "name": "document_library_approver",
             "aria-label": "",
             "type": "user",
-            "instructions": "Reviews and approves submitted documents, and receives an email when one is waiting.",
+            "instructions": "Everyone listed can review and approve submitted documents, and each gets an email when one is waiting.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -36,30 +36,8 @@
             },
             "role": "",
             "return_format": "id",
-            "multiple": 0,
+            "multiple": 1,
             "allow_null": 0,
-            "allow_in_bindings": 0,
-            "bidirectional": 0,
-            "bidirectional_target": []
-        },
-        {
-            "key": "field_glover_document_settings_backup_approver",
-            "label": "Backup approver",
-            "name": "document_library_backup_approver",
-            "aria-label": "",
-            "type": "user",
-            "instructions": "Optional. Also receives review emails and can approve, so deadlines are covered when the approver is away.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "role": "",
-            "return_format": "id",
-            "multiple": 0,
-            "allow_null": 1,
             "allow_in_bindings": 0,
             "bidirectional": 0,
             "bidirectional_target": []
@@ -219,6 +197,153 @@
             "allow_in_bindings": 0
         },
         {
+            "key": "field_glover_document_settings_tab_uploaders",
+            "label": "Uploaders",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_document_settings_uploaders",
+            "label": "Approved uploaders",
+            "name": "document_library_uploaders",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "People who may submit documents, the boards they submit for, and whether their documents skip review. Turn on All boards to let someone post for every board. Approvers can always submit for every board. Each person needs a WordPress account first (Users > Add New).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add uploader",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glover_document_settings_uploader_user",
+                    "label": "Person",
+                    "name": "user",
+                    "aria-label": "",
+                    "type": "user",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "role": "",
+                    "return_format": "id",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "bidirectional": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_all_boards",
+                    "label": "All boards",
+                    "name": "all_boards",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_boards",
+                    "label": "Boards",
+                    "name": "boards",
+                    "aria-label": "",
+                    "type": "post_object",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_document_settings_uploader_all_boards",
+                                "operator": "!=",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "department-board"
+                    ],
+                    "post_status": [
+                        "publish"
+                    ],
+                    "taxonomy": "",
+                    "return_format": "id",
+                    "multiple": 1,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "bidirectional": 0,
+                    "ui": 1,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_auto_approve",
+                    "label": "Auto-approve",
+                    "name": "auto_approve",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                }
+            ]
+        },
+        {
             "key": "field_glover_document_settings_tab_search",
             "label": "Search",
             "name": "",
@@ -318,5 +443,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792513026
+    "modified": 1792524356
 }

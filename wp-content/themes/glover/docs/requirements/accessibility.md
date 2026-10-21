@@ -97,7 +97,7 @@ These are binding on `wp-content/themes/glover`. WCAG success criteria are cited
 
 - All interactive elements are reachable and operable by keyboard, in a logical order, with no keyboard traps. (SC 2.1.1, 2.1.2, 2.4.3)
 - A visible focus indicator is present on every focusable element. **Never remove outlines without an equivalent replacement.** (SC 2.4.7)
-- Menus, modals, and dropdowns manage focus correctly. The stock `cltv8-modal` and `cltv8-dropdown` base-theme components are unreviewed for this and must be audited before first use, not assumed correct.
+- Menus, modals, and dropdowns manage focus correctly. The stock `glover-modal` and `glover-dropdown` base-theme components are unreviewed for this and must be audited before first use, not assumed correct.
 - Interactive controls are real `<button>` and `<a>` elements. A `<div>` with a click handler is not acceptable. (SC 4.1.2)
 
 ### Color and visual design
@@ -114,11 +114,11 @@ These are binding on `wp-content/themes/glover`. WCAG success criteria are cited
 ### Images and media
 
 - Every meaningful image has a meaningful `alt`. Decorative images take `alt=""`. (SC 1.1.1)
-- ACF image fields render alt text from the media library. `components/common/cltv8-acf-image.php` and `cltv8-single-image.php` must be reviewed to confirm they emit `alt`, and the editorial process must require alt text at upload time.
+- ACF image fields render alt text from the media library. `components/common/glover-acf-image.php` and `glover-single-image.php` must be reviewed to confirm they emit `alt`, and the editorial process must require alt text at upload time.
 - Prerecorded video, for example meeting recordings, requires accurate captions. (SC 1.2.2)
 - Prerecorded video requires audio description or a media alternative where visual information is not conveyed in the audio. (SC 1.2.3, 1.2.5)
 - No content flashes more than three times per second. (SC 2.3.1)
-- Any auto-playing, moving, or scrolling content lasting more than five seconds can be paused. This constrains use of the base theme's GSAP animations and `cltv8-reveal-animations`. (SC 2.2.2)
+- Any auto-playing, moving, or scrolling content lasting more than five seconds can be paused. This constrains use of the base theme's GSAP animations and `glover-reveal-animations`. (SC 2.2.2)
 
 ### Forms
 

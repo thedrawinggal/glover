@@ -64,7 +64,7 @@ let options = {
 /**
  * Private
  */
-let revealableIdPrefix = 'cltv8-revealable-';
+let revealableIdPrefix = 'glover-revealable-';
 let elementsData = [];
 let intersectionObserver = null;
 

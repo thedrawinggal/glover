@@ -53,7 +53,7 @@ function glover_event_calendar_validate_time_pair($start_value, $end_value, $end
     if (null !== $start_time && null !== $end_time && $end_time < $start_time) {
         acf_add_validation_error(
             $end_input,
-            __('End Time must be the same as or later than Start Time.', 'cltv8')
+            __('End Time must be the same as or later than Start Time.', 'glover')
         );
     }
 }
@@ -115,7 +115,7 @@ function glover_event_calendar_validate_schedule()
         if ('on_date' === $end_type && $start_date && $recurrence_end_date && $recurrence_end_date < $start_date) {
             acf_add_validation_error(
                 'acf[' . $key_prefix . 'recurrence_end_date]',
-                __('End date must be on or after the Start Date.', 'cltv8')
+                __('End date must be on or after the Start Date.', 'glover')
             );
         }
     } elseif ('specific_dates' === $schedule_type) {

@@ -250,12 +250,14 @@ function glover_google_request_code($email)
         ), GLOVER_GOOGLE_CODE_LIFETIME);
 
         $site = wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES);
-        wp_mail($user->user_email, 'Your sign-in code: ' . $code, implode("\n\n", array(
-            'Your code to sign in to the ' . $site . ' website is:',
-            $code,
-            'It works once and expires in 10 minutes.',
-            "If you didn't ask to sign in, you can ignore this email.",
-        )));
+        $minutes = (int) round(GLOVER_GOOGLE_CODE_LIFETIME / 60);
+        wp_mail($user->user_email, 'Your ' . $site . ' sign-in code: ' . $code, glover_email_render(array(
+            'heading' => 'Your sign-in code',
+            'subtitle' => '',
+            'code' => $code,
+            'intro' => sprintf('Enter it on the sign-in page. It works once and expires in %d minutes.', $minutes),
+            'footer' => "If you didn't ask to sign in, you can ignore this email.",
+        )), array('Content-Type: text/html; charset=UTF-8'));
     }
 
     return 'code_sent';

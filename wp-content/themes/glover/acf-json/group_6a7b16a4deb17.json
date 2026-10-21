@@ -4,11 +4,11 @@
     "fields": [
         {
             "key": "field_glover_document_file",
-            "label": "Document file",
+            "label": "Document File",
             "name": "document_file",
             "aria-label": "",
             "type": "file",
-            "instructions": "Upload a PDF, Word (.docx) or Excel (.xlsx) file. Scans and photos of paper are not accepted.",
+            "instructions": "Accepted formats: PDF, Word (.docx), Excel (.xlsx), or JPEG.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -20,7 +20,7 @@
             "library": "uploadedTo",
             "min_size": "",
             "max_size": "",
-            "mime_types": "pdf, docx, xlsx",
+            "mime_types": "pdf, docx, xlsx, jpg, jpeg",
             "allow_in_bindings": 0
         },
         {
@@ -28,8 +28,8 @@
             "label": "Board",
             "name": "document_boards",
             "aria-label": "",
-            "type": "checkbox",
-            "instructions": "Choose the board this document belongs to. Choose more than one only if it truly belongs to several.",
+            "type": "select",
+            "instructions": "Choose the board this document belongs to. Start typing to find a board. Add more than one only if it truly belongs to several.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -37,15 +37,17 @@
                 "class": "",
                 "id": ""
             },
-            "choices": {},
+            "choices": [],
             "default_value": [],
             "return_format": "value",
-            "allow_custom": 0,
-            "layout": "vertical",
-            "toggle": 0,
-            "save_custom": 0,
-            "custom_choice_button_text": "Add new choice",
-            "allow_in_bindings": 0
+            "multiple": 1,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
         },
         {
             "key": "field_glover_document_category",
@@ -74,6 +76,40 @@
             "bidirectional_target": []
         },
         {
+            "key": "field_glover_document_minutes_status",
+            "label": "Minutes Status",
+            "name": "document_minutes_status",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "Draft minutes are labeled Draft on the website until approved minutes replace them.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_document_category",
+                        "operator": "==",
+                        "value": "31"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "draft": "Draft",
+                "approved": "Approved by the board"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "save_other_choice": 0,
+            "layout": "vertical",
+            "allow_in_bindings": 0
+        },
+        {
             "key": "field_glover_document_topics",
             "label": "Topics",
             "name": "document_topics",
@@ -100,29 +136,8 @@
             "bidirectional_target": []
         },
         {
-            "key": "field_glover_document_suggested_topic",
-            "label": "Suggest a new topic",
-            "name": "document_suggested_topic",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Optional. If no topic fits, suggest one. The approver decides whether to add it.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": 60,
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "allow_in_bindings": 0
-        },
-        {
             "key": "field_glover_document_date",
-            "label": "Date of the document",
+            "label": "Date of the Document",
             "name": "document_date",
             "aria-label": "",
             "type": "date_picker",
@@ -141,56 +156,40 @@
             "allow_in_bindings": 0
         },
         {
-            "key": "field_glover_document_minutes_status",
-            "label": "Minutes status",
-            "name": "document_minutes_status",
-            "aria-label": "",
-            "type": "radio",
-            "instructions": "Required for minutes. Draft minutes are labeled Draft on the website until approved minutes replace them.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "draft": "Draft",
-                "approved": "Approved by the board"
-            },
-            "default_value": "",
-            "return_format": "value",
-            "allow_null": 1,
-            "other_choice": 0,
-            "save_other_choice": 0,
-            "layout": "vertical",
-            "allow_in_bindings": 0
-        },
-        {
             "key": "field_glover_document_replaces",
-            "label": "This replaces an earlier version",
+            "label": "Replace an Earlier Version of a Document",
             "name": "document_replaces",
             "aria-label": "",
-            "type": "select",
-            "instructions": "Optional. Choose the document this one replaces, such as draft minutes. When approved, the earlier document's web address shows this new file.",
+            "type": "post_object",
+            "instructions": "Optional. Start typing to find the document this one replaces, such as draft minutes. Only documents from the boards chosen above are listed. When approved, the earlier document's web address shows this new file.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_document_boards",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "choices": {},
-            "default_value": false,
-            "return_format": "value",
+            "post_type": [
+                "document-library"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
             "multiple": 0,
             "allow_null": 1,
             "allow_in_bindings": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": "",
-            "create_options": 0,
-            "save_options": 0
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
         },
         {
             "key": "field_glover_document_accessibility_confirmed",
@@ -206,7 +205,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "This is a text-based file, not a scan, and it has passed an accessibility check.",
+            "message": "I verify that this meets accessibility standards for documents. <a href=\"#glover-requirements\" data-dialog-open=\"glover-requirements\">Review accessibility and legal requirements for uploaded documents<\/a>.",
             "default_value": 0,
             "allow_in_bindings": 0,
             "ui": 0,
@@ -215,7 +214,7 @@
         },
         {
             "key": "field_glover_document_legal_confirmed",
-            "label": "Public record",
+            "label": "Public Record",
             "name": "document_legal_confirmed",
             "aria-label": "",
             "type": "true_false",
@@ -236,7 +235,7 @@
         },
         {
             "key": "field_glover_document_reviewer_note",
-            "label": "Note to the reviewer",
+            "label": "Note to the Reviewer",
             "name": "document_reviewer_note",
             "aria-label": "",
             "type": "textarea",
@@ -257,7 +256,7 @@
         },
         {
             "key": "field_glover_document_exclude_from_text_search",
-            "label": "Text search",
+            "label": "Text Search",
             "name": "document_exclude_from_text_search",
             "aria-label": "",
             "type": "true_false",
@@ -300,5 +299,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792513026
+    "modified": 1792593322
 }

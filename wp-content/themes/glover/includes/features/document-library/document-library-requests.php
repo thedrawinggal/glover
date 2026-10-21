@@ -122,8 +122,24 @@ function glover_document_library_handle_request()
 
     $contact = glover_document_library_help_contact();
     $to = $contact['email'] ? array($contact['email']) : glover_document_library_approver_emails();
-    $lines[] = 'Saved in wp-admin: ' . admin_url('post.php?post=' . (int) $request_id . '&action=edit');
-    glover_document_library_mail($to, 'Accessible copy requested', $lines);
+    glover_document_library_mail($to, 'Accessible copy requested: ' . $document_title, array(
+        'heading' => 'Someone needs an accessible copy',
+        'intro' => sprintf('Reply to this email to reach %s directly.', $name),
+        'card' => array(
+            'title' => $document_title,
+            'url' => $document_id ? get_permalink($document_id) : '',
+            'rows' => array(
+                array('label' => 'Format wanted', 'value' => GLOVER_DOCUMENT_LIBRARY_REQUEST_FORMATS[$format], 'strong' => true),
+                array('label' => 'Name', 'value' => $name),
+                array('label' => 'Email', 'value' => $email, 'url' => 'mailto:' . $email),
+                array('label' => 'Phone', 'value' => $phone !== '' ? $phone : 'Not given'),
+                array('label' => 'Requested', 'value' => wp_date('M j, Y, g:i a')),
+            ),
+        ),
+        'note' => array('label' => 'Details', 'text' => $details),
+        'button' => array('label' => 'Open the request', 'url' => admin_url('post.php?post=' . (int) $request_id . '&action=edit')),
+        'footer' => $contact['email'] ? "You're the help contact for the Town of Glover Document Library." : "You're an approver for the Town of Glover Document Library.",
+    ), array('Reply-To: ' . $name . ' <' . $email . '>'));
 
     wp_safe_redirect(add_query_arg('request_sent', 1, remove_query_arg('request_error', $back)) . '#glover-request-status');
     exit;

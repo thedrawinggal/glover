@@ -1,16 +1,16 @@
-.cltv8-dropdown {
+.glover-dropdown {
   position: relative;
   user-select: none;
 
-  .cltv8-dropdown-button {
+  .glover-dropdown-button {
     transition: $COMMON-TRANSITION;
 
-    .cltv8-dropdown-button-icon {
+    .glover-dropdown-button-icon {
       transition: $COMMON-TRANSITION;
     }
   }
 
-  .cltv8-dropdown-content {
+  .glover-dropdown-content {
     position: absolute;
     width: 100%;
     z-index: 5;
@@ -22,13 +22,13 @@
   }
 
   &.open {
-    .cltv8-dropdown-button {
-      .cltv8-dropdown-button-icon {
+    .glover-dropdown-button {
+      .glover-dropdown-button-icon {
         @include transform(rotate(180deg));
       }
     }
 
-    .cltv8-dropdown-content {
+    .glover-dropdown-content {
       max-height: 2000px;
     }
   }

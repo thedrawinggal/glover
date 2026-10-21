@@ -1,13 +1,10 @@
 {
-  "name": "cultivate-theme",
+  "name": "glover-theme",
   "version": "2.0.0",
-  "description": "base theme for cultivate wordpress projects.",
+  "description": "WordPress theme for the Town of Glover, Vermont.",
   "scripts": {
     "dev": "parcel watch src/js/app.js src/styles/app.scss src/styles/admin-editor.scss --no-cache",
     "build": "parcel build src/js/app.js src/styles/app.scss src/styles/admin-editor.scss --no-cache"
-  },
-  "dependencies": {
-    "gsap": "file:gsap-bonus.tgz"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.12.0",

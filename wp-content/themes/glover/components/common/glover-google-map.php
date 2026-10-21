@@ -1,15 +1,15 @@
 <?php
 /*
 Use this component to display a Google Map. Map displays a set of marked locations.
-Related files: _cltv8-google-map.scss, cltv8-google-map.js
+Related files: _glover-google-map.scss, glover-google-map.js
 
 TODO when you use this in a new project:
-- Template builder: uncomment the code enabling enqueueing of Google's Google Maps support JS file in functions.php (cltv8_enqueue_scripts()). This requires us to be able to fetch an API key from ACF.
-- Styler: add a PNG map marker icon as <theme>/dist/images/map-marker.png, then update markerImageRelativePath in cltv8-google-map.js to point to that file.
-- Styler: update the markerIcon settings in cltv8-google-map.js so that the marker is positioned correctly (so that it points at the marked address regardless of zoom distance).
-- Styler: set appropriate Snazzy Maps map style in the mapStyles variable in cltv8-google-map.js
+- Template builder: uncomment the code enabling enqueueing of Google's Google Maps support JS file in functions.php (glover_enqueue_scripts()). This requires us to be able to fetch an API key from ACF.
+- Styler: add a PNG map marker icon as <theme>/dist/images/map-marker.png, then update markerImageRelativePath in glover-google-map.js to point to that file.
+- Styler: update the markerIcon settings in glover-google-map.js so that the marker is positioned correctly (so that it points at the marked address regardless of zoom distance).
+- Styler: set appropriate Snazzy Maps map style in the mapStyles variable in glover-google-map.js
 - Styler: add appropriate styles for the marker pop-outs
-- Styler: update variables storing max map heights for device sizes (_cltv8-google-map.scss)
+- Styler: update variables storing max map heights for device sizes (_glover-google-map.scss)
 
 ACF Structure:
 - Locations Map - locations - Group
@@ -19,7 +19,7 @@ ACF Structure:
         - Location Phone - location_phone - Text
 
 Map Styling:
-Styles for maps can be created using Snazzy Maps. The resulting list of JSON objects should be assigned to the mapStyles variable in cltv8-google-map.js
+Styles for maps can be created using Snazzy Maps. The resulting list of JSON objects should be assigned to the mapStyles variable in glover-google-map.js
 */
 $locations_map_args = wp_parse_args(
     $args ?? array(),
@@ -30,7 +30,7 @@ $locations_map_args = wp_parse_args(
 );
 $locations = $locations_map_args['locations'];
 ?>
-<div class="cltv8-google-map-container">
+<div class="glover-google-map-container">
     <div class="acf-map">
         <div id="mapCanvas"></div>
         <?php foreach ($locations as $location) {

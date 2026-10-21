@@ -1,5 +1,5 @@
 <?php
-// This template renders a standard Cultivate "Single Image" - passed as a data structure containing two subfields:
+// This template renders a standard "Single Image" - passed as a data structure containing two subfields:
 // - desktop_image (required) - Image
 // - mobile_image - Image
 //
@@ -7,7 +7,7 @@
 //
 // This template always renders the desktop and mobile images in a container div.
 //
-// This template calls a cltv8-acf-image template to render the individual ACF images.
+// This template calls a glover-acf-image template to render the individual ACF images.
 //
 // API:
 $single_image_args = wp_parse_args(
@@ -27,9 +27,9 @@ $single_image_args = wp_parse_args(
         // un-styled PHP templates, you don't need to pass anything for this.
         'container_classes' => '',
 
-        // (Optional) these are passed down through the cltv8-acf-image template to the cltv8-image-element template if
+        // (Optional) these are passed down through the glover-acf-image template to the glover-image-element template if
         // you want to override attributes of the final img tags themselves. These accept arguments with the names
-        // listed in the cltv8-image-element template API. If you're building un-styled PHP templates, please do not
+        // listed in the glover-image-element template API. If you're building un-styled PHP templates, please do not
         // pass these.
         'desktop_image_attribute_overrides' => array(),
         'mobile_image_attribute_overrides' => array(),
@@ -52,7 +52,7 @@ if ($single_image_args['prefer_mobile_image'] == 'true' && $single_image['mobile
 <div class="single-image-container <?= $single_image_args['container_classes'] ?>">
     <?php
     get_generic_template_part(
-        'components/common/cltv8-acf-image',
+        'components/common/glover-acf-image',
         array(
             'acf_image' => $desktop_image,
             'image_classes' => 'single-image single-image-desktop',
@@ -63,7 +63,7 @@ if ($single_image_args['prefer_mobile_image'] == 'true' && $single_image['mobile
         )
     );
     get_generic_template_part(
-        'components/common/cltv8-acf-image',
+        'components/common/glover-acf-image',
         array(
             'acf_image' => $mobile_image,
             'image_classes' => 'single-image single-image-mobile',

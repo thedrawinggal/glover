@@ -62,10 +62,9 @@ function glover_document_library_form_field_keys()
         'field_glover_document_file',
         'field_glover_document_boards',
         'field_glover_document_category',
-        'field_glover_document_topics',
-        'field_glover_document_suggested_topic',
-        'field_glover_document_date',
         'field_glover_document_minutes_status',
+        'field_glover_document_topics',
+        'field_glover_document_date',
         'field_glover_document_replaces',
         'field_glover_document_accessibility_confirmed',
         'field_glover_document_legal_confirmed',
@@ -113,12 +112,38 @@ function glover_document_library_title_field($field)
         return $field;
     }
 
-    $field['label'] = 'Document title';
+    $field['label'] = 'Document Title';
     $field['instructions'] = 'Use the board, the type of document and its date, for example "Select Board Minutes, October 14, 2026".';
 
     return $field;
 }
 add_filter('acf/load_field/name=_post_title', 'glover_document_library_title_field');
+
+/**
+ * The accessibility checkbox links to the requirements guide. On the public
+ * form that link (set in the ACF field) opens the guide's dialog; wp-admin has
+ * no dialog, so there it opens the requirements page in a new tab instead,
+ * or is left out when no page is chosen.
+ *
+ * @param array $field Field definition.
+ * @return array
+ */
+function glover_document_library_accessibility_link($field)
+{
+    if (!is_admin() || wp_doing_ajax()) {
+        return $field;
+    }
+
+    $page_id = (int) glover_document_library_setting('requirements_page', 0);
+    $url = $page_id && get_post_status($page_id) === 'publish' ? get_permalink($page_id) : '';
+
+    $field['message'] = $url
+        ? str_replace('href="#glover-requirements" data-dialog-open="glover-requirements"', 'href="' . esc_url($url) . '" target="_blank" rel="noopener"', $field['message'])
+        : preg_replace('#\s*<a [^>]*>.*?</a>\.#', '', $field['message']);
+
+    return $field;
+}
+add_filter('acf/load_field/key=field_glover_document_accessibility_confirmed', 'glover_document_library_accessibility_link');
 
 /**
  * Apply the upload size cap from Document Library settings.
@@ -139,52 +164,48 @@ function glover_document_library_file_field($field)
 add_filter('acf/load_field/key=field_glover_document_file', 'glover_document_library_file_field');
 
 /**
- * Fill "This replaces an earlier version" with recent published documents.
- * The public form lists only the submitter's own boards; wp-admin lists all.
+ * Boards whose documents "Replace an earlier version of a document" may list: the
+ * boards chosen in the Board field, limited to the ones this person may post
+ * for (approvers may post for all).
  *
- * @param array $field Field definition.
- * @return array
+ * @param mixed $chosen Board IDs chosen on the form.
+ * @return int[]
  */
-function glover_document_library_replaces_choices($field)
+function glover_document_library_replaces_boards($chosen)
 {
-    $args = array(
-        'post_type' => GLOVER_DOCUMENT_LIBRARY_POST_TYPE,
-        'post_status' => 'publish',
-        'posts_per_page' => 50,
-        'orderby' => 'date',
-        'order' => 'DESC',
-        'no_found_rows' => true,
-    );
+    $allowed = array_keys(glover_document_library_allowed_boards());
+    $chosen = array_filter(array_map('intval', (array) $chosen));
 
-    if (!is_admin() || wp_doing_ajax()) {
-        $slugs = array_map('glover_document_library_board_term_slug', array_keys(glover_document_library_allowed_boards()));
-        $args['tax_query'] = array(array(
-            'taxonomy' => GLOVER_DOCUMENT_LIBRARY_BOARD_TAXONOMY,
-            'field' => 'slug',
-            'terms' => $slugs ? $slugs : array('none'),
-        ));
-    }
-
-    $field['choices'] = array();
-
-    foreach (get_posts($args) as $document) {
-        $date = glover_document_library_display_date($document->ID);
-        $field['choices'][(string) $document->ID] = get_the_title($document) . ($date ? ' (' . $date . ')' : '');
-    }
-
-    // Keep a saved value selectable in wp-admin even if it is older than the list.
-    $saved = isset($field['value']) ? (string) $field['value'] : '';
-
-    if ($saved !== '' && !isset($field['choices'][$saved]) && get_post($saved)) {
-        $field['choices'][$saved] = get_the_title((int) $saved);
-    }
-
-    return $field;
+    return array_values(array_intersect($chosen ? $chosen : $allowed, $allowed));
 }
-add_filter('acf/load_field/key=field_glover_document_replaces', 'glover_document_library_replaces_choices');
 
 /**
- * Only published documents the submitter could choose may be replaced.
+ * "Replace an earlier version of a document" is an ACF Post Object field: it searches
+ * published documents as you type, and ACF conditional logic shows it only
+ * once a board is chosen. ACF has no setting to filter by another field's
+ * value, so assets/replaces-boards.js adds the chosen boards to each search
+ * (ACF's select2_ajax_data hook) and this keeps results to those boards.
+ *
+ * @param array $args WP_Query arguments.
+ * @return array
+ */
+function glover_document_library_replaces_query($args)
+{
+    $chosen = isset($_POST['glover_boards']) ? wp_unslash($_POST['glover_boards']) : array(); // phpcs:ignore WordPress.Security.NonceVerification -- ACF verifies the field nonce.
+    $slugs = array_map('glover_document_library_board_term_slug', glover_document_library_replaces_boards($chosen));
+    $args['tax_query'] = array(array(
+        'taxonomy' => GLOVER_DOCUMENT_LIBRARY_BOARD_TAXONOMY,
+        'field' => 'slug',
+        'terms' => $slugs ? $slugs : array('none'),
+    ));
+
+    return $args;
+}
+add_filter('acf/fields/post_object/query/key=field_glover_document_replaces', 'glover_document_library_replaces_query');
+
+/**
+ * The search list is only a convenience, so check the submitted choice too:
+ * a published document from one of the boards chosen on the form.
  *
  * @param bool|string $valid Current validity.
  * @param mixed       $value Submitted value.
@@ -192,39 +213,39 @@ add_filter('acf/load_field/key=field_glover_document_replaces', 'glover_document
  */
 function glover_document_library_validate_replaces($valid, $value)
 {
-    if ($valid !== true || $value === '' || $value === null) {
+    if ($valid !== true || empty($value)) {
         return $valid;
     }
 
-    $field = glover_document_library_replaces_choices(array('choices' => array()));
+    $chosen = isset($_POST['acf']['field_glover_document_boards']) ? wp_unslash($_POST['acf']['field_glover_document_boards']) : array(); // phpcs:ignore WordPress.Security.NonceVerification -- ACF verifies the form nonce.
+    $slugs = array_map('glover_document_library_board_term_slug', glover_document_library_replaces_boards($chosen));
+    $found = get_posts(array(
+        'post_type' => GLOVER_DOCUMENT_LIBRARY_POST_TYPE,
+        'post_status' => 'publish',
+        'post__in' => array((int) $value),
+        'fields' => 'ids',
+        'no_found_rows' => true,
+        'tax_query' => array(array(
+            'taxonomy' => GLOVER_DOCUMENT_LIBRARY_BOARD_TAXONOMY,
+            'field' => 'slug',
+            'terms' => $slugs ? $slugs : array('none'),
+        )),
+    ));
 
-    return isset($field['choices'][(string) $value]) ? $valid : 'Choose a document from the list, or leave this empty.';
+    return $found ? $valid : 'Choose a document from one of the boards selected above, or leave this empty.';
 }
 add_filter('acf/validate_value/key=field_glover_document_replaces', 'glover_document_library_validate_replaces', 10, 2);
 
 /**
- * Cross-field rules ACF can't express: minutes need a status.
+ * The small script that tells the replaces search which boards are chosen.
+ * ACF loads its own scripts first, on both the public form and wp-admin.
  */
-function glover_document_library_validate_submission()
+function glover_document_library_replaces_script()
 {
-    if (empty($_POST['acf']) || !is_array($_POST['acf'])) {
-        return;
-    }
-
-    $values = wp_unslash($_POST['acf']);
-
-    if (!array_key_exists('field_glover_document_category', $values)) {
-        return;
-    }
-
-    $term = get_term((int) $values['field_glover_document_category'], GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY);
-    $status = isset($values['field_glover_document_minutes_status']) ? $values['field_glover_document_minutes_status'] : '';
-
-    if ($term && !is_wp_error($term) && $term->slug === 'minutes' && !in_array($status, array('draft', 'approved'), true)) {
-        acf_add_validation_error('acf[field_glover_document_minutes_status]', 'Choose whether these minutes are a draft or approved by the board.');
-    }
+    $file = __DIR__ . '/assets/replaces-boards.js';
+    wp_enqueue_script('glover-document-replaces', get_template_directory_uri() . '/includes/features/document-library/assets/replaces-boards.js', array('acf-input'), (string) filemtime($file), true);
 }
-add_action('acf/validate_save_post', 'glover_document_library_validate_submission', 5);
+add_action('acf/input/admin_enqueue_scripts', 'glover_document_library_replaces_script');
 
 /**
  * Refuse public-form saves from anyone who isn't a submitter.
@@ -277,7 +298,6 @@ function glover_document_library_complete_submission($post_id)
         $previous = glover_document_library_allow_publish(true);
         wp_publish_post($post_id);
         glover_document_library_allow_publish($previous);
-        glover_document_library_notify_topic_suggestion($post_id);
         return;
     }
 

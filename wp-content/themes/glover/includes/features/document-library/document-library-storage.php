@@ -204,6 +204,32 @@ function glover_document_library_file_url($post_id)
 }
 
 /**
+ * A private document file's direct address is blocked by the server, so any
+ * link WordPress or ACF builds to it (the file name under Document file, the
+ * media library) goes through the permission-checked stream instead.
+ *
+ * @param string $url           Attachment URL.
+ * @param int    $attachment_id Attachment ID.
+ * @return string
+ */
+function glover_document_library_private_attachment_url($url, $attachment_id)
+{
+    $document_id = wp_get_post_parent_id($attachment_id);
+
+    if (!$document_id || get_post_type($document_id) !== GLOVER_DOCUMENT_LIBRARY_POST_TYPE
+        || !glover_document_library_attachment_is_private($attachment_id)) {
+        return $url;
+    }
+
+    return add_query_arg(array(
+        'action' => 'glover_document_file',
+        'document' => (int) $document_id,
+        'attachment' => (int) $attachment_id,
+    ), admin_url('admin-post.php'));
+}
+add_filter('wp_get_attachment_url', 'glover_document_library_private_attachment_url', 10, 2);
+
+/**
  * Stream a private document file to someone allowed to see it: a reviewer,
  * or the person who submitted it.
  */
@@ -259,7 +285,7 @@ function glover_document_library_file_details($post_id)
 {
     $file = get_attached_file(glover_document_library_file_id($post_id));
     $ext = $file ? strtolower(pathinfo($file, PATHINFO_EXTENSION)) : '';
-    $labels = array('pdf' => 'PDF', 'docx' => 'Word', 'doc' => 'Word', 'xlsx' => 'Excel', 'xls' => 'Excel');
+    $labels = array('pdf' => 'PDF', 'docx' => 'Word', 'doc' => 'Word', 'xlsx' => 'Excel', 'xls' => 'Excel', 'jpg' => 'JPEG', 'jpeg' => 'JPEG');
 
     return array(
         'label' => isset($labels[$ext]) ? $labels[$ext] : strtoupper($ext),

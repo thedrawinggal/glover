@@ -1,6 +1,6 @@
 <?php
 // theme setup
-function cultivate_theme_setup()
+function glover_theme_setup()
 {
     add_theme_support('post-thumbnails');
     add_theme_support('title-tag');
@@ -10,7 +10,7 @@ function cultivate_theme_setup()
     // src/styles/admin-editor.scss; WordPress skips it until the file exists.
     add_theme_support('editor-styles');
     add_editor_style('dist/styles/admin-editor.css');
-    load_theme_textdomain('cltv8', get_template_directory() . '/languages');
+    load_theme_textdomain('glover', get_template_directory() . '/languages');
 
     // Register menus
     function register_menus()
@@ -22,10 +22,10 @@ function cultivate_theme_setup()
     add_action('init', 'register_menus');
 }
 
-add_action('after_setup_theme', 'cultivate_theme_setup');
+add_action('after_setup_theme', 'glover_theme_setup');
 
 // enqueue project-specific scripts/CSS
-function cltv8_enqueue_scripts()
+function glover_enqueue_scripts()
 {
     // TODO: if this project uses google maps, uncomment this and change the conditional logic below so that it only loads on pages that use it. You may need to update how it fetches the API key from ACF as well.
     //    if (is_single() && ('news' == get_post_type() || 'project' == get_post_type())) {
@@ -56,9 +56,9 @@ function cltv8_enqueue_scripts()
     // Before doing a production deployment that involves CSS or JS bundle changes, change the below bundle version
     // numbers (to make browsers fetch the latest versions).
     $site_domain = str_replace(array('http://', 'https://'), '', get_site_url());
-    $is_dev_environment = (str_ends_with($site_domain, '.cltv8.com') || str_starts_with($site_domain, 'localhost'));
+    $is_dev_environment = str_starts_with($site_domain, 'localhost');
     wp_enqueue_script(
-        'cltv8-app-script',
+        'glover-app-script',
         get_template_directory_uri() . '/dist/js/app.js',
         array(),
         $is_dev_environment ? time() : '1.0.1',
@@ -68,7 +68,7 @@ function cltv8_enqueue_scripts()
         )
     );
     wp_enqueue_style(
-        'cltv8-app-style',
+        'glover-app-style',
         get_template_directory_uri() . '/dist/styles/app.css',
         array(),
         $is_dev_environment ? time() : '1.0.1',
@@ -76,7 +76,7 @@ function cltv8_enqueue_scripts()
     );
 }
 
-add_action('wp_enqueue_scripts', 'cltv8_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'glover_enqueue_scripts');
 
 // Enqueue admin area styles
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
@@ -89,8 +89,8 @@ function enqueue_admin_styles()
 
 // TinyMCE caches editor stylesheets by WordPress version only, so version the
 // theme's by file date to show changes as soon as it is rebuilt.
-add_filter('editor_stylesheets', 'cltv8_version_editor_stylesheets');
-function cltv8_version_editor_stylesheets($stylesheets)
+add_filter('editor_stylesheets', 'glover_version_editor_stylesheets');
+function glover_version_editor_stylesheets($stylesheets)
 {
     $path = get_stylesheet_directory() . '/dist/styles/admin-editor.css';
     $url = get_stylesheet_directory_uri() . '/dist/styles/admin-editor.css';

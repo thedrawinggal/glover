@@ -1,5 +1,5 @@
 <?php
-// This template renders a passed ACF image object - it renders an img tag using cltv8-image-element.
+// This template renders a passed ACF image object - it renders an img tag using glover-image-element.
 //
 // Accepts an image object and an optional fallback image object. I only set that up to support the "single image"
 // requirements (where the mobile image uses desktop image settings as a fallback); you shouldn't need to use that very
@@ -29,7 +29,7 @@ $acf_image_args = wp_parse_args(
         'container_classes' => '',
 
         // (Optional) array of overrides to img tag attributes passed to the template that renders an img
-        // (cltv8-image-element). If you're building un-styled PHP templates, please do not pass these.
+        // (glover-image-element). If you're building un-styled PHP templates, please do not pass these.
         'image_attribute_overrides' => array(),
 
         // (Optional) whether or not to attach the full-sized image URL as an attribute to the image element
@@ -80,7 +80,7 @@ if ($acf_image_args['include_full_sized_url_attribute']) {
 }
 
 get_generic_template_part(
-    'components/common/cltv8-image-element',
+    'components/common/glover-image-element',
     $image_tag_args
 );
 ?>

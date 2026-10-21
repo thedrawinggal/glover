@@ -66,6 +66,14 @@ get_header();
         </div>
     </div>
 
+    <?php $request_url = glover_document_library_request_url(); ?>
+    <?php if ($request_url) : ?>
+        <p class="documents__request container">
+            Need a document in another format, such as large print or an accessible PDF?
+            <a href="<?php echo esc_url($request_url); ?>">Request an accessible copy</a>.
+        </p>
+    <?php endif; ?>
+
     <?php get_template_part('components/document-library/help'); ?>
 </main>
 <?php

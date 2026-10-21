@@ -117,8 +117,10 @@ function glover_document_library_handle_publish($post_id)
     }
 
     glover_document_library_log($post_id, 'published');
+    update_post_meta($post_id, '_glover_published_at', time());
 
-    if ((int) get_post_field('post_author', $post_id) !== get_current_user_id()) {
+    if ((int) get_post_field('post_author', $post_id) !== get_current_user_id()
+        && !(function_exists('glover_document_library_restoring') && glover_document_library_restoring())) {
         glover_document_library_notify_published($post_id);
     }
 
@@ -137,6 +139,17 @@ function glover_document_library_merge_replacement($original_id, $replacement_id
 {
     $new_attachment = glover_document_library_file_id($replacement_id);
     $previous_attachment = glover_document_library_file_id($original_id);
+
+    // Snapshot what the original looked like before this replacement, so an
+    // approver can undo it within the undo window.
+    $snapshot = array(
+        'title' => get_post_field('post_title', $original_id, 'raw'),
+        'document_date' => get_field('document_date', $original_id, false),
+        'minutes_status' => get_field('document_minutes_status', $original_id, false),
+        'boards' => get_field('document_boards', $original_id, false),
+        'categories' => wp_get_object_terms($original_id, GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY, array('fields' => 'ids')),
+        'topics' => wp_get_object_terms($original_id, GLOVER_DOCUMENT_LIBRARY_TOPIC_TAXONOMY, array('fields' => 'ids')),
+    );
 
     $copy = array(
         'field_glover_document_file' => $new_attachment,
@@ -163,6 +176,9 @@ function glover_document_library_merge_replacement($original_id, $replacement_id
         'attachment' => $previous_attachment,
         'replaced_at' => time(),
         'replacement' => $replacement_id,
+        'new_attachment' => $new_attachment,
+        'approved_by' => get_current_user_id(),
+        'snapshot' => $snapshot,
     );
     update_post_meta($original_id, '_glover_previous_files', $history);
 
@@ -185,15 +201,7 @@ function glover_document_library_merge_replacement($original_id, $replacement_id
     wp_trash_post($replacement_id);
 
     if ((int) get_post_field('post_author', $replacement_id) !== get_current_user_id()) {
-        $author = (int) get_post_field('post_author', $replacement_id);
-        $submitter = get_userdata($author);
-
-        if ($submitter) {
-            glover_document_library_mail($submitter->user_email, 'Your document is published', array(
-                sprintf('"%s" is now on the website, replacing the earlier version.', get_the_title($original_id)),
-                get_permalink($original_id),
-            ));
-        }
+        glover_document_library_notify_replaced($original_id, $replacement_id);
     }
 
     do_action('glover_document_library/document_replaced', $original_id, $new_attachment, $previous_attachment);

@@ -76,6 +76,7 @@ On production, put the key file outside `public_html`, update the path and redir
 - `wp-content/mu-plugins/glover-google.php`: loader (a must-use plugin, so a theme change can't break sign-in or email).
 - `wp-content/mu-plugins/glover-google/client.php`: settings, service account key, JWT access tokens, request helper.
 - `wp-content/mu-plugins/glover-google/mail.php`: Gmail API transport for `wp_mail()`.
+- `wp-content/mu-plugins/glover-google/email.php` and `templates/email.php`: the shared email layout (`glover_email_render()`, `glover_email_send()`) used by every site email, matching the "Glover Review Email" design canvas. HTML email is sent with a plain-text copy (`multipart/alternative`, built by `glover_google_mail_html_to_text()` in `mail.php`).
 - `wp-content/mu-plugins/glover-google/sign-in.php`: `/sign-in/` routes, Google OAuth, emailed codes, 30-day sessions.
 - `wp-content/mu-plugins/glover-google/status.php`: Settings > Google Workspace status and test buttons.
 - `wp-content/themes/glover/includes/features/document-library/document-library-drive.php`: Drive backup handler, folders, upload, retries, failure notice.
@@ -91,7 +92,7 @@ On production, put the key file outside `public_html`, update the path and redir
 
 ## Local configuration (2026-10-20)
 
-- Sending mailbox: `jenny@townofglover.com`, with webmaster@ verified as a "Send mail as" alias. Before launch, consider moving this to a long-term town staff mailbox: change `GLOVER_GOOGLE_MAIL_SENDER` and add the alias in that person's Gmail.
+- Sending mailbox: `jenny@townofglover.com`, with webmaster@ verified as a "Send mail as" alias. **High priority before launch:** settle the final sending mailbox (possibly Jenny's address becoming webmaster@ itself), set `GLOVER_GOOGLE_MAIL_SENDER` and `GLOVER_GOOGLE_MAIL_FROM` to match, and confirm a test email and a sign-in code arrive from the server. Tracked in `tools/README.md` under "Before launch: high priority".
 - Service account: `glover-website@glover-website-512214.iam.gserviceaccount.com` (Unique ID 116955177061542909689), domain-wide delegation for `gmail.send` only.
 - Shared Drive: "Glover Website Documents" (`0AFKH6dxADVvqUk9PVA`), service account as Content manager.
 - OAuth client "Glover website sign-in", Internal audience, local redirect URI registered. The first client secret was exposed in a chat and replaced; the old one should stay deleted.
@@ -108,6 +109,7 @@ On production, put the key file outside `public_html`, update the path and redir
 
 ## Material change history
 
+- 2026-10-21: Added the shared HTML email layout (`email.php`, `templates/email.php`) and a plain-text copy for every HTML email. The sign-in code email now uses the layout, with the code large and centered.
 - 2026-10-20: Cached Drive folders are now checked before use, so a folder deleted in Drive is recreated on the next backup. First real submission (#497) went through submitted, approved, published and backed up.
 - 2026-10-20: Completed setup in Google Admin and Cloud for the local site and verified email, Drive backup and Google sign-in live.
 - 2026-10-20: Built the Glover Google Workspace must-use plugin (Gmail API email from webmaster@, `/sign-in/` with Google and emailed codes, status and test screen) and the Document Library's Drive backup module, with the setup checklist.

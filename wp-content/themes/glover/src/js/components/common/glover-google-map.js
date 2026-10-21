@@ -16,28 +16,28 @@ const initializeMap = async () => {
             fullscreenControl: false,
             streetViewControl: false,
         };
-        let cltv8LocationsMap = new Map(mapContainer, mapOptions);
+        let gloverLocationsMap = new Map(mapContainer, mapOptions);
 
         const bounds = new google.maps.LatLngBounds();
         const markers = document.querySelectorAll('.acf-map .marker');
         if (markers.length > 0) {
             markers.forEach(function (markerTag) {
-                const marker = createMarker(cltv8LocationsMap, markerTag);
+                const marker = createMarker(gloverLocationsMap, markerTag);
                 bounds.extend(marker.position);
             });
 
             if (markers.length === 1) {
-                cltv8LocationsMap.setCenter(bounds.getCenter());
+                gloverLocationsMap.setCenter(bounds.getCenter());
             } else {
-                cltv8LocationsMap.fitBounds(bounds);
+                gloverLocationsMap.fitBounds(bounds);
             }
         } else {
-            cltv8LocationsMap.fitBounds(bounds);
+            gloverLocationsMap.fitBounds(bounds);
         }
     }
 }
 
-const createMarker = (cltv8LocationsMap, location) => {
+const createMarker = (gloverLocationsMap, location) => {
     // Markers should be double-sized pngs.
     // The scaledSize is the dimensions we want the marker to display at.
     // The origin and anchor may need adjusting so we can center the marker correctly over its target regardless of how
@@ -57,7 +57,7 @@ const createMarker = (cltv8LocationsMap, location) => {
 
     const marker = new google.maps.Marker({
         position: new google.maps.LatLng(markerLat, markerLng),
-        map: cltv8LocationsMap,
+        map: gloverLocationsMap,
         title: location.querySelector('.location-title').textContent,
         icon: markerIcon
     });
@@ -67,7 +67,7 @@ const createMarker = (cltv8LocationsMap, location) => {
 
         google.maps.event.addListener(marker, "click", function (event, needZoomingIn) {
             infoWindow.setContent(location.innerHTML);
-            infoWindow.open(cltv8LocationsMap, marker);
+            infoWindow.open(gloverLocationsMap, marker);
         });
     }
 

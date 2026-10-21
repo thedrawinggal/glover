@@ -326,7 +326,7 @@ function glover_document_library_drive_failure_notice()
     printf(
         '<div class="notice notice-error"><p>%s <a href="%s">Review failed backups</a>.</p></div>',
         esc_html(sprintf(_n('%d document failed to back up to Google Drive.', '%d documents failed to back up to Google Drive.', count($failed)), count($failed))),
-        esc_url(admin_url('edit.php?post_type=' . GLOVER_DOCUMENT_LIBRARY_POST_TYPE . '&glover_view=backup_failed'))
+        esc_url(glover_document_library_review_screen_url('approved', array('view' => 'backup_failed')))
     );
 }
 add_action('admin_notices', 'glover_document_library_drive_failure_notice');

@@ -1,4 +1,4 @@
-.cltv8-modal {
+.glover-modal {
   position: fixed;
   z-index: 9999;
   pointer-events: none;
@@ -16,7 +16,7 @@
     opacity: 1;
   }
 
-  .cltv8-modal-closer {
+  .glover-modal-closer {
     cursor: pointer;
     transition: .15s ease-in-out;
     // todo: update this - this will probably be unique to each project
@@ -28,7 +28,7 @@
   }
 }
 
-.cltv8-modal-opener {
+.glover-modal-opener {
   transition: .15s ease-in-out;
 
   &:hover {

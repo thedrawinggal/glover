@@ -1,7 +1,7 @@
 // If possible, do not import third-party JS libraries here; import them dynamically in the functions that use them at
 // the point they're first needed. That way we avoid loading that JS before it's absolutely necessary, meaning we can
 // get an initial page load performance boost.
-import handleImageBanners from "./components/common/cltv8-image-banner";
+import handleImageBanners from "./components/common/glover-image-banner";
 import onDocumentReady from "./utils/onDocumentReady";
 
 const app = () => {

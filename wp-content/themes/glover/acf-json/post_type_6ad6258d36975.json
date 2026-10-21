@@ -68,8 +68,6 @@
     "plural_capability_name": "posts",
     "supports": [
         "title",
-        "editor",
-        "thumbnail",
         "custom-fields"
     ],
     "taxonomies": "",
@@ -88,5 +86,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "",
-    "modified": 1792421356
+    "modified": 1792589467
 }

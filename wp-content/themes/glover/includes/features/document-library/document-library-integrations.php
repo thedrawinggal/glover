@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
  *
  * Google and emailed-code sign-in (Phase 2): filter
  * 'glover_document_library/sign_in_url' and sign people in as ordinary
- * WordPress users. Submitter boards and Auto-approve already live on the
- * user profile, so the rest of the feature does not change.
+ * WordPress users. Who may submit, their boards and Auto-approve live in
+ * Settings > Uploaders, so the rest of the feature does not change.
  *
  * Lifecycle actions fired by this feature:
  * - glover_document_library/document_published   ($post_id)

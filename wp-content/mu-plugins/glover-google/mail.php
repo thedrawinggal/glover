@@ -53,6 +53,36 @@ function glover_google_mail_encode_header($value)
 }
 
 /**
+ * A readable plain-text version of an HTML email: one block per line,
+ * links as "text (address)", no markup.
+ *
+ * @param string $html Email HTML.
+ */
+function glover_google_mail_html_to_text($html)
+{
+    $html = preg_replace('#<(head|style|script)\b[^>]*>.*?</\1>#is', '', $html);
+    // Source line breaks mean nothing in HTML; the tags below decide the lines.
+    $html = preg_replace('/\s+/', ' ', $html);
+    // Side-by-side cells (a label and its value) read as "Label: value".
+    $html = preg_replace('#</td>\s*<td\b#i', '</td>: <td', $html);
+    $html = preg_replace_callback('#<a\b[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>#is', function ($match) {
+        $text = trim(wp_strip_all_tags($match[2]));
+        $url = html_entity_decode($match[1], ENT_QUOTES, 'UTF-8');
+
+        $url = preg_replace('#^mailto:#i', '', $url);
+
+        return ($text === '' || $text === $url) ? $url : $text . ' (' . $url . ')';
+    }, $html);
+    $html = preg_replace('#<br\s*/?>#i', "\n", $html);
+    $html = preg_replace('#</(p|div|h[1-6]|li|tr|table)>#i', "\n\n", $html);
+    $text = html_entity_decode(wp_strip_all_tags($html), ENT_QUOTES, 'UTF-8');
+    $text = preg_replace('/[ \t]+/', ' ', $text);
+    $text = preg_replace('/ *\n */', "\n", $text);
+
+    return trim(preg_replace('/\n{3,}/', "\n\n", $text)) . "\n";
+}
+
+/**
  * Build the raw RFC 5322 message wp_mail() was asked to send.
  *
  * @param array $atts wp_mail() arguments: to, subject, message, headers, attachments.
@@ -123,6 +153,16 @@ function glover_google_mail_build_message($atts)
 
     $body_part = "Content-Type: {$content_type}; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
         . chunk_split(base64_encode((string) $atts['message']));
+
+    // HTML email also carries a plain-text copy for mail apps that show text only.
+    if ($content_type === 'text/html') {
+        $alternative = 'glover-alt-' . wp_generate_password(24, false);
+        $body_part = "Content-Type: multipart/alternative; boundary=\"{$alternative}\"\r\n\r\n"
+            . "--{$alternative}\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
+            . chunk_split(base64_encode(glover_google_mail_html_to_text((string) $atts['message'])))
+            . "\r\n--{$alternative}\r\n" . $body_part
+            . "\r\n--{$alternative}--\r\n";
+    }
     $attachments = array_filter((array) $atts['attachments'], 'is_readable');
 
     if (!$attachments) {
