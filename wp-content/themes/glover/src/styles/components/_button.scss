@@ -19,11 +19,6 @@
   text-decoration: none;
   cursor: pointer;
 
-  @include hover {
-    text-decoration: underline;
-    text-underline-offset: 0.15em;
-  }
-
   &:active {
     transform: translateY(1px);
   }
@@ -39,11 +34,17 @@
   }
 }
 
+// Hover changes color and never adds an underline.
 a.button--primary,
 .button--primary {
   background: var(--color-forest-dark);
   border-color: var(--color-forest-dark);
   color: var(--color-forest-ink);
+
+  @include hover {
+    background: var(--color-link);
+    border-color: var(--color-link);
+  }
 }
 
 a.button--accent,
@@ -51,6 +52,11 @@ a.button--accent,
   background: var(--color-orange);
   border-color: var(--color-orange);
   color: var(--color-forest-dark);
+
+  @include hover {
+    background: var(--color-orange-hover);
+    border-color: var(--color-orange-hover);
+  }
 }
 
 a.button--secondary,
@@ -58,6 +64,11 @@ a.button--secondary,
   background: var(--color-teal);
   border-color: var(--color-teal);
   color: var(--color-forest-dark);
+
+  @include hover {
+    background: var(--color-teal-hover);
+    border-color: var(--color-teal-hover);
+  }
 }
 
 a.button--outline,
@@ -65,6 +76,11 @@ a.button--outline,
   background: transparent;
   border-color: var(--color-forest-dark);
   color: var(--color-forest-dark);
+
+  @include hover {
+    border-color: var(--color-link);
+    color: var(--color-link);
+  }
 }
 
 a.button--ghost,
@@ -72,6 +88,11 @@ a.button--ghost,
   background: transparent;
   border-color: var(--color-forest-ink);
   color: var(--color-forest-ink);
+
+  @include hover {
+    background: var(--color-forest-ink);
+    color: var(--color-forest);
+  }
 }
 
 // The submit button of a full-page form, or a panel's main action. One per view.

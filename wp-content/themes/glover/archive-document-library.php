@@ -17,10 +17,12 @@ get_header();
             array('label' => 'Home', 'url' => home_url('/')),
             array('label' => 'Documents', 'url' => glover_document_library_url()),
         ),
-        'action' => array(
-            'label' => 'Help',
-            'url' => '#glover-library-help',
-            'attributes' => array('data-dialog-open' => 'glover-library-help'),
+        'actions' => array(
+            array(
+                'label' => 'Help',
+                'url' => '#glover-library-help',
+                'attributes' => array('data-dialog-open' => 'glover-library-help'),
+            ),
         ),
     ));
     ?>

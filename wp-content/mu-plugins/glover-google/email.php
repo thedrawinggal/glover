@@ -53,7 +53,7 @@ function glover_email_render(array $args)
  * Send an email in the shared layout.
  *
  * @param string|string[] $to      Recipient address(es).
- * @param string          $subject Subject line (the site name is added in front).
+ * @param string          $subject Subject line ("Town of Glover | " is added in front unless it names the town).
  * @param array           $args    glover_email_render() arguments.
  * @param string[]        $headers Extra headers, e.g. Reply-To.
  * @return bool
@@ -69,5 +69,10 @@ function glover_email_send($to, $subject, array $args, array $headers = array())
     $site = wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES);
     $headers[] = 'Content-Type: text/html; charset=UTF-8';
 
-    return wp_mail($to, '[' . $site . '] ' . $subject, glover_email_render($args), $headers);
+    // "Town of Glover | Subject", unless the subject already names the town.
+    if ($site !== '' && stripos($subject, $site) === false) {
+        $subject = $site . ' | ' . $subject;
+    }
+
+    return wp_mail($to, $subject, glover_email_render($args), $headers);
 }

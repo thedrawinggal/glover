@@ -17,6 +17,7 @@ require_once __DIR__ . '/document-library-review.php';
 require_once __DIR__ . '/document-library-review-screen.php';
 require_once __DIR__ . '/document-library-trash.php';
 require_once __DIR__ . '/document-library-review-compare.php';
+require_once __DIR__ . '/document-library-uploaders.php';
 require_once __DIR__ . '/document-library-edit-screen.php';
 require_once __DIR__ . '/document-library-query.php';
 require_once __DIR__ . '/document-library-search-extract.php';

@@ -148,6 +148,8 @@ A submitter is a WordPress user, so sign-in only has to sign people in as users.
 - `boards`: the boards they may post for (required, one or more, when All boards is off).
 - `auto_approve`: a toggle that publishes their documents without review.
 
+**Add a new person** (a button at the top of the Uploaders tab, in the `field_glover_document_settings_add_uploader` message field) opens a dialog with Name, Email, boards (or All boards), Auto-approve and "Send a welcome email" (on by default). Saving it creates the account with the Document Submitter role and a random password nobody uses (sign-in is Google or an emailed code), or reuses an existing account with that email (giving it the submitter role only if it has none), then adds the Uploaders row with ACF's `add_row()`. The welcome email, in the shared email layout, lists their boards, says whether their documents are reviewed, says how they sign in (Google for a town address, an emailed code otherwise) and links to the submission page. The dialog has its own form outside ACF's settings form, so unsaved changes elsewhere on the page are not kept; it comes back to the settings page (switch to the Uploaders tab to see the new row), with a notice only for a problem (already listed, missing boards, the email failing to send). People who already have an account are still added with a new row and the Person field.
+
 Approvers and administrators can always submit, for every board, without being listed. Being listed is what grants submission; the `submit_glover_documents` capability on the role no longer does.
 
 ### Accessible-copy requests
@@ -242,6 +244,7 @@ Created by `dbDelta` on `init` once per `GLOVER_DOCUMENT_SEARCH_DB_VERSION` (opt
 - `document-library-trash.php`: the Trash and Drafts tabs, Restore and Delete permanently, the Approved tab's filtered views, and the redirect from WordPress's document list.
 - `document-library-review-screen.php`, `assets/review-admin.css` and `assets/review-admin.js`: the Document Library > Documents screen, which replaces WordPress's All Documents list in the menu (Pending, Approved and Returned tabs).
 - `document-library-review-compare.php`: the replacement queue, the compare dialog and page, detail comparison, and the approve-or-return handler. `assets/review-admin.js` opens the dialog and drives its choices.
+- `document-library-uploaders.php` and `assets/uploaders-admin.js`: Add a new person on Settings > Uploaders (dialog, account creation, Uploaders row, welcome email). Its styles are in `assets/review-admin.css`.
 - `document-library-review.php`: list columns, Approve and Return (`glover_document_library_return_document()` is shared with the compare dialog), Published without review view, pending count, Review details box.
 - `document-library-query.php`: filter parsing (including the Best match default sort), query building, facet counts, library URLs, REST endpoint `glover/v1/documents`.
 - `document-library-search-extract.php`: reading PDF, Word and Excel text; the smalot autoloader; unapplied-redaction detection.
@@ -254,7 +257,7 @@ Created by `dbDelta` on `init` once per `GLOVER_DOCUMENT_SEARCH_DB_VERSION` (opt
 - `assets/library.js` (live filtering, year slider, topics and filters toggles), `assets/dialogs.js` (help and requirements dialogs), `assets/replaces-boards.js` (sends the chosen boards to the replaces search). These load directly from the feature folder; styles do not (see Styles).
 - `archive-document-library.php`, `single-department-board.php`, `template-document-submission.php`, `template-accessible-copy-request.php`.
 - `components/document-library/`: `filters`, `summary`, `active-filters`, `results`, `help`, `requirements`, `latest-documents`.
-- `components/common/page-banner.php`: the site-wide page banner (breadcrumb, title, optional action and note) used by every library template.
+- `components/common/page-banner.php`: the site-wide page banner used by every library template: breadcrumb, title, optional intro and note, and a right-hand area for any number of actions and other content (`aside`).
 
 ## Styles
 
@@ -316,6 +319,7 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 20. Replace, unpublish and trash documents, and confirm their old text can't be found.
 21. Submit two replacements for the same published document. Confirm the row says "2 replacements", the dialog shows a card for each, choosing a card switches the details table and the Approve button's name, and approving without a reason for the other is refused. Approve one with a reason, and confirm the other is Returned with that reason and its submitter is emailed.
 22. In the compare dialog, confirm Escape, Close and a click outside each close it and return focus to Compare, and that Return to submitter swaps in a required reason box. Disable JavaScript and confirm Compare opens the comparison as a page that still approves and returns.
+23. In Settings > Uploaders, use Add a new person with a new email address, one board and the welcome email on. Confirm the new row (boards and toggles as chosen), the person under Users with the Document Submitter role, the welcome email listing the board, and that they can sign in with an emailed code and see only that board. Try the same email again and confirm the "already an uploader" notice.
 
 ## Verification approach
 
@@ -361,8 +365,11 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 
 ## Material change history
 
+- 2026-10-22: Rebuilt the page banner (design: the "Glover Submit a Document" canvas). The breadcrumb is set in the label style with Orange links and Fresh arrows, and the separate `label` above the title is gone. The single `action` became `actions`, any number of buttons (the first Teal, the rest Cream outline), and a new `aside` takes other content for the right-hand area, as a callable or an HTML string. The right-hand area sits beside the title from 992px and below it on narrower screens. New optional `intro` line under the title. The Documents page's Help button moved to `actions`.
 - 2026-10-22: Restyled to the spec plate (`docs/design/spec-plate.html`). Headings are Young Serif 400 and body text Figtree, both from Google Fonts. Buttons are pills (Primary is Forest Dark; Secondary is Teal and is the banner's action; new Accent, Outline and Compact styles). Selected filter chips are Teal with a Forest border. Notices are Teal by default, with `--success`, `--warning`, `--emergency` and `--error` kinds; the submission page's Published message uses `--success`. Fields are 48px tall with a Forest border on focus. The page banner takes an optional `label` above the title and shows Fresh breadcrumb arrows. The search bar, status labels and dialog Close button are pills.
 - 2026-10-22: The site palette dropped Chip (#e6dfcd) and Highlight (#efd673). File-type badges are now Teal and search matches are Orange (6.8:1 with ink, still bold), from the Glover.UI design system.
+- 2026-10-21: Every site email subject now reads "Town of Glover | Subject" instead of "[Town of Glover] Subject" (the prefix is skipped when the subject already names the town). The welcome email's subject is "Welcome, You're Approved for Document Submission", and it opens "You've been added as an approved user to submit documents for" their boards (or every board).
+- 2026-10-21: Added Add a new person to Settings > Uploaders: one dialog creates a passwordless Document Submitter account, adds the Uploaders row with `add_row()`, and can send a welcome email on how to sign in and submit. New message field `field_glover_document_settings_add_uploader` in the settings group (synchronize it in wp-admin). A throwaway WP-CLI check passed 18 of 18 (account and role, no WordPress email on creation, the row and the boards it grants, sign-in eligibility, the welcome email's recipient, subject, boards, sign-in method and link, then the list restored and the test user removed). The settings page itself was checked by rendering it as an administrator, not in the browser.
 - 2026-10-21: The accessibility checkbox now reads "I verify that this meets accessibility standards for documents." followed by a "Review accessibility and legal requirements for uploaded documents" link that opens the same guide dialog as the button at the top of the form (the requirements page, in a new tab, on the edit screen).
 - 2026-10-21: Document File now also accepts JPEG (ACF file-type setting: pdf, docx, xlsx, jpg, jpeg), with the help text "Accepted formats: PDF, Word (.docx), Excel (.xlsx), or JPEG." JPEGs are labelled JPEG, show as images in the preview dialogs, and are marked No text in text search (images have no text to read; they are found by title).
 - 2026-10-21: Document field labels are now title case (Document File, Minutes Status, Date of the Document, Replace an Earlier Version of a Document, Public Record, Note to the Reviewer, Text Search, and the form's Document Title), the same on the submission form and the edit screen.

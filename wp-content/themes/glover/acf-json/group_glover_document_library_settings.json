@@ -215,6 +215,24 @@
             "selected": 0
         },
         {
+            "key": "field_glover_document_settings_add_uploader",
+            "label": "Add a new person",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Someone without an account yet: add them here. For someone who already has an account, add a row below and choose them.",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
             "key": "field_glover_document_settings_uploaders",
             "label": "Approved uploaders",
             "name": "document_library_uploaders",
@@ -443,5 +461,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792524356
+    "modified": 1792608191
 }

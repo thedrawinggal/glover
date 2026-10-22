@@ -305,11 +305,17 @@
   line-height: 1.3;
 }
 
+// Download: the file pill from the spec plate's Record Row. Hover fills Teal.
 .results-table__action .button--secondary {
   border-width: 1.5px;
   border-color: var(--color-link);
   background: transparent;
   color: var(--color-link);
+
+  @include hover {
+    border-color: var(--color-link);
+    background: var(--color-teal);
+  }
 }
 
 // Search matches: the searched words are marked in titles and snippets,

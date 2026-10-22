@@ -1,7 +1,7 @@
 // Page banner: the Forest band at the top of every interior page, holding
-// the breadcrumb, an optional small label, the page title (the page's only
-// h1), at most one Teal action and an optional note.
-// Markup: components/common/page-banner.php.
+// the breadcrumb (in the label style), the page title (the page's only h1),
+// an optional intro and note, and a right-hand area for actions and other
+// content. Markup: components/common/page-banner.php.
 
 .page-banner {
   background: var(--color-forest);
@@ -10,10 +10,6 @@
 
   a:not(.button) {
     color: var(--color-forest-ink);
-  }
-
-  .breadcrumb li + li::before {
-    color: var(--color-fresh);
   }
 
   :focus-visible {
@@ -28,24 +24,30 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 0.75rem 1.5rem;
+  gap: 0.75rem 2rem;
 }
 
-.page-banner__breadcrumb {
+// Breadcrumb on forest: the label style, Orange links, Fresh arrows. Doubled
+// class so it outranks _breadcrumb.scss, which loads after this file.
+.breadcrumb.page-banner__breadcrumb {
   flex: 1 1 100%;
+  @include eyebrow;
+
+  .page-banner & a {
+    color: var(--color-orange);
+  }
+
+  li + li::before {
+    color: var(--color-fresh);
+  }
 }
 
 .page-banner__heading {
-  flex: 1 1 20rem;
+  flex: 999 1 20rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.page-banner__label {
-  @include eyebrow;
-  margin: 0;
-  color: var(--color-orange);
+  min-width: 0;
 }
 
 .page-banner__title {
@@ -53,8 +55,44 @@
   color: inherit;
 }
 
+.page-banner__intro {
+  margin: 0;
+  max-width: $CONTENT-WIDTH;
+}
+
+// Right-hand area: other content first, then the actions. Below the title,
+// left aligned, on narrow screens; beside it, right aligned, from $LG.
+.page-banner__aside {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1.5rem;
+  min-width: 0;
+}
+
+.page-banner__extra {
+  min-width: 0;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.page-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .page-banner__note {
   flex: 1 1 100%;
   margin: 0;
   font-weight: $FONT-WEIGHT-BOLD;
+}
+
+@media (min-width: $LG) {
+  .page-banner__aside {
+    justify-content: flex-end;
+  }
 }

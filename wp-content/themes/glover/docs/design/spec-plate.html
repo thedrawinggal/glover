@@ -17,7 +17,9 @@
     --fresh:#6fbf97;
     --fresh-dark:#3c8661;
     --teal:#c6e3d6;
+    --teal-hover:#e8f4ef;
     --orange:#e0a458;
+    --orange-hover:#e8bb83;
     --link:#306c4e;
     --ink:#1d2a23;
     --muted:#486355;
@@ -123,12 +125,18 @@
   /* Component styles: the system's own values. */
   .g-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 22px;border:2px solid transparent;border-radius:999px;font:600 16px/1.2 var(--sans);text-decoration:none;cursor:pointer;transition:transform .08s ease-out}
   .g-btn:active{transform:translateY(1px)}
-  @media (hover:hover){.g-btn:hover{text-decoration:underline;text-underline-offset:.15em}}
   .g-btn--primary{background:var(--forest-dark);border-color:var(--forest-dark);color:var(--forest-ink)}
   .g-btn--accent{background:var(--orange);border-color:var(--orange);color:var(--forest-dark)}
   .g-btn--secondary{background:var(--teal);border-color:var(--teal);color:var(--forest-dark)}
   .g-btn--outline{background:transparent;border-color:var(--forest-dark);color:var(--forest-dark)}
   .g-btn--ghost{background:transparent;border-color:var(--forest-ink);color:var(--forest-ink)}
+  @media (hover:hover){
+    .g-btn--primary:hover{background:var(--link);border-color:var(--link)}
+    .g-btn--accent:hover{background:var(--orange-hover);border-color:var(--orange-hover)}
+    .g-btn--secondary:hover{background:var(--teal-hover);border-color:var(--teal-hover)}
+    .g-btn--outline:hover{border-color:var(--link);color:var(--link)}
+    .g-btn--ghost:hover{background:var(--forest-ink);color:var(--forest)}
+  }
   .g-btn--large{min-height:52px;padding:13px 28px;font-size:18px}
   .g-btn--compact{min-height:36px;padding:6px 16px;font-size:14px}
   .g-btn[disabled]{background:var(--line-subtle);border-color:var(--line-subtle);color:var(--muted);cursor:not-allowed;transform:none;text-decoration:none}
@@ -190,12 +198,12 @@
   .g-banner__nav{display:flex;gap:18px;font-weight:600;font-size:15px}
   .g-banner__nav a{color:var(--forest-ink);text-decoration:none}
   .g-banner__band{background:var(--forest);padding:20px 22px 26px;display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 20px}
-  .g-banner__crumb{flex:1 1 100%;font-size:14px}
-  .g-banner__crumb a{color:var(--forest-ink)}
+  .g-banner__crumb{flex:1 1 100%;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .g-banner__crumb a{color:var(--orange)}
   .g-banner__crumb span{color:var(--fresh);margin:0 8px}
-  .g-banner__t{flex:1 1 16rem;display:flex;flex-direction:column;gap:4px}
-  .g-banner__lbl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange)}
+  .g-banner__t{flex:999 1 16rem;display:flex;flex-direction:column;gap:4px}
   .g-banner__t h4{margin:0;font:400 34px/1.15 var(--serif)}
+  .g-banner__aside{flex:1 1 auto;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
   .g-banner :focus-visible{outline-color:var(--orange)}
 
   .g-rec{width:100%;max-width:520px;border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid var(--line-subtle)}
@@ -231,7 +239,7 @@
     <h1>Glover<em>.UI</em></h1>
     <p class="plate__desc">The Spec Plate for the Town of Glover, Vermont website.</p>
     <div class="plate__stamp">
-      <div class="plate__cell"><span class="plate__k">Colors</span><span class="plate__v">18</span></div>
+      <div class="plate__cell"><span class="plate__k">Colors</span><span class="plate__v">20</span></div>
       <div class="plate__cell"><span class="plate__k">Text Styles</span><span class="plate__v">10</span></div>
       <div class="plate__cell"><span class="plate__k">Components</span><span class="plate__v">14</span></div>
       <div class="plate__cell"><span class="plate__k">Radius</span><span class="plate__v">4 · 8 · 12 · 20 · Pill</span></div>
@@ -261,6 +269,8 @@
         <div class="chip" style="background:#6fbf97;color:#10241b"><span class="chip__name">fresh</span><span class="chip__hex">#6fbf97</span><span class="chip__use">Step numbers, icon fills, text on forest (6.1 to 7.4:1).</span></div>
         <div class="chip" style="background:#3c8661;color:#ffffff"><span class="chip__name">fresh-dark</span><span class="chip__hex">#3c8661</span><span class="chip__use">The focus ring on light grounds, 3.2 to 4.4:1.</span></div>
         <div class="chip" style="background:#e0a458;color:#10241b"><span class="chip__name">orange</span><span class="chip__hex">#e0a458</span><span class="chip__use">Accent buttons, attention notices, search matches, labels and the focus ring on forest.</span></div>
+        <div class="chip" style="background:#e8f4ef;color:#10241b"><span class="chip__name">teal-hover</span><span class="chip__hex">#e8f4ef</span><span class="chip__use">Teal 10% lighter: the Secondary button's hover.</span></div>
+        <div class="chip" style="background:#e8bb83;color:#10241b"><span class="chip__name">orange-hover</span><span class="chip__hex">#e8bb83</span><span class="chip__use">Orange 10% lighter: the Accent button's hover.</span></div>
       </div>
     </section>
 
@@ -309,7 +319,7 @@
       <div class="ramp__row"><div><span class="ramp__name">small</span><span class="ramp__spec">Figtree · 15px / 400 / 1.45</span><span class="ramp__use">Help text under labels, in muted.</span></div><div class="ramp__sample" style="font-size:15px;color:var(--muted)">Use the board, the type of document and its date.</div></div>
       <div class="ramp__row"><div><span class="ramp__name">xsmall</span><span class="ramp__spec">Figtree · 13px / 400 / 1.4</span><span class="ramp__use">Metadata in record rows.</span></div><div class="ramp__sample" style="font-size:13px;color:var(--muted)">Draft · Posted October 15 · 2 pages</div></div>
       <div class="ramp__row"><div><span class="ramp__name">button</span><span class="ramp__spec">Figtree · 16px / 600 (18px large, 14px compact)</span><span class="ramp__use">Every button label, Title Case.</span></div><div class="ramp__sample" style="font-size:16px;font-weight:600">Submit Document</div></div>
-      <div class="ramp__row"><div><span class="ramp__name">label</span><span class="ramp__spec">Figtree · 12px / 700 / 0.08em, uppercase</span><span class="ramp__use">Section labels and the label above a page heading.</span></div><div class="ramp__sample" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Document Library</div></div>
+      <div class="ramp__row"><div><span class="ramp__name">label</span><span class="ramp__spec">Figtree · 12px / 700 / 0.08em, uppercase</span><span class="ramp__use">Section labels and the page banner's breadcrumb.</span></div><div class="ramp__sample" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Document Library</div></div>
     </div>
   </div></section>
 
@@ -339,7 +349,7 @@
       </article>
 
       <article class="spec">
-        <header class="spec__head"><h3 class="spec__name">Buttons on Forest</h3><p class="spec__note">One Teal action in a banner or forest panel, a Cream outline for a second. The focus ring turns Orange.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Buttons on Forest</h3><p class="spec__note">In a banner or forest panel, the first action is Teal and any others are Cream outlines. The focus ring turns Orange.</p></header>
         <div class="spec__stage spec__stage--forest"><a class="g-btn g-btn--secondary" href="#sign-in">Sign In</a><a class="g-btn g-btn--ghost" href="#help">Help</a></div>
       </article>
 
@@ -353,7 +363,7 @@
       </article>
 
       <article class="spec">
-        <header class="spec__head"><h3 class="spec__name">Button States</h3><p class="spec__note">Hover underlines the label. Pressed moves down 1px. Loading names the action in progress and holds the width. Disabled is a last resort.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Button States</h3><p class="spec__note">Hover changes color, with no underline: Primary's fill turns Link Green, Secondary and Accent turn 10% lighter, Outline's stroke and label turn Link Green, and Ghost fills Cream with a Forest label. Pressed moves down 1px. Loading names the action in progress and holds the width. Disabled is a last resort.</p></header>
         <div class="spec__stage">
           <div class="g-cell"><button class="g-btn g-btn--primary" type="button" aria-busy="true"><span class="g-spin" aria-hidden="true"></span>Submitting Document</button><span class="g-cap">Loading</span></div>
           <div class="g-cell"><button class="g-btn" type="button" disabled>Submit Document</button><span class="g-cap">Disabled</span></div>
@@ -430,9 +440,9 @@
       </article>
 
       <article class="spec spec--wide">
-        <header class="spec__head"><h3 class="spec__name">Site Header and Page Banner</h3><p class="spec__note">Forest Dark header, Forest banner: breadcrumb with Fresh arrows, an Orange label, the Young Serif h1 and at most one Teal action.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Site Header and Page Banner</h3><p class="spec__note">Forest Dark header, Forest banner: the breadcrumb in the label style with Orange links and Fresh arrows, the Young Serif h1, and a right-hand area for actions or other content. The first action is Teal, any others are Cream outlines. The right-hand area drops below the title on narrow screens.</p></header>
         <div class="spec__stage" style="padding:24px">
-          <div class="g-banner"><div class="g-banner__hdr"><a class="g-banner__mark" href="#home" style="color:var(--forest-ink);text-decoration:none"><b>Town of Glover</b><span>Vermont</span></a><nav class="g-banner__nav" aria-label="Sample main"><a href="#d">Documents</a><a href="#m">Meetings</a><a href="#c">Calendar</a><a href="#b">Boards</a></nav></div><div class="g-banner__band"><nav class="g-banner__crumb" aria-label="Sample breadcrumb"><a href="#home">Home</a><span aria-hidden="true">→</span><a href="#s" aria-current="page">Submit a Document</a></nav><div class="g-banner__t"><span class="g-banner__lbl">Document Library</span><h4>Submit a Document</h4></div><a class="g-btn g-btn--secondary" href="#req">Upload Requirements</a></div></div>
+          <div class="g-banner"><div class="g-banner__hdr"><a class="g-banner__mark" href="#home" style="color:var(--forest-ink);text-decoration:none"><b>Town of Glover</b><span>Vermont</span></a><nav class="g-banner__nav" aria-label="Sample main"><a href="#d">Documents</a><a href="#m">Meetings</a><a href="#c">Calendar</a><a href="#b">Boards</a></nav></div><div class="g-banner__band"><nav class="g-banner__crumb" aria-label="Sample breadcrumb"><a href="#home">Home</a><span aria-hidden="true">→</span><a href="#lib">Document Library</a><span aria-hidden="true">→</span><a href="#s" aria-current="page">Submit a Document</a></nav><div class="g-banner__t"><h4>Submit a Document</h4></div><div class="g-banner__aside"><a class="g-btn g-btn--secondary" href="#req">Upload Requirements</a><a class="g-btn g-btn--ghost" href="#help">Help</a></div></div></div>
         </div>
       </article>
 
@@ -452,7 +462,7 @@
       <div class="rule"><h3 class="rule__name">The AA Rule</h3><p class="rule__body">Every public page meets WCAG 2.1 AA. Text is at least 4.5:1, or 3:1 at 24px and larger. Control borders, focus rings and meaningful icons reach 3:1. Additional layers of accessibility are permitted using a custom accessibility widget, never in place of meeting AA.</p></div>
       <div class="rule"><h3 class="rule__name">The Signal Rule</h3><p class="rule__body">Fresh and Orange are never text or icons on a light ground. On light grounds they are fills behind Forest Dark or Ink text. As text, they appear only on Forest and Forest Dark.</p></div>
       <div class="rule"><h3 class="rule__name">The Focus Rule</h3><p class="rule__body">Every control shows a 3px ring with a 2 to 3px offset when focused from the keyboard: Fresh Dark on light grounds, Orange on Forest grounds. No rule removes it.</p></div>
-      <div class="rule"><h3 class="rule__name">The Link Rule</h3><p class="rule__body">Links are underlined. On light grounds they are Link Green; on Forest grounds, Cream or Fresh. Color alone never marks a link.</p></div>
+      <div class="rule"><h3 class="rule__name">The Link Rule</h3><p class="rule__body">Links are underlined. On light grounds they are Link Green; on Forest grounds, Cream or Fresh, and the banner's breadcrumb is Orange. Color alone never marks a link.</p></div>
       <div class="rule"><h3 class="rule__name">The One Container Rule</h3><p class="rule__body">Every page uses <code>$CONTAINER-WIDTH</code> (82rem) and <code>$GUTTER</code> (20px on phones up to 80px). No page or feature sets its own max width.</p></div>
       <div class="rule"><h3 class="rule__name">The Pill Rule</h3><p class="rule__body">Every button, chip, tag and search bar is a pill. Fields are 8px, cards and notices 12px, feature panels 20px, badges 4px. Nothing else is rounded any other way.</p></div>
       <div class="rule"><h3 class="rule__name">The Serif Rule</h3><p class="rule__body">Young Serif sets headings only, at weight 400, never bold. Figtree sets everything else. A third face is a defect.</p></div>
@@ -471,7 +481,7 @@
         <li>Do keep every color in <code>_colors.scss</code> and reference it through <code>--color-*</code>; partials never carry a raw hex.</li>
         <li>Do keep the public site light with forest bookends: Forest Dark header and footer, a Forest banner, cream between.</li>
         <li>Do use Teal for secondary actions, notices, selected states and badges, with Forest Dark text.</li>
-        <li>Do use Orange for Accent buttons, attention notices, search matches and labels on forest.</li>
+        <li>Do use Orange for Accent buttons, attention notices, search matches, labels and breadcrumbs on forest.</li>
         <li>Do set headings in Young Serif 400 and let size and color carry the hierarchy.</li>
         <li>Do use placeholders like [Town Clerk email] until the town supplies real details.</li>
       </ul></div>
