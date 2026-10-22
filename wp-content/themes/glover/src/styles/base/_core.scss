@@ -10,6 +10,14 @@ $RADIUS-LARGE: 0.75rem;   // cards, notices, panels
 $RADIUS-PANEL: 1.25rem;   // large feature panels
 $RADIUS-PILL: 999px;      // every button, chip, tag and search bar
 
+// Padding and borders count inside every box's size, form controls included,
+// so a 100%-wide field stays inside its container.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   background: var(--color-page);
 }

@@ -258,6 +258,7 @@ Created by `dbDelta` on `init` once per `GLOVER_DOCUMENT_SEARCH_DB_VERSION` (opt
 - `archive-document-library.php`, `single-department-board.php`, `template-document-submission.php`, `template-accessible-copy-request.php`.
 - `components/document-library/`: `filters`, `summary`, `active-filters`, `results`, `help`, `requirements`, `latest-documents`.
 - `components/common/page-banner.php`: the site-wide page banner used by every library template: breadcrumb, title, optional intro and note, and a right-hand area for any number of actions and other content (`aside`).
+- `components/document-library/submit-sign-in.php`: Submit a Document's signed-out view, the sign-in panel and How It Works (`components/common/steps.php`). Every shared component is catalogued in [`docs/components.md`](../components.md).
 
 ## Styles
 
@@ -365,6 +366,7 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 
 ## Material change history
 
+- 2026-10-22: Submit a Document's signed-out view is now the simplified landing from the "Glover Submit a Document" canvas (`components/document-library/submit-sign-in.php`): a Forest Dark sign-in panel with the email-code form (posting to the must-use plugin's `/sign-in/`, which asks for the code there) and Sign In With Google, then How It Works, built on the new reusable Steps component (`components/common/steps.php`). Without the plugin it shows a single Sign In link. The page's breadcrumb now includes Document Library. Reusable components are catalogued in `docs/components.md`.
 - 2026-10-22: Rebuilt the page banner (design: the "Glover Submit a Document" canvas). The breadcrumb is set in the label style with Orange links and Fresh arrows, and the separate `label` above the title is gone. The single `action` became `actions`, any number of buttons (the first Teal, the rest Cream outline), and a new `aside` takes other content for the right-hand area, as a callable or an HTML string. The right-hand area sits beside the title from 992px and below it on narrower screens. New optional `intro` line under the title. The Documents page's Help button moved to `actions`.
 - 2026-10-22: Restyled to the spec plate (`docs/design/spec-plate.html`). Headings are Young Serif 400 and body text Figtree, both from Google Fonts. Buttons are pills (Primary is Forest Dark; Secondary is Teal and is the banner's action; new Accent, Outline and Compact styles). Selected filter chips are Teal with a Forest border. Notices are Teal by default, with `--success`, `--warning`, `--emergency` and `--error` kinds; the submission page's Published message uses `--success`. Fields are 48px tall with a Forest border on focus. The page banner takes an optional `label` above the title and shows Fresh breadcrumb arrows. The search bar, status labels and dialog Close button are pills.
 - 2026-10-22: The site palette dropped Chip (#e6dfcd) and Highlight (#efd673). File-type badges are now Teal and search matches are Orange (6.8:1 with ink, still bold), from the Glover.UI design system.

@@ -23,17 +23,19 @@ get_header();
         'title' => get_the_title(),
         'breadcrumbs' => array(
             array('label' => 'Home', 'url' => home_url('/')),
+            array('label' => 'Document Library', 'url' => glover_document_library_url()),
             array('label' => get_the_title(), 'url' => get_permalink()),
         ),
     ));
     ?>
 
+    <?php if (!is_user_logged_in()) : ?>
+        <div class="submit-document__signed-out">
+            <?php get_template_part('components/document-library/submit-sign-in', null, array('return' => get_permalink())); ?>
+        </div>
+    <?php else : ?>
     <div class="content-narrow">
-        <?php if (!is_user_logged_in()) : ?>
-            <p>Please sign in to submit a document.</p>
-            <p><a class="button button--primary" href="<?php echo esc_url(glover_document_library_sign_in_url(get_permalink())); ?>">Sign in</a></p>
-
-        <?php elseif (!glover_document_library_user_can_submit()) : ?>
+        <?php if (!glover_document_library_user_can_submit()) : ?>
             <p>Your account isn't set up to submit documents. Please contact the Town Clerk's office if you need access.</p>
 
         <?php elseif (!glover_document_library_allowed_boards()) : ?>
@@ -85,6 +87,7 @@ get_header();
             <?php get_template_part('components/document-library/requirements'); ?>
         <?php endif; ?>
     </div>
+    <?php endif; ?>
 </main>
 <?php
 get_footer();
