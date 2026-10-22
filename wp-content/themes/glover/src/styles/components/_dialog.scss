@@ -33,12 +33,12 @@
 .dialog__close {
   float: right;
   margin-left: 1rem;
-  min-height: 2.5rem;
-  padding: 0.4rem 0.9rem;
-  border: 2px solid var(--color-forest);
-  border-radius: $RADIUS;
-  background: var(--color-surface);
-  color: var(--color-forest);
+  min-height: 2.75rem;
+  padding: 0.5rem 1.375rem;
+  border: 2px solid var(--color-forest-dark);
+  border-radius: $RADIUS-PILL;
+  background: transparent;
+  color: var(--color-forest-dark);
   font-weight: $FONT-WEIGHT-SEMIBOLD;
   cursor: pointer;
 }

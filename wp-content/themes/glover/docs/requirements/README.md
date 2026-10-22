@@ -4,6 +4,8 @@ This directory holds site-wide requirements that apply across features. Feature-
 
 A requirement here is binding on every feature unless a feature document records an approved, reasoned exception.
 
+The site's visual standard (colors, type, components and their rules) is the spec plate, [`../design/spec-plate.html`](../design/spec-plate.html).
+
 ## Requirements
 
 | Requirement | Status | Document |

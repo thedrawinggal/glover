@@ -5,6 +5,7 @@
  *
  * Usage:
  * get_template_part('components/common/page-banner', null, array(
+ *     'label' => 'Town Records',
  *     'title' => 'Document library',
  *     'breadcrumbs' => array(array('label' => 'Home', 'url' => home_url('/')), array('label' => 'Documents', 'url' => '...')),
  *     'action' => array('label' => 'Help', 'url' => '#help', 'attributes' => array('data-dialog-open' => 'help')),
@@ -24,6 +25,7 @@ $title = isset($args['title']) ? $args['title'] : get_the_title();
 $breadcrumbs = isset($args['breadcrumbs']) ? (array) $args['breadcrumbs'] : array();
 $action = isset($args['action']) ? $args['action'] : null;
 $note = isset($args['note']) ? $args['note'] : '';
+$label = isset($args['label']) ? $args['label'] : '';
 ?>
 <header class="page-banner">
     <div class="page-banner__inner">
@@ -39,10 +41,15 @@ $note = isset($args['note']) ? $args['note'] : '';
             </nav>
         <?php endif; ?>
 
-        <h1 class="page-banner__title"><?php echo esc_html($title); ?></h1>
+        <div class="page-banner__heading">
+            <?php if ($label !== '') : ?>
+                <p class="page-banner__label"><?php echo esc_html($label); ?></p>
+            <?php endif; ?>
+            <h1 class="page-banner__title"><?php echo esc_html($title); ?></h1>
+        </div>
 
         <?php if ($action && !empty($action['label']) && !empty($action['url'])) : ?>
-            <a class="button button--ghost page-banner__action" href="<?php echo esc_url($action['url']); ?>"<?php
+            <a class="button button--secondary page-banner__action" href="<?php echo esc_url($action['url']); ?>"<?php
             foreach ((array) (isset($action['attributes']) ? $action['attributes'] : array()) as $name => $value) {
                 printf(' %s="%s"', esc_attr($name), esc_attr($value));
             }

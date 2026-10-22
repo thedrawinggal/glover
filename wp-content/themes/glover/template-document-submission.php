@@ -41,7 +41,7 @@ get_header();
 
         <?php else : ?>
             <?php if ($submitted) : ?>
-                <div class="notice" role="status" tabindex="-1" data-focus-on-load>
+                <div class="notice<?php echo $submitted->post_status === 'publish' || $submitted->post_status === 'trash' ? ' notice--success' : ''; ?>" role="status" tabindex="-1" data-focus-on-load>
                     <?php if ($submitted->post_status === 'publish') : ?>
                         <p><strong>Published.</strong> “<?php echo esc_html(get_the_title($submitted)); ?>” is now on the website. <a href="<?php echo esc_url(get_permalink($submitted)); ?>">Open the document</a>.</p>
                     <?php elseif ($submitted->post_status === 'trash' && get_post_meta($submitted->ID, '_glover_merged_into', true)) : ?>

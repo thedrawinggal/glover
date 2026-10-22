@@ -1,18 +1,23 @@
-// Page banner: the dark green band at the top of every interior page, holding
-// the breadcrumb, the page title (the page's only h1), an optional action
-// button and an optional note. Markup: components/common/page-banner.php.
+// Page banner: the Forest band at the top of every interior page, holding
+// the breadcrumb, an optional small label, the page title (the page's only
+// h1), at most one Teal action and an optional note.
+// Markup: components/common/page-banner.php.
 
 .page-banner {
   background: var(--color-forest);
   color: var(--color-forest-ink);
-  padding: 1.5rem 0 1.75rem;
+  padding: 1.75rem 0 2.25rem;
 
-  a {
+  a:not(.button) {
     color: var(--color-forest-ink);
   }
 
+  .breadcrumb li + li::before {
+    color: var(--color-fresh);
+  }
+
   :focus-visible {
-    outline-color: var(--color-gold);
+    outline-color: var(--color-orange);
   }
 }
 
@@ -30,9 +35,22 @@
   flex: 1 1 100%;
 }
 
-.page-banner__title {
+.page-banner__heading {
   flex: 1 1 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.page-banner__label {
+  @include eyebrow;
   margin: 0;
+  color: var(--color-orange);
+}
+
+.page-banner__title {
+  margin: 0;
+  color: inherit;
 }
 
 .page-banner__note {

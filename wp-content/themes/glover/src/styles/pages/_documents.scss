@@ -171,8 +171,8 @@
   gap: 0.5rem;
   padding: 0.5rem;
   background: var(--color-white);
-  border: 1px solid var(--color-line);
-  border-radius: $RADIUS;
+  border: 1px solid var(--color-border);
+  border-radius: $RADIUS-PILL;
 
   .form-input {
     flex: 1;
@@ -273,7 +273,7 @@
 
   .badge {
     padding: 0.3rem 0.9rem;
-    border-radius: 0.375rem;
+    border-radius: $RADIUS-SMALL;
     font-size: 0.8125rem;
   }
 }
@@ -282,7 +282,7 @@
   color: var(--color-forest);
   font-family: $FONT-SERIF;
   font-size: 1.25rem;
-  font-weight: $FONT-WEIGHT-BOLD;
+  font-weight: $FONT-WEIGHT-HEADING;
   line-height: 1.25;
   text-decoration: none;
 
@@ -318,7 +318,7 @@
 .documents mark {
   padding: 0 0.15em;
   border-radius: 0.15em;
-  background: var(--color-highlight);
+  background: var(--color-orange);
   color: var(--color-ink);
   font-weight: $FONT-WEIGHT-BOLD;
   -webkit-box-decoration-break: clone;

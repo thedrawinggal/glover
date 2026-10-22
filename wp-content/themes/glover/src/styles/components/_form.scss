@@ -18,15 +18,38 @@
   color: var(--color-muted);
 }
 
+// Help text under a label, tied to its field with aria-describedby.
+.form-help {
+  margin: 0 0 0.35rem;
+  font-size: $FONT-SIZE-SMALL;
+  color: var(--color-muted);
+}
+
+// An error message above its field: names the problem and the fix.
+.form-error {
+  margin: 0 0 0.35rem;
+  font-size: $FONT-SIZE-SMALL;
+  font-weight: $FONT-WEIGHT-BOLD;
+  color: var(--color-alert);
+}
+
 .form-input,
 .form-select {
   width: 100%;
-  min-height: 2.75rem;
-  padding: 0.5rem 0.75rem;
+  min-height: 3rem;
+  padding: 0.625rem 0.875rem;
   border: 1px solid var(--color-border);
   border-radius: $RADIUS;
   background: var(--color-white);
   color: var(--color-ink);
+
+  &:focus-visible {
+    border: 2px solid var(--color-forest);
+  }
+
+  &[aria-invalid="true"] {
+    border: 2px solid var(--color-alert);
+  }
 }
 
 textarea.form-input {
@@ -73,19 +96,60 @@ textarea.form-input {
   font-variant-numeric: tabular-nums;
 }
 
-// Status and error messages. Pair with role="status" or role="alert".
+// Notices. Pair with role="status" or role="alert". Every notice has a written title.
+// .notice (Teal) informs, --success (Forest Dark) confirms, --warning (Orange)
+// warns, --emergency (Alert fill) is an emergency, --error (Alert outline)
+// reports form errors.
 .notice {
   margin: 0 0 1.5rem;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--color-border);
-  border-radius: $RADIUS;
-  background: var(--color-surface);
+  border: 2px solid transparent;
+  border-radius: $RADIUS-LARGE;
+  background: var(--color-teal);
+  color: var(--color-forest-dark);
+
+  a {
+    color: inherit;
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
 
   p:last-child {
     margin-bottom: 0;
   }
 }
 
+.notice--success {
+  background: var(--color-forest-dark);
+  color: var(--color-forest-ink);
+
+  a {
+    color: var(--color-fresh);
+  }
+
+  :focus-visible {
+    outline-color: var(--color-orange);
+  }
+}
+
+.notice--warning {
+  background: var(--color-orange);
+}
+
+.notice--emergency {
+  background: var(--color-alert);
+  color: var(--color-white);
+}
+
 .notice--error {
-  border-color: var(--color-error);
+  background: var(--color-surface);
+  border-color: var(--color-alert);
+  color: var(--color-ink);
+
+  a {
+    color: var(--color-link);
+  }
+
+  strong:first-child {
+    color: var(--color-alert);
+  }
 }

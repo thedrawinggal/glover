@@ -1,15 +1,19 @@
-// Buttons for <a> and <button>. Minimum 44px tall for touch.
-// .button--ghost is for use on the forest page banner.
+// Buttons for <a> and <button>: pills, 44px tall by default.
+// One .button--primary per view. On a forest ground use .button--secondary
+// (Teal) for the one action and .button--ghost (Cream outline) for a second.
+// Rules and placement: docs/design/spec-plate.html.
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-height: 2.75rem;
-  padding: 0.5rem 1.1rem;
-  border: 2px solid var(--color-forest);
-  border-radius: 999px;
+  padding: 0.5rem 1.375rem;
+  border: 2px solid transparent;
+  border-radius: $RADIUS-PILL;
   font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-BASE;
   font-weight: $FONT-WEIGHT-SEMIBOLD;
   line-height: 1.2;
   text-decoration: none;
@@ -17,33 +21,87 @@
 
   @include hover {
     text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &[disabled],
+  &[aria-disabled="true"] {
+    background: var(--color-line-subtle);
+    border-color: var(--color-line-subtle);
+    color: var(--color-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+    transform: none;
   }
 }
 
 a.button--primary,
 .button--primary {
-  background: var(--color-forest);
+  background: var(--color-forest-dark);
+  border-color: var(--color-forest-dark);
   color: var(--color-forest-ink);
+}
+
+a.button--accent,
+.button--accent {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-forest-dark);
 }
 
 a.button--secondary,
 .button--secondary {
-  background: var(--color-surface);
-  color: var(--color-forest);
+  background: var(--color-teal);
+  border-color: var(--color-teal);
+  color: var(--color-forest-dark);
+}
+
+a.button--outline,
+.button--outline {
+  background: transparent;
+  border-color: var(--color-forest-dark);
+  color: var(--color-forest-dark);
 }
 
 a.button--ghost,
 .button--ghost {
   background: transparent;
   border-color: var(--color-forest-ink);
-  border-radius: $RADIUS;
   color: var(--color-forest-ink);
 }
 
+// The submit button of a full-page form, or a panel's main action. One per view.
 .button--large {
-  padding: 0.85rem 1.5rem;
-  font-size: 1.125rem;
-  border-radius: $RADIUS;
+  min-height: 3.25rem;
+  padding: 0.8125rem 1.75rem;
+  font-size: $FONT-SIZE-LARGE;
+}
+
+// Only inside record rows, tables and filter bars.
+.button--compact {
+  min-height: 2.25rem;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+}
+
+// Loading: the label names the action in progress; set aria-busy="true".
+.button__spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.8s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 // A <button> that looks like a text link.
@@ -53,5 +111,6 @@ a.button--ghost,
   padding: 0.25rem 0;
   color: var(--color-link);
   text-decoration: underline;
+  text-underline-offset: 0.15em;
   cursor: pointer;
 }

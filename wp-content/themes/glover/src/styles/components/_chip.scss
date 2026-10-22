@@ -17,7 +17,7 @@
   min-height: 2rem;
   padding: 0.2rem 0.75rem;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: $RADIUS-PILL;
   background: var(--color-surface);
   color: var(--color-ink);
   font-size: $FONT-SIZE-SMALL;
@@ -29,11 +29,13 @@
   }
 }
 
+// Selected: Teal fill, Forest border, Forest Dark text, plus the check below.
 a.chip--active,
 .chip--active {
-  background: var(--color-forest);
+  background: var(--color-teal);
   border-color: var(--color-forest);
-  color: var(--color-forest-ink);
+  color: var(--color-forest-dark);
+  font-weight: $FONT-WEIGHT-BOLD;
 }
 
 .chip--small {
@@ -64,9 +66,10 @@ a.chip--active,
   height: 1px;
 
   &:checked + .chip {
-    background: var(--color-forest);
+    background: var(--color-teal);
     border-color: var(--color-forest);
-    color: var(--color-forest-ink);
+    color: var(--color-forest-dark);
+    font-weight: $FONT-WEIGHT-BOLD;
 
     &::after {
       content: "\2713";

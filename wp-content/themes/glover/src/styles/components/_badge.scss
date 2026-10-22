@@ -4,8 +4,9 @@
 .badge {
   display: inline-block;
   padding: 0.1rem 0.5rem;
-  border-radius: 0.25rem;
-  background: var(--color-chip);
+  border-radius: $RADIUS-SMALL;
+  background: var(--color-teal);
+  color: var(--color-forest-dark);
   font-size: $FONT-SIZE-EYEBROW;
   font-weight: $FONT-WEIGHT-BOLD;
 }
@@ -15,7 +16,7 @@
   margin-left: 0.35rem;
   padding: 0.05rem 0.5rem;
   border: 1px solid currentColor;
-  border-radius: 0.25rem;
+  border-radius: $RADIUS-PILL;
   font-family: $FONT-SANS;
   font-size: $FONT-SIZE-XSMALL;
   font-weight: $FONT-WEIGHT-BOLD;

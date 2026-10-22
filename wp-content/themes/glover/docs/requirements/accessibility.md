@@ -96,7 +96,7 @@ These are binding on `wp-content/themes/glover`. WCAG success criteria are cited
 ### Keyboard and focus
 
 - All interactive elements are reachable and operable by keyboard, in a logical order, with no keyboard traps. (SC 2.1.1, 2.1.2, 2.4.3)
-- A visible focus indicator is present on every focusable element. **Never remove outlines without an equivalent replacement.** (SC 2.4.7)
+- A visible focus indicator is present on every focusable element. **Never remove outlines without an equivalent replacement.** (SC 2.4.7) The ring is 3px: Fresh Dark (`--color-fresh-dark`, 3.2 to 4.4:1) on light grounds and Orange (`--color-orange`) on forest grounds, as the spec plate's Focus Rule sets out.
 - Menus, modals, and dropdowns manage focus correctly. The stock `glover-modal` and `glover-dropdown` base-theme components are unreviewed for this and must be audited before first use, not assumed correct.
 - Interactive controls are real `<button>` and `<a>` elements. A `<div>` with a click handler is not acceptable. (SC 4.1.2)
 
@@ -104,6 +104,7 @@ These are binding on `wp-content/themes/glover`. WCAG success criteria are cited
 
 - Text contrast is at least 4.5:1, or 3:1 for large text at 24px, or 19px bold. (SC 1.4.3)
 - UI component boundaries and meaningful graphics meet 3:1. (SC 1.4.11)
+- Every color and the grounds it may sit on are set in the design standard, [`../design/spec-plate.html`](../design/spec-plate.html), with each pairing's ratio. Fresh and Orange are never text on light grounds; Link Green, Alert and Muted are never text on forest grounds.
 - Color is never the sole means of conveying information. This has a direct calendar consequence: **a cancelled occurrence must not be indicated by color alone.** It needs a text label such as "Cancelled". (SC 1.4.1)
 - Content reflows without horizontal scrolling at 320 CSS pixels wide, equivalent to 400% zoom at 1280px. (SC 1.4.10)
 - Content survives user text-spacing overrides. (SC 1.4.12)
@@ -235,6 +236,8 @@ Record results per feature in that feature's document, in the style already used
 - FTC action against accessiBe, January 2025.
 
 ## Material change history
+
+- 2026-10-22 - Pointed color and focus requirements at the design standard, `docs/design/spec-plate.html`. The focus ring is now Fresh Dark on light grounds and Orange on forest grounds (replacing blue and gold), checked to 3:1 or better on every ground.
 
 - 2026-10-20 - Added "Beyond AA: Accessibility Options": the approved first-party preferences panel is a bonus layer, conformance is measured with it switched off, and it must itself meet AA.
 - 2026-10-19 - Added the skip link, `<header>` landmark, and a single `<main id="main-content">` on every template, and gave `index.php` its missing header and footer. Deleted the base theme's blank `templates/index.html`, which had made WordPress treat the theme as a block theme and render plain pages and posts empty; the classic PHP template hierarchy now applies. Verified by curl across the front page, pages, a post, search, 404, the Documents archive, both Document Library forms, and board pages, and by a keyboard pass on a page.

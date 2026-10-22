@@ -258,9 +258,9 @@ Created by `dbDelta` on `init` once per `GLOVER_DOCUMENT_SEARCH_DB_VERSION` (opt
 
 ## Styles
 
-All styles are Sass in `src/styles/`, compiled by Parcel into `dist/styles/app.css`, which `functions.php` loads on every page. The library has no stylesheet of its own.
+All styles are Sass in `src/styles/`, compiled by Parcel into `dist/styles/app.css`, which `functions.php` loads on every page. The library has no stylesheet of its own. Colors, type, buttons, chips, notices, fields and the banner follow the design standard in [`docs/design/spec-plate.html`](../design/spec-plate.html).
 
-- `base/_colors.scss`: the color palette as Sass variables and `--color-*` custom properties. Rules use the custom properties. `--color-highlight` marks search matches; `--color-line-subtle` is the faint divider above snippets on stacked cards.
+- `base/_colors.scss`: the color palette as Sass variables and `--color-*` custom properties. Rules use the custom properties. `--color-orange` marks search matches; `--color-line-subtle` is the faint divider above snippets on stacked cards.
 - `base/_typography.scss`: typefaces, h1 to h6 sizes, body text, the `.rich-text` wrapper for editor content, and the `eyebrow` mixin.
 - `base/_core.scss`: page background, links, focus ring, `.container`, `.content-narrow`, `.visually-hidden`, `.skip-link`, reduced motion.
 - `components/`: `_page-banner`, `_breadcrumb`, `_button`, `_chip`, `_dialog`, `_form`, `_badge`, `_pagination`, `_document-feed`. Shared across pages.
@@ -284,7 +284,7 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 - Year range: two labeled dropdowns, plus a slider built from two native range inputs labeled "From year" and "To year" that can't pass each other.
 - Topic chips are real checkboxes. Active filters are links, so they work without JavaScript.
 - Results are a real table with explicit roles kept for the stacked phone layout. Each result is its own `<tbody>`. The column headings are visually hidden at every width but stay for screen readers, and each date carries a visible "Effective Date" label (hidden from screen readers, which hear the "Effective date" heading). Each Download link includes the document title, format and size for screen readers.
-- Search matches are `<mark>`, bold as well as colored (`--color-highlight`, 10:1 with ink), so they don't rely on color. Most screen readers don't announce `<mark>`; the snippet text and its "Page 4:" lead-in carry the meaning.
+- Search matches are `<mark>`, bold as well as colored (`--color-orange`, 6.8:1 with ink), so they don't rely on color. Most screen readers don't announce `<mark>`; the snippet text and its "Page 4:" lead-in carry the meaning.
 - Snippets appear twice in the markup (their own row on the full table, inside the Title cell on stacked cards); the hidden copy is `display: none`, so it is read once. Page links have unique names, for example "Page 4 of Select Board Minutes (PDF)". The live region still announces only the count.
 - Dialogs use the native `<dialog>` element. Without JavaScript they are ordinary page sections reached by their links.
 - The request form has visible labels, `autocomplete` on personal fields, and errors announced with `role="alert"` and focus.
@@ -334,7 +334,7 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 - The private folder is protected by `.htaccess`, which only works on Apache. An nginx host must deny `uploads/glover-private-documents/` in its server config.
 - `wp_publish_post()` bypasses the publishing guard by design. Approve, Auto-approve and admin publishing are the only callers.
 - ACF prints the file field's `accept` attribute as "pdf, docx, xlsx, jpg, jpeg", which browsers don't use to filter the file picker. Type checks still happen on the server.
-- Colors and type follow the Figma mockup. They live in `base/_colors.scss` and `base/_typography.scss`, so the rest of the site inherits them, and they can be changed in one place when the full design system arrives.
+- Colors and type follow the spec plate (`docs/design/spec-plate.html`). They live in `base/_colors.scss` and `base/_typography.scss`, so the rest of the site inherits them. The submission form is still ACF's own field markup with light spacing; it doesn't yet use the plate's field, choice card and file upload styles.
 - Results show as stacked cards below 1200px wide, including beside the filters at 992 to 1199px, because the full table needs about 760px for its columns.
 - Terms, pages and settings are database content and must be recreated or migrated on the production site.
 - Hosting is undecided. Scheduled jobs for Drive retries, upload limits and virus scanning all depend on it.
@@ -361,6 +361,8 @@ The public library, board feeds, signed-out forms, both dialogs, and every docum
 
 ## Material change history
 
+- 2026-10-22: Restyled to the spec plate (`docs/design/spec-plate.html`). Headings are Young Serif 400 and body text Figtree, both from Google Fonts. Buttons are pills (Primary is Forest Dark; Secondary is Teal and is the banner's action; new Accent, Outline and Compact styles). Selected filter chips are Teal with a Forest border. Notices are Teal by default, with `--success`, `--warning`, `--emergency` and `--error` kinds; the submission page's Published message uses `--success`. Fields are 48px tall with a Forest border on focus. The page banner takes an optional `label` above the title and shows Fresh breadcrumb arrows. The search bar, status labels and dialog Close button are pills.
+- 2026-10-22: The site palette dropped Chip (#e6dfcd) and Highlight (#efd673). File-type badges are now Teal and search matches are Orange (6.8:1 with ink, still bold), from the Glover.UI design system.
 - 2026-10-21: The accessibility checkbox now reads "I verify that this meets accessibility standards for documents." followed by a "Review accessibility and legal requirements for uploaded documents" link that opens the same guide dialog as the button at the top of the form (the requirements page, in a new tab, on the edit screen).
 - 2026-10-21: Document File now also accepts JPEG (ACF file-type setting: pdf, docx, xlsx, jpg, jpeg), with the help text "Accepted formats: PDF, Word (.docx), Excel (.xlsx), or JPEG." JPEGs are labelled JPEG, show as images in the preview dialogs, and are marked No text in text search (images have no text to read; they are found by title).
 - 2026-10-21: Document field labels are now title case (Document File, Minutes Status, Date of the Document, Replace an Earlier Version of a Document, Public Record, Note to the Reviewer, Text Search, and the form's Document Title), the same on the submission form and the edit screen.

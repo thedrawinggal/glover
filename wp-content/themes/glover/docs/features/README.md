@@ -2,6 +2,8 @@
 
 This directory is the orientation index for major Glover theme features. Update a feature document whenever its fields, data contracts, PHP, templates, components, styles, scripts, behavior, accessibility implications, dependencies, or approved scope change.
 
+Every feature's public markup and styles follow the design standard in [`../design/spec-plate.html`](../design/spec-plate.html): colors, type, components and rules.
+
 ## Features
 
 - [Accessibility Options](accessibility-options.md): An optional panel of visitor display preferences (text size, spacing, readable font, high contrast, color blindness mode, link highlighting) layered on top of the AA-conformant site, with its own on/off settings screen in wp-admin. Approved, not built.

@@ -1,4 +1,7 @@
 <?php
+// Young Serif for headings, Figtree for everything else (docs/design/spec-plate.html).
+const GLOVER_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap';
+
 // theme setup
 function glover_theme_setup()
 {
@@ -9,7 +12,7 @@ function glover_theme_setup()
     // and TinyMCE (custom post types, ACF WYSIWYG fields). Built from
     // src/styles/admin-editor.scss; WordPress skips it until the file exists.
     add_theme_support('editor-styles');
-    add_editor_style('dist/styles/admin-editor.css');
+    add_editor_style(array(str_replace(',', '%2C', GLOVER_FONTS_URL), 'dist/styles/admin-editor.css'));
     load_theme_textdomain('glover', get_template_directory() . '/languages');
 
     // Register menus
@@ -67,10 +70,11 @@ function glover_enqueue_scripts()
             'strategy' => 'async',
         )
     );
+    wp_enqueue_style('glover-fonts', GLOVER_FONTS_URL, array(), null);
     wp_enqueue_style(
         'glover-app-style',
         get_template_directory_uri() . '/dist/styles/app.css',
-        array(),
+        array('glover-fonts'),
         $is_dev_environment ? time() : '1.0.1',
         'all'
     );

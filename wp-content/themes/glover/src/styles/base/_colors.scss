@@ -2,28 +2,35 @@
 // WCAG 2.1 AA contrast (4.5:1 for body text, 3:1 for large text and UI borders).
 // Rules use the CSS custom properties so colors can be remapped in one place.
 
-$COLOR-FOREST: #163a2c;        // banners, primary buttons, active states
-$COLOR-FOREST-INK: #f6f1e4;    // text on forest
+$COLOR-FOREST-DARK: #10241b;   // site header, footer, primary buttons, feature panels
+$COLOR-FOREST: #14352a;        // page banner, headings, selected states
+$COLOR-FOREST-INK: #f6f1e4;    // text on either forest
+$COLOR-FRESH: #6fbf97;         // fresh green accent: fills, numbers, text on forest (6:1). Not text on light (1.9:1)
+$COLOR-FRESH-DARK: #3c8661;    // darker fresh: focus ring on light (3.2:1 on teal to 4.4:1 on white, 3.7:1 against forest-dark)
+$COLOR-ORANGE: #e0a458;        // orange highlight: fills, alerts, search matches (6.8:1 with ink), text and focus ring on forest (6.1 to 7.5:1). Not text on light (1.9:1)
+$COLOR-TEAL: #c6e3d6;          // light teal: secondary buttons, notices, selected fills, badges, with forest-dark text (11.9:1)
 $COLOR-INK: #1d2a23;           // body text
-$COLOR-MUTED: #4e5a52;         // secondary text (6.4:1 on surface)
-$COLOR-LINK: #1f5a3d;          // links on light backgrounds
+$COLOR-MUTED: #486355;         // help and secondary text, a forest gray-green (5.7:1 on page, 6.2:1 on surface, 4.8:1 on teal)
+$COLOR-LINK: #306c4e;          // link green, a darker fresh: links on light backgrounds (4.5:1 on teal to 6.2:1 on white). Not on forest
 $COLOR-PAGE: #f3eee2;          // page background
 $COLOR-SURFACE: #fbf8f1;       // cards and panels
-$COLOR-SURFACE-ALT: #f4efe3;   // table headers, striped rows
+$COLOR-SURFACE-ALT: #f8f4ea;   // table headers, striped rows: a step lighter than page, a step darker than surface
 $COLOR-LINE: #cfc6b2;          // dividers (decorative only)
 $COLOR-BORDER: #8a8270;        // form control borders (3:1 on surface)
-$COLOR-CHIP: #e6dfcd;          // badges
-$COLOR-HIGHLIGHT: #efd673;     // search matches (10:1 with ink)
 $COLOR-LINE-SUBTLE: #e4ddcc;   // faint dividers (decorative only)
-$COLOR-GOLD: #f0c96b;          // focus ring on forest
-$COLOR-FOCUS: #1b4fd6;         // focus ring on light backgrounds
-$COLOR-ERROR: #a12a1e;
+$COLOR-FOCUS: $COLOR-FRESH-DARK; // focus ring on light backgrounds (orange on forest)
+$COLOR-ALERT: #a6451b;         // alert: errors, required marks, emergency notices. White on it 6:1; text on light 5.2 to 6:1. Not on forest (2.7:1)
 $COLOR-WHITE: #ffffff;
-$COLOR-BACKDROP: rgba(13, 26, 20, 0.6);
+$COLOR-BACKDROP: rgba(16, 36, 27, 0.6); // forest-dark at 60%: the scrim behind a dialog
 
 :root {
+  --color-forest-dark: #{$COLOR-FOREST-DARK};
   --color-forest: #{$COLOR-FOREST};
   --color-forest-ink: #{$COLOR-FOREST-INK};
+  --color-fresh: #{$COLOR-FRESH};
+  --color-fresh-dark: #{$COLOR-FRESH-DARK};
+  --color-orange: #{$COLOR-ORANGE};
+  --color-teal: #{$COLOR-TEAL};
   --color-ink: #{$COLOR-INK};
   --color-muted: #{$COLOR-MUTED};
   --color-link: #{$COLOR-LINK};
@@ -32,12 +39,9 @@ $COLOR-BACKDROP: rgba(13, 26, 20, 0.6);
   --color-surface-alt: #{$COLOR-SURFACE-ALT};
   --color-line: #{$COLOR-LINE};
   --color-border: #{$COLOR-BORDER};
-  --color-chip: #{$COLOR-CHIP};
-  --color-highlight: #{$COLOR-HIGHLIGHT};
   --color-line-subtle: #{$COLOR-LINE-SUBTLE};
-  --color-gold: #{$COLOR-GOLD};
   --color-focus: #{$COLOR-FOCUS};
-  --color-error: #{$COLOR-ERROR};
+  --color-alert: #{$COLOR-ALERT};
   --color-white: #{$COLOR-WHITE};
   --color-backdrop: #{$COLOR-BACKDROP};
 }
