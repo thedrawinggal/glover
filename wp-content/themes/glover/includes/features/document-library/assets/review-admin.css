@@ -83,6 +83,11 @@
     color: var(--glover-changed-text);
 }
 
+/* "Replaces: <title>" can be long, so it wraps inside the Title column. */
+.glover-review-tag--replaces {
+    white-space: normal;
+}
+
 .glover-review-tag--warning {
     border-color: var(--glover-wp-warning-border);
     background: var(--glover-wp-warning-bg);

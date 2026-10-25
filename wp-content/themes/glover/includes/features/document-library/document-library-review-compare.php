@@ -199,14 +199,6 @@ function glover_document_library_render_replacement_queue($groups)
                 <?php
                 $title = get_post_field('post_title', $original_id, 'raw');
                 $multiple = count($replacement_ids) > 1;
-                $changed = array();
-
-                if (!$multiple) {
-                    $changed = glover_document_library_compare_changes(
-                        glover_document_library_compare_details($original_id),
-                        glover_document_library_compare_details($replacement_ids[0])
-                    )['changed'];
-                }
 
                 // The proposed details. With several replacements, a detail
                 // they disagree on reads "Varies"; Compare shows each one.
@@ -221,16 +213,10 @@ function glover_document_library_render_replacement_queue($groups)
                 ?>
                 <tr>
                     <td class="column-primary">
-                        <strong><?php echo esc_html($title); ?></strong>
+                        <?php // The submitted title; several replacements with different titles read "N replacements". ?>
+                        <strong><?php echo esc_html($shared('Title') === 'Varies' ? count($replacement_ids) . ' replacements' : $shared('Title')); ?></strong>
                         <div class="glover-review-tags">
-                            <?php if ($multiple) : ?>
-                                <span class="glover-review-tag glover-review-tag--warning"><?php echo (int) count($replacement_ids); ?> replacements</span>
-                            <?php else : ?>
-                                <span class="glover-review-tag glover-review-tag--changed">New file</span>
-                                <?php foreach (array_intersect_key(glover_document_library_compare_keys(), $changed) as $label) : ?>
-                                    <span class="glover-review-tag glover-review-tag--changed"><?php echo esc_html($label); ?></span>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <span class="glover-review-tag glover-review-tag--changed glover-review-tag--replaces">Replaces: <?php echo esc_html($title); ?></span>
                         </div>
                     </td>
                     <td><?php echo esc_html($shared('Boards')); ?></td>
