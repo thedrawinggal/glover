@@ -4,8 +4,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const GLOVER_DOCUMENT_LIBRARY_REQUEST_TEMPLATE = 'template-accessible-copy-request.php';
-
 /**
  * Whether the current front-end view belongs to the Document Library.
  */
@@ -13,7 +11,7 @@ function glover_document_library_is_feature_view()
 {
     return is_post_type_archive(GLOVER_DOCUMENT_LIBRARY_POST_TYPE)
         || is_singular(array(GLOVER_DOCUMENT_LIBRARY_POST_TYPE, GLOVER_DOCUMENT_LIBRARY_BOARD_POST_TYPE))
-        || is_page_template(array(GLOVER_DOCUMENT_LIBRARY_SUBMIT_TEMPLATE, GLOVER_DOCUMENT_LIBRARY_REQUEST_TEMPLATE));
+        || is_page_template(GLOVER_DOCUMENT_LIBRARY_SUBMIT_TEMPLATE);
 }
 
 /**
@@ -36,10 +34,6 @@ function glover_document_library_enqueue_public_assets()
         wp_localize_script('glover-document-library', 'gloverDocumentLibrary', array(
             'endpoint' => esc_url_raw(rest_url('glover/v1/documents')),
         ));
-    }
-
-    if (is_page_template(GLOVER_DOCUMENT_LIBRARY_REQUEST_TEMPLATE) && glover_document_library_setting('turnstile_site_key')) {
-        wp_enqueue_script('cloudflare-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, array('strategy' => 'defer'));
     }
 }
 add_action('wp_enqueue_scripts', 'glover_document_library_enqueue_public_assets', 20);
@@ -94,8 +88,10 @@ add_action('template_redirect', 'glover_document_library_redirect_to_file', 1);
  * @param int    $post_id Document ID.
  * @param string $class   CSS class.
  * @param string $text    Visible text.
+ * @param bool   $icon    Show a download icon instead of the text, which
+ *                        stays for screen readers and as the tooltip.
  */
-function glover_document_library_download_link($post_id, $class = 'button button--secondary', $text = 'Download')
+function glover_document_library_download_link($post_id, $class = 'button button--secondary', $text = 'Download', $icon = false)
 {
     $url = glover_document_library_file_url($post_id);
 
@@ -106,12 +102,21 @@ function glover_document_library_download_link($post_id, $class = 'button button
     $details = glover_document_library_file_details($post_id);
     $meta = trim($details['label'] . ($details['size'] ? ', ' . $details['size'] : ''));
 
+    // Titles leave out the board and date, which have their own fields, so
+    // the spoken name adds them back: "Download Regular Meeting Minutes,
+    // Select Board, October 14, 2026 (PDF, 790 B)".
+    $name = implode(', ', array_filter(array(wp_specialchars_decode(get_the_title($post_id), ENT_QUOTES), glover_document_library_board_date_text($post_id))));
+    $label = $icon
+        ? '<svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg><span class="visually-hidden">' . esc_html($text) . '</span>'
+        : esc_html($text);
+
     return sprintf(
-        '<a class="%s" href="%s" download>%s<span class="visually-hidden"> %s%s</span></a>',
+        '<a class="%s" href="%s" download%s>%s<span class="visually-hidden"> %s%s</span></a>',
         esc_attr($class),
         esc_url($url),
-        esc_html($text),
-        esc_html(get_the_title($post_id)),
+        $icon ? ' title="' . esc_attr($text) . '"' : '',
+        $label,
+        esc_html($name),
         $meta ? esc_html(' (' . $meta . ')') : ''
     );
 }
@@ -125,8 +130,28 @@ function glover_document_library_link_format_text($post_id)
 {
     $details = glover_document_library_file_details($post_id);
     $meta = trim($details['label'] . ($details['size'] ? ', ' . $details['size'] : ''));
+    $context = glover_document_library_board_date_text($post_id);
+    $text = ($context !== '' ? ', ' . $context : '') . ($meta ? ' (' . $meta . ')' : '');
 
-    return $meta ? '<span class="visually-hidden"> (' . esc_html($meta) . ')</span>' : '';
+    return $text !== '' ? '<span class="visually-hidden">' . esc_html($text) . '</span>' : '';
+}
+
+/**
+ * A document's boards and date as plain text, "Select Board, October 14,
+ * 2026", for spoken link names: titles leave both out, since they are
+ * their own fields.
+ *
+ * @param int $post_id Document ID.
+ * @return string
+ */
+function glover_document_library_board_date_text($post_id)
+{
+    $parts = array_map(function ($board_id) {
+        return wp_specialchars_decode(get_the_title($board_id), ENT_QUOTES);
+    }, glover_document_library_document_board_ids($post_id));
+    $parts[] = glover_document_library_display_date($post_id);
+
+    return implode(', ', array_filter($parts));
 }
 
 /**
@@ -189,39 +214,55 @@ function glover_document_library_latest_for_board($board_id, $limit = 5)
 }
 
 /**
- * The page that holds the accessible-copy request form, with a document pre-selected.
+ * "Email the Town Clerk at clerk@townofglover.com", the way to ask for a
+ * document in an accessible format.
  *
- * @param int $post_id Optional document ID.
+ * @return string HTML.
  */
-function glover_document_library_request_url($post_id = 0)
+function glover_document_library_accessible_copy_link()
 {
-    $pages = get_posts(array(
-        'post_type' => 'page',
-        'post_status' => 'publish',
-        'posts_per_page' => 1,
-        'fields' => 'ids',
-        'meta_key' => '_wp_page_template',
-        'meta_value' => GLOVER_DOCUMENT_LIBRARY_REQUEST_TEMPLATE,
-        'no_found_rows' => true,
-    ));
+    $email = GLOVER_DOCUMENT_LIBRARY_ACCESSIBLE_COPY_EMAIL;
 
-    if (!$pages) {
-        return '';
-    }
-
-    return $post_id ? add_query_arg('document', (int) $post_id, get_permalink($pages[0])) : get_permalink($pages[0]);
+    return sprintf('Email the Town Clerk at <a href="mailto:%1$s">%1$s</a>', esc_attr($email));
 }
 
 /**
  * Help contact details from settings.
  *
- * @return array{name:string,phone:string,email:string}
+ * The emails are those of the users chosen as Help Contacts.
+ *
+ * @return array{name:string,phone:string,emails:string[]}
  */
 function glover_document_library_help_contact()
 {
+    $emails = array();
+
+    foreach ((array) glover_document_library_setting('help_contacts', array()) as $user_id) {
+        $user = get_userdata((int) $user_id);
+
+        if ($user && $user->user_email !== '') {
+            $emails[] = $user->user_email;
+        }
+    }
+
     return array(
         'name' => (string) glover_document_library_setting('help_contact_name', "Town Clerk's Office"),
         'phone' => (string) glover_document_library_setting('help_contact_phone', ''),
-        'email' => (string) glover_document_library_setting('help_contact_email', ''),
+        'emails' => array_values(array_unique($emails)),
     );
+}
+
+/**
+ * The help contacts' email addresses as escaped mailto links, joined with
+ * " or ". Empty when no Help Contacts are chosen.
+ */
+function glover_document_library_help_contact_links()
+{
+    $links = array();
+
+    foreach (glover_document_library_help_contact()['emails'] as $email) {
+        $links[] = sprintf('<a href="mailto:%1$s">%2$s</a>', esc_attr($email), esc_html($email));
+    }
+
+    return implode(' or ', $links);
 }

@@ -29,6 +29,8 @@
     // Until someone picks a sort, it follows the search: Best match while
     // searching, Most recent otherwise.
     var sortChosen = false;
+    // Set by the Filters panel below.
+    var updateFilterSummary = function () {};
 
     function defaultSort(query) {
         return query && query.trim() !== '' ? 'relevance' : 'recent';
@@ -133,6 +135,7 @@
                     sortSelect.value = data.sort;
                 }
                 updateCounts(data.counts);
+                updateFilterSummary(data.total);
 
                 if (options.history === 'push') {
                     window.history.pushState({ gloverLibrary: true }, '', data.url);
@@ -202,8 +205,21 @@
 
         event.preventDefault();
         var params = new URL(link.href, window.location.href).searchParams;
+        var clearsPanel = link.hasAttribute('data-filters-clear');
+
+        if (clearsPanel) {
+            var search = document.getElementById('glover-library-search');
+            params = new URLSearchParams();
+            if (search && search.value.trim() !== '') {
+                params.set('q', search.value);
+            }
+            if (sortChosen && sortSelect) {
+                params.set('sort', sortSelect.value);
+            }
+        }
+
         setFormFromParams(params);
-        load(params, { history: 'push', focusSummary: true });
+        load(params, { history: 'push', focusSummary: !clearsPanel });
     });
 
     window.addEventListener('popstate', function () {
@@ -300,21 +316,133 @@
         });
     }
 
-    /* Filters toggle on narrow screens. */
+    /* Filters panel on narrow screens: the Filters button opens the form as a
+       full-screen modal panel. Results update as filters change, so Show
+       just closes it. */
     var filtersToggle = document.querySelector('.documents__filters-toggle');
     var filtersPanel = document.getElementById('glover-library-filters-panel');
+    var filtersFooter = form.querySelector('.filters__footer');
+    var filtersCount = document.querySelector('[data-filters-count]');
+    var filtersShow = form.querySelector('[data-filters-show]');
+    var narrow = window.matchMedia('(max-width: 991.98px)');
+    var inerted = [];
+
+    function activeFilterCount() {
+        var count = form.querySelectorAll('input[type="checkbox"]:checked').length;
+        var board = form.querySelector('[name="board"]');
+
+        if (board && board.value !== '') {
+            count++;
+        }
+        if (fromSelect && toSelect && (fromSelect.value !== minYear || toSelect.value !== maxYear)) {
+            count++;
+        }
+
+        return count;
+    }
+
+    updateFilterSummary = function (total) {
+        if (filtersCount) {
+            var count = activeFilterCount();
+            filtersCount.textContent = count ? ' (' + count + ')' : '';
+        }
+        if (filtersShow && typeof total === 'number') {
+            filtersShow.textContent = 'Show ' + total.toLocaleString() + (total === 1 ? ' Result' : ' Results');
+        }
+    };
+
+    function isPanelOpen() {
+        return filtersToggle.getAttribute('aria-expanded') === 'true';
+    }
+
+    // Everything outside the panel, at every level up to <body>, is made
+    // inert while the panel is a modal.
+    function setModal(on) {
+        if (on) {
+            filtersPanel.setAttribute('role', 'dialog');
+            filtersPanel.setAttribute('aria-modal', 'true');
+            filtersPanel.setAttribute('aria-labelledby', 'glover-filters-heading');
+            for (var node = filtersPanel; node && node !== document.body; node = node.parentElement) {
+                Array.prototype.forEach.call(node.parentElement.children, function (sibling) {
+                    if (sibling !== node && !sibling.inert) {
+                        sibling.inert = true;
+                        inerted.push(sibling);
+                    }
+                });
+            }
+            document.documentElement.classList.add('documents-filters-open');
+        } else {
+            filtersPanel.removeAttribute('role');
+            filtersPanel.removeAttribute('aria-modal');
+            filtersPanel.removeAttribute('aria-labelledby');
+            inerted.forEach(function (element) {
+                element.inert = false;
+            });
+            inerted = [];
+            document.documentElement.classList.remove('documents-filters-open');
+        }
+    }
+
+    function openPanel() {
+        filtersToggle.setAttribute('aria-expanded', 'true');
+        filtersPanel.removeAttribute('data-collapsed');
+        if (narrow.matches) {
+            setModal(true);
+            var close = filtersPanel.querySelector('.filters__close');
+            if (close) {
+                close.focus();
+            }
+        }
+    }
+
+    function closePanel() {
+        var wasModal = filtersPanel.getAttribute('aria-modal') === 'true';
+        filtersToggle.setAttribute('aria-expanded', 'false');
+        filtersPanel.setAttribute('data-collapsed', '');
+        setModal(false);
+        if (wasModal) {
+            filtersToggle.focus();
+        }
+    }
 
     if (filtersToggle && filtersPanel) {
         filtersToggle.hidden = false;
         filtersPanel.setAttribute('data-collapsed', '');
+        form.querySelectorAll('[data-filters-close], .filters__footer').forEach(function (element) {
+            element.hidden = false;
+        });
+        if (filtersFooter) {
+            filtersFooter.hidden = false;
+        }
+
         filtersToggle.addEventListener('click', function () {
-            var expanded = filtersToggle.getAttribute('aria-expanded') === 'true';
-            filtersToggle.setAttribute('aria-expanded', String(!expanded));
-            if (expanded) {
-                filtersPanel.setAttribute('data-collapsed', '');
+            if (isPanelOpen()) {
+                closePanel();
             } else {
-                filtersPanel.removeAttribute('data-collapsed');
+                openPanel();
             }
         });
+
+        form.addEventListener('click', function (event) {
+            var close = event.target.closest ? event.target.closest('[data-filters-close]') : null;
+            if (close) {
+                closePanel();
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && filtersPanel.getAttribute('aria-modal') === 'true') {
+                closePanel();
+            }
+        });
+
+        // Widening the window shows the filters as a sidebar again.
+        narrow.addEventListener('change', function () {
+            if (!narrow.matches && isPanelOpen()) {
+                closePanel();
+            }
+        });
+
+        updateFilterSummary();
     }
 })();

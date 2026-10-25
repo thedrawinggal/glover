@@ -29,6 +29,12 @@ function glover_google_mail_addresses($list)
             continue;
         }
 
+        $address = preg_match('/<([^>]+)>$/', $item, $found) ? trim($found[1]) : $item;
+
+        if (glover_google_mail_is_reserved($address)) {
+            continue;
+        }
+
         if (preg_match('/^(.*)<([^>]+)>$/', $item, $matches) && is_email(trim($matches[2]))) {
             $name = trim(trim($matches[1]), '"');
             $clean[] = $name !== '' ? glover_google_mail_encode_header($name) . ' <' . trim($matches[2]) . '>' : trim($matches[2]);
@@ -38,6 +44,27 @@ function glover_google_mail_addresses($list)
     }
 
     return $clean;
+}
+
+/**
+ * Whether an address is at a domain reserved for examples and testing
+ * (RFC 2606 and RFC 6761), which can never receive mail. Test and sample
+ * accounts use them; sending there only brings a bounce back to the sender
+ * mailbox, so these addresses are dropped from every email.
+ *
+ * @param string $address Email address.
+ * @return bool
+ */
+function glover_google_mail_is_reserved($address)
+{
+    $domain = strtolower((string) substr(strrchr(trim($address), '@'), 1));
+
+    if ($domain === '') {
+        return false;
+    }
+
+    return in_array($domain, array('example.com', 'example.net', 'example.org'), true)
+        || (bool) preg_match('/(^|\.)(example\.(com|net|org)|example|test|invalid|localhost|local)$/', $domain);
 }
 
 /**
@@ -227,6 +254,13 @@ function glover_google_pre_wp_mail($return, $atts)
 {
     if ($return !== null || !glover_google_is_configured('mail')) {
         return $return;
+    }
+
+    // Nothing to send when every recipient is at a reserved test domain.
+    if (!glover_google_mail_addresses($atts['to'])) {
+        error_log('Glover Google mail skipped: no deliverable recipient (reserved test domains are never sent to). Subject: ' . $atts['subject']);
+
+        return false;
     }
 
     $result = glover_google_send_mail($atts);

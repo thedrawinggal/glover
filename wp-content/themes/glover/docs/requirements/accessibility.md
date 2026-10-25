@@ -141,7 +141,7 @@ Municipal sites fail Title II on PDFs more than on anything else, and this proje
 - A scanned image of a document is never acceptable on its own. It is unreadable to a screen reader and has no text layer.
 - Where a PDF must be posted, it needs real text, a document title, a language, tagged structure, and heading order. Word's "Check Accessibility" plus a correct export to PDF handles most of this at no cost.
 - Link text states the format and, where useful, the size. Example: "Select Board minutes, 2026-03-04 (PDF, 240 KB)".
-- Uploaded documents do not become accessible merely because they are linked. The Document Library asks submitters to confirm accessibility, links a requirements guide from the submission page, and offers a public request form for accessible copies.
+- Uploaded documents do not become accessible merely because they are linked. The Document Library asks submitters to confirm accessibility, links a requirements guide from the submission page, and tells people on the Documents page to email the Town Clerk (clerk@townofglover.com) for an accessible copy.
 
 ## Beyond AA: Accessibility Options
 

@@ -8,6 +8,14 @@
   }
 }
 
+// A Cream link or link button on Forest turns Orange on hover (the spec
+// plate's Link Rule).
+@mixin cream-link-hover {
+  @include hover {
+    color: var(--color-orange);
+  }
+}
+
 @mixin position-center($position, $direction) {
   @if $direction == "vertical" {
     position: $position;

@@ -173,62 +173,87 @@ function glover_document_library_compare_url($original_id)
 }
 
 /**
- * The Replacements list on the Pending tab, plus a dialog per document.
+ * The Replacements table on the Pending tab, in the New documents table's
+ * columns, plus a Compare dialog per document.
  *
  * @param array<int,int[]> $groups Published document ID => pending replacement IDs.
  */
 function glover_document_library_render_replacement_queue($groups)
 {
     ?>
-    <ul class="glover-queue">
-        <?php foreach ($groups as $original_id => $replacement_ids) : ?>
-            <?php
-            $title = get_post_field('post_title', $original_id, 'raw');
-            $multiple = count($replacement_ids) > 1;
-            $changed = array();
+    <table class="wp-list-table widefat striped glover-review-table">
+        <caption class="screen-reader-text">Replacements waiting for review, oldest first</caption>
+        <thead>
+            <tr>
+                <th scope="col" class="column-primary">Title</th>
+                <th scope="col">Boards</th>
+                <th scope="col">Category</th>
+                <th scope="col">Document date</th>
+                <th scope="col">File</th>
+                <th scope="col">Submitted</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($groups as $original_id => $replacement_ids) : ?>
+                <?php
+                $title = get_post_field('post_title', $original_id, 'raw');
+                $multiple = count($replacement_ids) > 1;
+                $changed = array();
 
-            if (!$multiple) {
-                $changed = glover_document_library_compare_changes(
-                    glover_document_library_compare_details($original_id),
-                    glover_document_library_compare_details($replacement_ids[0])
-                )['changed'];
-            }
+                if (!$multiple) {
+                    $changed = glover_document_library_compare_changes(
+                        glover_document_library_compare_details($original_id),
+                        glover_document_library_compare_details($replacement_ids[0])
+                    )['changed'];
+                }
 
-            $submitters = array_map('glover_document_library_review_submitter', $replacement_ids);
-            $dialog_id = 'glover-compare-dialog-' . (int) $original_id;
-            ?>
-            <li class="glover-queue__item">
-                <div class="glover-queue__main">
-                    <strong class="glover-queue__title"><?php echo esc_html($title); ?></strong>
-                    <div class="glover-queue__tags">
-                        <?php if ($multiple) : ?>
-                            <span class="glover-review-tag glover-review-tag--warning"><?php echo (int) count($replacement_ids); ?> replacements</span>
-                            <span class="glover-queue__hint">Choose one to approve</span>
-                        <?php else : ?>
-                            <span class="glover-review-tag glover-review-tag--changed">New file</span>
-                            <?php if ($changed) : ?>
+                // The proposed details. With several replacements, a detail
+                // they disagree on reads "Varies"; Compare shows each one.
+                $details = array_map('glover_document_library_review_details', $replacement_ids);
+                $shared = function ($key) use ($details) {
+                    $values = array_unique(wp_list_pluck($details, $key));
+                    return count($values) === 1 ? reset($values) : 'Varies';
+                };
+                $file = glover_document_library_file_details($replacement_ids[0]);
+                $submitters = array_map('glover_document_library_review_submitter', $replacement_ids);
+                $dialog_id = 'glover-compare-dialog-' . (int) $original_id;
+                ?>
+                <tr>
+                    <td class="column-primary">
+                        <strong><?php echo esc_html($title); ?></strong>
+                        <div class="glover-review-tags">
+                            <?php if ($multiple) : ?>
+                                <span class="glover-review-tag glover-review-tag--warning"><?php echo (int) count($replacement_ids); ?> replacements</span>
+                            <?php else : ?>
+                                <span class="glover-review-tag glover-review-tag--changed">New file</span>
                                 <?php foreach (array_intersect_key(glover_document_library_compare_keys(), $changed) as $label) : ?>
                                     <span class="glover-review-tag glover-review-tag--changed"><?php echo esc_html($label); ?></span>
                                 <?php endforeach; ?>
-                            <?php else : ?>
-                                <span class="glover-queue__hint">Only the file changes</span>
                             <?php endif; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="glover-queue__who">
-                    <span><?php echo esc_html(glover_document_library_join_names(array_unique(wp_list_pluck($submitters, 'name')))); ?></span>
-                    <span class="glover-queue__date"><?php echo esc_html(implode('; ', wp_list_pluck($submitters, 'date'))); ?></span>
-                </div>
-                <div class="glover-queue__actions">
-                    <a class="button<?php echo (!$multiple && !$changed) ? '' : ' button-primary'; ?>" href="<?php echo esc_url(glover_document_library_compare_url($original_id)); ?>" data-glover-open="<?php echo esc_attr($dialog_id); ?>" aria-haspopup="dialog">Compare<span class="screen-reader-text"> <?php echo esc_html($title); ?></span></a>
-                    <?php if (!$multiple && !$changed) : ?>
-                        <a class="button button-primary" href="<?php echo esc_url(glover_document_library_approve_url($replacement_ids[0], 'review')); ?>">Approve file<span class="screen-reader-text"> for <?php echo esc_html($title); ?></span></a>
-                    <?php endif; ?>
-                </div>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+                        </div>
+                    </td>
+                    <td><?php echo esc_html($shared('Boards')); ?></td>
+                    <td><?php echo esc_html($shared('Category')); ?></td>
+                    <td><?php echo esc_html($shared('Document date')); ?></td>
+                    <td><?php echo esc_html($multiple ? count($replacement_ids) . ' files' : trim($file['label'] . ', ' . $file['size'], ', ')); ?></td>
+                    <td><?php echo esc_html(implode('; ', array_map(function ($submitter) {
+                        return $submitter['name'] . ', ' . $submitter['date'];
+                    }, $submitters))); ?></td>
+                    <td class="glover-review-actions">
+                        <div class="glover-review-buttons">
+                            <?php if (!$multiple) : ?>
+                                <a class="button" href="<?php echo esc_url(get_edit_post_link($replacement_ids[0], 'url')); ?>" aria-label="<?php echo esc_attr(sprintf('Edit the replacement for "%s"', $title)); ?>">Edit</a>
+                                <span class="glover-review-sep" aria-hidden="true">|</span>
+                                <a class="button" href="<?php echo esc_url(glover_document_library_return_url($replacement_ids[0], 'review')); ?>" title="Return to submitter" aria-label="<?php echo esc_attr(sprintf('Return the replacement for "%s" to its submitter', $title)); ?>" aria-haspopup="dialog" <?php echo glover_document_library_return_data($replacement_ids[0]); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?>>Return</a>
+                            <?php endif; ?>
+                            <a class="button button-primary" href="<?php echo esc_url(glover_document_library_compare_url($original_id)); ?>" data-glover-open="<?php echo esc_attr($dialog_id); ?>" aria-haspopup="dialog">Compare<span class="screen-reader-text"> <?php echo esc_html($title); ?></span></a>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
     <?php foreach ($groups as $original_id => $replacement_ids) : ?>
         <dialog id="<?php echo esc_attr('glover-compare-dialog-' . (int) $original_id); ?>" class="glover-compare-dialog" aria-labelledby="<?php echo esc_attr('glover-compare-title-' . (int) $original_id); ?>">

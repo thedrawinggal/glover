@@ -37,7 +37,7 @@ $board_name = get_the_title($board_id);
                         echo esc_html(implode(' · ', array_filter($meta)));
                         ?>
                     </p>
-                    <?php echo glover_document_library_download_link($document->ID, ''); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?>
+                    <?php echo glover_document_library_download_link($document->ID, 'button button--outline button--compact'); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?>
                 </li>
             <?php endforeach; ?>
         </ul>

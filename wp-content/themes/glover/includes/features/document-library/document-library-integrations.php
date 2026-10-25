@@ -13,9 +13,9 @@ if (!defined('ABSPATH')) {
  * glover_document_library_set_backup_status() and store the Drive file ID
  * in the _glover_drive_file_id meta (the ID, never a URL).
  *
- * Google and emailed-code sign-in (Phase 2): filter
- * 'glover_document_library/sign_in_url' and sign people in as ordinary
- * WordPress users. Who may submit, their boards and Auto-approve live in
+ * Google and emailed-code sign-in (Phase 2): the Glover Google Workspace
+ * must-use plugin signs people in as ordinary WordPress users, on Submit a
+ * Document's own sign-in panel and on the restyled WordPress login. Who may submit, their boards and Auto-approve live in
  * Settings > Uploaders, so the rest of the feature does not change.
  *
  * Lifecycle actions fired by this feature:

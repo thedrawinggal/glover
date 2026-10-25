@@ -108,12 +108,12 @@
             "allow_in_bindings": 0
         },
         {
-            "key": "field_glover_document_settings_help_contact_email",
-            "label": "Help contact email",
-            "name": "document_library_help_contact_email",
+            "key": "field_glover_document_settings_help_contacts",
+            "label": "Help Contacts",
+            "name": "document_library_help_contacts",
             "aria-label": "",
-            "type": "email",
-            "instructions": "Also receives requests for accessible copies.",
+            "type": "user",
+            "instructions": "Their email addresses are shown in the library's help window and on Submit a Document.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -121,11 +121,13 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "allow_in_bindings": 0
+            "role": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
         },
         {
             "key": "field_glover_document_settings_requirements_page",
@@ -157,46 +159,6 @@
             "bidirectional_target": []
         },
         {
-            "key": "field_glover_document_settings_turnstile_site_key",
-            "label": "Cloudflare Turnstile site key",
-            "name": "document_library_turnstile_site_key",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Optional bot check for the public request form. Leave blank to rely on the built-in honeypot.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "allow_in_bindings": 0
-        },
-        {
-            "key": "field_glover_document_settings_turnstile_secret_key",
-            "label": "Cloudflare Turnstile secret key",
-            "name": "document_library_turnstile_secret_key",
-            "aria-label": "",
-            "type": "password",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "allow_in_bindings": 0
-        },
-        {
             "key": "field_glover_document_settings_tab_uploaders",
             "label": "Uploaders",
             "name": "",
@@ -216,7 +178,7 @@
         },
         {
             "key": "field_glover_document_settings_add_uploader",
-            "label": "Add a new person",
+            "label": "Approved Uploaders",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -228,7 +190,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "Someone without an account yet: add them here. For someone who already has an account, add a row below and choose them.",
+            "message": "The list of approved uploaders, with Add User and Edit User. Built in document-library-uploaders.php.",
             "new_lines": "",
             "esc_html": 0
         },
@@ -461,5 +423,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792608191
+    "modified": 1792945641
 }

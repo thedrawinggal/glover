@@ -49,7 +49,7 @@ if (!$chips) {
     <ul class="chip-list" role="list">
         <?php foreach ($chips as $chip) : ?>
             <li>
-                <a class="chip chip--active" href="<?php echo esc_url(glover_document_library_url($chip['filters'])); ?>" data-library-link>
+                <a class="chip chip--filter" href="<?php echo esc_url(glover_document_library_url($chip['filters'])); ?>" data-library-link>
                     <span class="visually-hidden">Remove filter: </span><?php echo esc_html($chip['label']); ?><span class="chip__remove" aria-hidden="true">×</span>
                 </a>
             </li>

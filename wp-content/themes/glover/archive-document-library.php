@@ -28,10 +28,6 @@ get_header();
     ?>
 
     <div class="documents__layout">
-        <button type="button" class="button button--secondary documents__filters-toggle" aria-expanded="false" aria-controls="glover-library-filters-panel" hidden>
-            Filters
-        </button>
-
         <div id="glover-library-filters-panel" class="documents__sidebar">
             <?php get_template_part('components/document-library/filters', null, $results); ?>
         </div>
@@ -47,14 +43,21 @@ get_header();
                 <p class="documents__summary" id="glover-library-summary" role="status" aria-live="polite" aria-atomic="true">
                     <?php get_template_part('components/document-library/summary', null, $results); ?>
                 </p>
-                <div class="documents__sort">
-                    <label for="glover-library-sort">Sort</label>
-                    <select id="glover-library-sort" name="sort" form="glover-library-filters" class="form-select">
-                        <option value="relevance" <?php selected($filters['sort'], 'relevance'); ?>>Best match</option>
-                        <option value="recent" <?php selected($filters['sort'], 'recent'); ?>>Most recent</option>
-                        <option value="oldest" <?php selected($filters['sort'], 'oldest'); ?>>Oldest</option>
-                        <option value="title" <?php selected($filters['sort'], 'title'); ?>>Title, A to Z</option>
-                    </select>
+                <div class="documents__tools">
+                    <?php // Narrow screens only, once library.js has loaded: opens the filters as a full-screen panel. ?>
+                    <button type="button" class="button button--secondary documents__filters-toggle" aria-expanded="false" aria-controls="glover-library-filters-panel" hidden>
+                        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+                        Filters<span data-filters-count></span>
+                    </button>
+                    <div class="documents__sort">
+                        <label for="glover-library-sort">Sort</label>
+                        <select id="glover-library-sort" name="sort" form="glover-library-filters" class="form-select">
+                            <option value="relevance" <?php selected($filters['sort'], 'relevance'); ?>>Best match</option>
+                            <option value="recent" <?php selected($filters['sort'], 'recent'); ?>>Most recent</option>
+                            <option value="oldest" <?php selected($filters['sort'], 'oldest'); ?>>Oldest</option>
+                            <option value="title" <?php selected($filters['sort'], 'title'); ?>>Title, A to Z</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -68,13 +71,10 @@ get_header();
         </div>
     </div>
 
-    <?php $request_url = glover_document_library_request_url(); ?>
-    <?php if ($request_url) : ?>
-        <p class="documents__request container">
-            Need a document in another format, such as large print or an accessible PDF?
-            <a href="<?php echo esc_url($request_url); ?>">Request an accessible copy</a>.
-        </p>
-    <?php endif; ?>
+    <p class="documents__request container">
+        Need a document in another format, such as large print or an accessible PDF?
+        <?php echo glover_document_library_accessible_copy_link(); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?>.
+    </p>
 
     <?php get_template_part('components/document-library/help'); ?>
 </main>

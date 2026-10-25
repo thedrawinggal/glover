@@ -1,9 +1,15 @@
 <?php
 /**
- * Passwordless sign-in at /sign-in/: "Sign in with Google" for Workspace
- * accounts, and a 6-digit code emailed to anyone else. Both sign in only
- * existing WordPress users who have a role; removing someone's role locks
- * them out of both. wp-login.php stays available as the admins' way in.
+ * Passwordless sign-in: "Sign in with Google" and a 6-digit code emailed to
+ * the account's address. Both sign in only existing WordPress users who have
+ * a role; removing someone's role locks them out of both.
+ *
+ * The theme's sign-in panel shows the forms: on Submit a Document for
+ * submitters, and on the WordPress login for everyone else. /sign-in/ has no
+ * page of its own: the forms post there, Google starts at /sign-in/google/
+ * and returns to /sign-in/google/callback/, and every step goes back to the
+ * page the form was on (glover_sign_in_back). A visit to /sign-in/ itself
+ * goes to the WordPress login.
  */
 
 if (!defined('ABSPATH')) {
@@ -43,7 +49,8 @@ add_filter('query_vars', function ($vars) {
 });
 
 /**
- * The sign-in page, returning to $redirect afterwards.
+ * Where the sign-in forms post (/sign-in/), returning to $redirect after a
+ * successful sign-in. Not a page anyone visits.
  *
  * @param string $redirect Where to go after signing in.
  */
@@ -61,11 +68,6 @@ function glover_google_oauth_redirect_uri()
 {
     return home_url('/sign-in/google/callback/');
 }
-
-// The Document Library's "Sign in" links come here instead of wp-login.php.
-add_filter('glover_document_library/sign_in_url', function ($url, $redirect) {
-    return glover_google_sign_in_url($redirect);
-}, 10, 2);
 
 /* -------------------------------------------------------------------------
  * Shared helpers
@@ -150,16 +152,45 @@ function glover_google_rate_limit($key, $limit, $window)
 }
 
 /**
- * Redirect back to the sign-in page with a status code (never personal data).
+ * The page a sign-in form was on, so each step returns there: Submit a
+ * Document for submitters, the WordPress login for everyone else. Read from
+ * the form (glover_sign_in_back) or, for Google, the sign-in session. Only
+ * addresses on this site are accepted.
+ *
+ * @param string $redirect Where to go after signing in.
+ * @return string
+ */
+function glover_google_form_page($redirect = '')
+{
+    $back = isset($_REQUEST['glover_sign_in_back']) ? esc_url_raw(wp_unslash($_REQUEST['glover_sign_in_back'])) : '';
+
+    if ($back === '') {
+        $session = glover_google_sign_in_session();
+        $back = $session['back'] ?? '';
+    }
+
+    $back = $back !== '' ? wp_validate_redirect($back, '') : '';
+
+    return $back !== '' ? remove_query_arg(array('glover_status', 'glover_step'), $back) : wp_login_url($redirect);
+}
+
+/**
+ * Go back to the form's page with a status key (never personal data):
+ * glover_status, and glover_step=code once a code was requested.
  *
  * @param string $status   Message key.
  * @param string $redirect Where to go after signing in.
- * @param array  $extra    Extra query args.
+ * @param array  $extra    'step' => 'code' for the code step.
  */
 function glover_google_back_to_form($status, $redirect = '', $extra = array())
 {
-    $url = add_query_arg(array_merge(array('status' => $status), $extra), glover_google_sign_in_url($redirect));
-    wp_safe_redirect($url);
+    $args = array('glover_status' => $status);
+
+    if (!empty($extra['step'])) {
+        $args['glover_step'] = $extra['step'];
+    }
+
+    wp_safe_redirect(add_query_arg($args, glover_google_form_page($redirect)));
     exit;
 }
 
@@ -320,7 +351,7 @@ function glover_google_start_oauth($redirect)
     }
 
     $state = wp_generate_password(32, false);
-    glover_google_sign_in_session(array_merge((array) glover_google_sign_in_session(), array('state' => $state, 'redirect' => $redirect)));
+    glover_google_sign_in_session(array_merge((array) glover_google_sign_in_session(), array('state' => $state, 'redirect' => $redirect, 'back' => glover_google_form_page($redirect))));
 
     $params = array(
         'client_id' => glover_google_setting('oauth_client_id'),
@@ -470,7 +501,8 @@ function glover_google_sign_in_router()
         glover_google_handle_sign_in_post($redirect);
     }
 
-    glover_google_render_sign_in_page($redirect);
+    // No page of its own: the forms live on Submit a Document and the WordPress login.
+    wp_safe_redirect(wp_login_url($redirect));
     exit;
 }
 add_action('template_redirect', 'glover_google_sign_in_router');
@@ -493,8 +525,8 @@ function glover_google_handle_sign_in_post($redirect)
         $status = glover_google_request_code($email);
 
         if ($status === 'code_sent') {
-            glover_google_sign_in_session(array_merge((array) glover_google_sign_in_session(), array('email' => $email, 'redirect' => $redirect)));
-            glover_google_back_to_form('code_sent', $redirect, array('step' => 'code'));
+            glover_google_sign_in_session(array_merge((array) glover_google_sign_in_session(), array('email' => $email, 'redirect' => $redirect, 'back' => glover_google_form_page($redirect))));
+            glover_google_back_to_form(!empty($_POST['glover_sign_in_resend']) ? 'code_resent' : 'code_sent', $redirect, array('step' => 'code'));
         }
 
         glover_google_back_to_form($status, $redirect);
@@ -522,116 +554,3 @@ function glover_google_handle_sign_in_post($redirect)
     glover_google_back_to_form('expired', $redirect);
 }
 
-/**
- * Status messages shown on the sign-in page.
- *
- * @return array<string, array{0:string,1:bool}> Key => [message, is_error].
- */
-function glover_google_sign_in_messages()
-{
-    return array(
-        'code_sent' => array('If that address belongs to an account here, we just emailed it a 6-digit code. Check your inbox (and spam folder), then enter the code below.', false),
-        'code_wrong' => array("That code isn't right. Check the email and try again.", true),
-        'code_expired' => array('That code has expired or was already used. Please request a new one.', true),
-        'locked' => array('Too many wrong codes. Please wait 15 minutes, then request a new code.', true),
-        'too_many' => array('Too many code requests. Please wait a few minutes and try again.', true),
-        'invalid_email' => array('Please enter a valid email address.', true),
-        'expired' => array('The form expired. Please try again.', true),
-        'not_allowed' => array("This account isn't set up to sign in here. Please contact the Town Clerk's office.", true),
-        'google_failed' => array("Google sign-in didn't work. Please try again, or use an emailed code.", true),
-        'google_cancelled' => array('Google sign-in was cancelled.', true),
-        'google_wrong_domain' => array('Please choose your townofglover.com Google account, or use an emailed code.', true),
-        'google_unavailable' => array("Google sign-in isn't available right now. Please use an emailed code.", true),
-    );
-}
-
-/**
- * Print the sign-in page inside the active theme.
- *
- * @param string $redirect Where to go after signing in.
- */
-function glover_google_render_sign_in_page($redirect)
-{
-    global $wp_query;
-
-    $wp_query->is_404 = false;
-    status_header(200);
-    nocache_headers();
-
-    add_filter('wp_robots', 'wp_robots_no_robots');
-    add_filter('document_title_parts', function ($parts) {
-        $parts['title'] = 'Sign in';
-        return $parts;
-    });
-
-    $messages = glover_google_sign_in_messages();
-    $status = isset($_GET['status']) ? sanitize_key($_GET['status']) : '';
-    $session = glover_google_sign_in_session();
-    $code_step = isset($_GET['step']) && $_GET['step'] === 'code' && !empty($session['email']);
-    $action = glover_google_sign_in_url($redirect);
-    $google_url = add_query_arg('redirect_to', rawurlencode($redirect), home_url('/sign-in/google/'));
-
-    get_header();
-    ?>
-    <main id="main-content" class="sign-in" tabindex="-1">
-        <?php
-        if (locate_template('components/common/page-banner.php')) {
-            get_template_part('components/common/page-banner', null, array(
-                'title' => 'Sign in',
-                'breadcrumbs' => array(
-                    array('label' => 'Home', 'url' => home_url('/')),
-                    array('label' => 'Sign in', 'url' => home_url('/sign-in/')),
-                ),
-            ));
-        } else {
-            echo '<h1>Sign in</h1>';
-        }
-        ?>
-        <div class="content-narrow">
-            <?php if (isset($messages[$status])) : ?>
-                <div class="notice<?php echo $messages[$status][1] ? ' notice--error' : ''; ?>" role="<?php echo $messages[$status][1] ? 'alert' : 'status'; ?>" tabindex="-1" data-focus-on-load>
-                    <p><?php echo esc_html($messages[$status][0]); ?></p>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($code_step) : ?>
-                <form class="sign-in__form" method="post" action="<?php echo esc_url($action); ?>">
-                    <?php wp_nonce_field('glover_sign_in'); ?>
-                    <input type="hidden" name="glover_sign_in_step" value="verify">
-                    <div class="form-field">
-                        <label class="form-label" for="sign-in-code">6-digit code</label>
-                        <input type="text" id="sign-in-code" name="code" class="form-input sign-in__code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required aria-describedby="sign-in-code-help">
-                        <p id="sign-in-code-help" class="sign-in__help">Codes expire after 10 minutes and work once.</p>
-                    </div>
-                    <p><button type="submit" class="button button--primary">Sign in</button></p>
-                </form>
-
-                <form method="post" action="<?php echo esc_url($action); ?>">
-                    <?php wp_nonce_field('glover_sign_in'); ?>
-                    <input type="hidden" name="glover_sign_in_step" value="request">
-                    <input type="hidden" name="email" value="<?php echo esc_attr($session['email']); ?>">
-                    <p><button type="submit" class="link-button">Send a new code</button> or <a href="<?php echo esc_url($action); ?>">use a different email address</a>.</p>
-                </form>
-            <?php else : ?>
-                <?php if (glover_google_is_configured('sign_in')) : ?>
-                    <h2 class="sign-in__heading">Town staff with a townofglover.com account</h2>
-                    <p><a class="button button--primary button--large" href="<?php echo esc_url($google_url); ?>">Sign in with Google</a></p>
-                    <h2 class="sign-in__heading">Everyone else</h2>
-                <?php endif; ?>
-
-                <form class="sign-in__form" method="post" action="<?php echo esc_url($action); ?>">
-                    <?php wp_nonce_field('glover_sign_in'); ?>
-                    <input type="hidden" name="glover_sign_in_step" value="request">
-                    <div class="form-field">
-                        <label class="form-label" for="sign-in-email">Email address</label>
-                        <input type="email" id="sign-in-email" name="email" class="form-input" autocomplete="email" required aria-describedby="sign-in-email-help">
-                        <p id="sign-in-email-help" class="sign-in__help">We'll email you a 6-digit code. No password needed.</p>
-                    </div>
-                    <p><button type="submit" class="button button--secondary">Email me a code</button></p>
-                </form>
-            <?php endif; ?>
-        </div>
-    </main>
-    <?php
-    get_footer();
-}

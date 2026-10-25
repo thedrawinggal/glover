@@ -1,7 +1,7 @@
 // Core site styles that apply everywhere: page background, links, focus,
 // layout containers, and accessibility helpers.
 
-$CONTAINER-WIDTH: 82rem;
+$CONTAINER-WIDTH: 90rem;   // 1440px, side padding included: 1280px of content at full width
 $CONTENT-WIDTH: 48rem;
 $GUTTER: clamp(1.25rem, 6vw, 5rem); // side padding of every page container: 20px on phones up to 80px
 $RADIUS-SMALL: 0.25rem;   // badges

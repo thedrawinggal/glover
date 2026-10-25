@@ -141,8 +141,8 @@
             "name": "document_date",
             "aria-label": "",
             "type": "date_picker",
-            "instructions": "The date printed on the document. For agendas and minutes, use the meeting date.",
-            "required": 1,
+            "instructions": "Saved from Month, Day and Year (Date of the Document) and never shown on a screen. Keep it: every query, sort and filter reads this value (Ymd).",
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -156,12 +156,116 @@
             "allow_in_bindings": 0
         },
         {
+            "key": "field_glover_document_date_parts",
+            "label": "Date of the Document",
+            "name": "document_date_parts",
+            "aria-label": "",
+            "type": "group",
+            "instructions": "The date printed on the document. For agendas and minutes, use the meeting date.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "allow_in_bindings": 0,
+            "sub_fields": [
+                {
+                    "key": "field_glover_document_date_month",
+                    "label": "Month",
+                    "name": "month",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "45",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "01": "January",
+                        "02": "February",
+                        "03": "March",
+                        "04": "April",
+                        "05": "May",
+                        "06": "June",
+                        "07": "July",
+                        "08": "August",
+                        "09": "September",
+                        "10": "October",
+                        "11": "November",
+                        "12": "December"
+                    },
+                    "default_value": false,
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "allow_in_bindings": 0,
+                    "create_options": 0,
+                    "save_options": 0
+                },
+                {
+                    "key": "field_glover_document_date_day",
+                    "label": "Day",
+                    "name": "day",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": 1,
+                    "max": 31,
+                    "step": 1,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "allow_in_bindings": 0
+                },
+                {
+                    "key": "field_glover_document_date_year",
+                    "label": "Year",
+                    "name": "year",
+                    "aria-label": "",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "min": 1984,
+                    "max": "",
+                    "step": 1,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "allow_in_bindings": 0
+                }
+            ]
+        },
+        {
             "key": "field_glover_document_replaces",
             "label": "Replace an Earlier Version of a Document",
             "name": "document_replaces",
             "aria-label": "",
             "type": "post_object",
-            "instructions": "Optional. Start typing to find the document this one replaces, such as draft minutes. Only documents from the boards chosen above are listed. When approved, the earlier document's web address shows this new file.",
+            "instructions": "Optional. Find the document this one replaces, such as draft minutes, by typing any words from its title, board, category or date (for example, \"May minutes\"). Only documents from the boards chosen above are listed. When approved, the earlier document's web address shows this new file.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -205,7 +309,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "I verify that this meets accessibility standards for documents. <a href=\"#glover-requirements\" data-dialog-open=\"glover-requirements\">Review accessibility and legal requirements for uploaded documents<\/a>.",
+            "message": "I verify that this meets accessibility standards for documents. <a href=\"#glover-requirements\" data-dialog-open=\"glover-requirements\">Review accessibility and legal requirements for uploaded documents</a>.",
             "default_value": 0,
             "allow_in_bindings": 0,
             "ui": 0,
@@ -299,5 +403,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1792593322
+    "modified": 1792941441
 }

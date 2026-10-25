@@ -28,12 +28,26 @@ gunzip -c "$HOME/Sites/db backups/glover/glover_<date>.sql.gz" | MYSQL_PWD=root 
 tar -xzf "$HOME/Sites/db backups/glover/glover_uploads_<date>.tar.gz" -C wp-content
 ```
 
+### Sample documents
+
+`tools/seed-documents.php` adds 44 realistic sample documents to the Document Library, for building and testing: every board kind, all 11 categories, all 14 topics, dates from 2019 to 2026, approved and draft minutes, two documents waiting in the review queue, and a small file for each: mostly text PDFs, plus Word, Excel and JPEG files so every file-type label shows. Search reads the PDFs, Word and Excel files; the JPEGs, like real scans, are found by title. It turns off Google Drive backups and all email while it runs, and marks each document so it can be removed cleanly. Running it again skips documents already there.
+
+```sh
+wp eval-file tools/seed-documents.php
+```
+
+```sh
+wp eval-file tools/seed-documents.php remove
+```
+
+With MAMP, `wp` needs MAMP's database socket: `php -d mysqli.default_socket=/Applications/MAMP/tmp/mysql/mysql.sock $(which wp) eval-file tools/seed-documents.php`.
+
 ## Choosing hosting
 
 Open the hosting account **in the town's name with the town's payment method**, and add yourself as a user. Look for:
 
 - PHP 8.x, SSH and SFTP, and WP-CLI
-- A real server cron (for Drive backup retries)
+- A real server cron (for Drive backup retries and the batched Document Library emails, which wait 10 to 30 minutes)
 - Apache, or nginx with a way to add a deny rule (see step 5)
 - An upload limit of at least 64 MB
 - Free SSL, daily backups, a staging copy, and a temporary address before the domain moves
@@ -59,7 +73,7 @@ See `docs/features/google-workspace.md` for the full setup.
 
 ### 2. Freeze and export
 
-1. Stop making changes locally.
+1. Stop making changes locally, and remove the sample documents: `wp eval-file tools/seed-documents.php remove`.
 2. Commit and push any code changes. The manifest records the commit.
 3. Run, with the server's address:
 
@@ -116,7 +130,7 @@ location ^~ /wp-content/uploads/glover-private-documents/ { deny all; }
 - Sign in with Google, and with an emailed code, in a private window.
 - Submit a test document, approve it, and confirm it appears in the library and reaches Drive.
 - `/documents/` filters, a board page, the request form, and a phone-width check.
-- Remove local-only accounts you don't want on the server (e.g. `glover_admin`).
+- Remove local-only accounts you don't want on the server (e.g. test or sample accounts).
 
 From here, **the server is the source of truth.** Localhost is for development only. To refresh it, export the server database and run `wp search-replace` back to `http://localhost:8888/glover`.
 

@@ -9,7 +9,8 @@ const GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY = 'document-category';
 const GLOVER_DOCUMENT_LIBRARY_TOPIC_TAXONOMY = 'document-subject';
 const GLOVER_DOCUMENT_LIBRARY_BOARD_TAXONOMY = 'document-board';
 const GLOVER_DOCUMENT_LIBRARY_BOARD_POST_TYPE = 'department-board';
-const GLOVER_DOCUMENT_LIBRARY_REQUEST_POST_TYPE = 'access-copy-request';
+// Where people ask for a document in an accessible format.
+const GLOVER_DOCUMENT_LIBRARY_ACCESSIBLE_COPY_EMAIL = 'clerk@townofglover.com';
 const GLOVER_DOCUMENT_LIBRARY_SETTINGS_SLUG = 'glover-document-library-settings';
 const GLOVER_DOCUMENT_LIBRARY_ROLE = 'document_submitter';
 const GLOVER_DOCUMENT_LIBRARY_SUBMIT_CAP = 'submit_glover_documents';
@@ -87,7 +88,8 @@ function glover_document_library_uploader($user_id)
 
 /**
  * Whether a user may submit documents: approvers, administrators, and
- * everyone in Settings > Uploaders.
+ * everyone with the Document Submitter role. The boards they may post for
+ * come from their Uploaders row (glover_document_library_allowed_boards()).
  *
  * @param int|null $user_id Defaults to the current user.
  */
@@ -95,7 +97,19 @@ function glover_document_library_user_can_submit($user_id = null)
 {
     $user_id = $user_id ? (int) $user_id : get_current_user_id();
 
-    return $user_id && (glover_document_library_user_can_review($user_id) || glover_document_library_uploader($user_id));
+    return $user_id && (glover_document_library_user_can_review($user_id) || glover_document_library_is_submitter_role($user_id));
+}
+
+/**
+ * Whether a user has the Document Submitter role.
+ *
+ * @param int $user_id User ID.
+ */
+function glover_document_library_is_submitter_role($user_id)
+{
+    $user = get_userdata((int) $user_id);
+
+    return $user && in_array(GLOVER_DOCUMENT_LIBRARY_ROLE, (array) $user->roles, true);
 }
 
 /**
@@ -167,8 +181,9 @@ function glover_document_library_allowed_boards($user_id = null)
 }
 
 /**
- * Where signed-out submitters go to sign in. Phase 2 (Google and emailed
- * codes) replaces this through the filter; nothing else needs to change.
+ * Where a signed-out person goes to sign in, for example from a pending
+ * document's preview link: the WordPress login, which offers emailed codes
+ * and Google. Submit a Document signs people in on its own page instead.
  *
  * @param string $redirect URL to return to after signing in.
  */

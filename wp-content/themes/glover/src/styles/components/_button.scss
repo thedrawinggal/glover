@@ -109,6 +109,25 @@ a.button--ghost,
   font-size: 0.875rem;
 }
 
+// Icon only: a circle as wide as the button is tall. The words stay in the
+// markup for screen readers (visually hidden) and as a title tooltip.
+.button--icon {
+  width: 2.75rem;
+  padding: 0;
+
+  &.button--compact {
+    width: 2.25rem;
+  }
+
+  &.button--large {
+    width: 3.25rem;
+  }
+
+  svg {
+    flex: 0 0 auto;
+  }
+}
+
 // Loading: the label names the action in progress; set aria-busy="true".
 .button__spinner {
   width: 1rem;

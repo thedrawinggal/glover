@@ -38,6 +38,25 @@ a.chip--active,
   font-weight: $FONT-WEIGHT-BOLD;
 }
 
+// An applied filter, removed by clicking it: Forest with Cream text and a
+// Cream ×. Forest Dark on hover.
+a.chip--filter,
+.chip--filter {
+  border-color: var(--color-forest);
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+  font-weight: $FONT-WEIGHT-SEMIBOLD;
+
+  .chip__remove {
+    color: var(--color-forest-ink);
+  }
+
+  @include hover {
+    border-color: var(--color-forest-dark);
+    background: var(--color-forest-dark);
+  }
+}
+
 .chip--small {
   min-height: 1.6rem;
   padding: 0.1rem 0.6rem;
@@ -45,11 +64,16 @@ a.chip--active,
   cursor: default;
 }
 
-.chip--outline {
-  min-height: 1.9rem;
-  padding: 0.15rem 0.85rem;
-  background: transparent;
-  font-size: 0.9375rem;
+// A display-only tag, such as a topic in a results row: a Teal fill, no
+// border, Forest Dark text (11.9:1).
+.chip--tag {
+  min-height: 0;
+  padding: 0.125rem 0.75rem;
+  line-height: 1.2;
+  border-color: transparent;
+  background: var(--color-teal);
+  color: var(--color-forest-dark);
+  font-size: $FONT-SIZE-XSMALL;
   font-weight: $FONT-WEIGHT-SEMIBOLD;
   cursor: default;
 }

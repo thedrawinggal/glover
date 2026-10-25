@@ -139,6 +139,8 @@
   }
   .g-btn--large{min-height:52px;padding:13px 28px;font-size:18px}
   .g-btn--compact{min-height:36px;padding:6px 16px;font-size:14px}
+  .g-btn--icon{width:36px;padding:0}
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .g-btn[disabled]{background:var(--line-subtle);border-color:var(--line-subtle);color:var(--muted);cursor:not-allowed;transform:none;text-decoration:none}
   .g-spin{width:16px;height:16px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:g-spin .8s linear infinite}
   @keyframes g-spin{to{transform:rotate(360deg)}}
@@ -163,6 +165,9 @@
   .g-card input,.g-chip input{width:20px;height:20px;margin:0;accent-color:var(--forest)}
   .g-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 16px 4px 12px;border:1px solid var(--border);border-radius:999px;background:var(--white);cursor:pointer}
   .g-chip:has(input:checked){background:var(--teal);border:2px solid var(--forest);font-weight:700;color:var(--forest-dark)}
+  .g-tag-topic{display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;border-radius:999px;background:var(--teal);color:var(--forest-dark);font-size:13px;font-weight:600}
+  .g-filter{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;border:1px solid var(--forest);border-radius:999px;background:var(--forest);color:var(--forest-ink);font-size:15px;font-weight:600;text-decoration:none}
+  @media (hover:hover){.g-filter:hover{background:var(--forest-dark);border-color:var(--forest-dark)}}
 
   .g-drop{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;width:100%;max-width:420px;padding:22px;border:2px dashed var(--forest);border-radius:12px;background:var(--surface)}
   .g-drop__ic{flex:0 0 52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--teal)}
@@ -189,7 +194,7 @@
   .g-tag--pend{background:var(--orange);color:var(--forest-dark)}
   .g-tag--draft{border:1px solid var(--ink)}
   .g-tag--ret{background:var(--alert);color:var(--white)}
-  .g-type{background:var(--teal);color:var(--forest-dark);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700}
+  .g-type{background:var(--line-subtle);color:var(--forest-dark);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:700}
 
   .g-banner{width:100%;border-radius:12px;overflow:hidden;color:var(--forest-ink)}
   .g-banner__hdr{background:var(--forest-dark);padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -214,8 +219,6 @@
   .g-rec li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-subtle)}
   .g-rec li:last-child{border-bottom:0}
   .g-rec__meta{font-size:13px;color:var(--muted)}
-  .g-file{display:inline-flex;align-items:center;gap:4px;min-height:32px;padding:2px 12px;border:1.5px solid var(--forest);border-radius:999px;color:var(--forest);font-size:13px;font-weight:700;text-decoration:none}
-  @media (hover:hover){.g-file:hover{background:var(--teal)}}
 
   .g-foot{width:100%;background:var(--forest-dark);color:var(--forest-ink);border-radius:12px;padding:22px 24px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;font-size:14px}
   .g-foot b{display:block;font:400 20px/1.2 var(--serif)}
@@ -224,6 +227,7 @@
   .g-foot nav{display:flex;flex-wrap:wrap;gap:8px 20px;font-weight:600}
   .g-foot a{color:var(--forest-ink)}
   .g-foot :focus-visible{outline-color:var(--orange)}
+  @media (hover:hover){.g-banner__nav a:hover,.g-foot a:hover{color:var(--orange)}}
 
   @media (max-width:720px){
     .ramp__row{grid-template-columns:1fr;gap:10px}
@@ -241,7 +245,7 @@
     <div class="plate__stamp">
       <div class="plate__cell"><span class="plate__k">Colors</span><span class="plate__v">20</span></div>
       <div class="plate__cell"><span class="plate__k">Text Styles</span><span class="plate__v">10</span></div>
-      <div class="plate__cell"><span class="plate__k">Components</span><span class="plate__v">14</span></div>
+      <div class="plate__cell"><span class="plate__k">Components</span><span class="plate__v">15</span></div>
       <div class="plate__cell"><span class="plate__k">Radius</span><span class="plate__v">4 · 8 · 12 · 20 · Pill</span></div>
       <div class="plate__cell"><span class="plate__k">Faces</span><span class="plate__v">Young Serif · Figtree</span></div>
       <div class="plate__cell"><span class="plate__k">Standard</span><span class="plate__v">WCAG 2.1 AA</span></div>
@@ -265,7 +269,7 @@
     <section class="band">
       <h3 class="band__name">Signal</h3>
       <div class="chips">
-        <div class="chip" style="background:#c6e3d6;color:#10241b"><span class="chip__name">teal</span><span class="chip__hex">#c6e3d6</span><span class="chip__use">Secondary buttons, notices, selected fills, badges, chips.</span></div>
+        <div class="chip" style="background:#c6e3d6;color:#10241b"><span class="chip__name">teal</span><span class="chip__hex">#c6e3d6</span><span class="chip__use">Secondary buttons, notices, selected fills, topic tags, chips.</span></div>
         <div class="chip" style="background:#e8f4ef;color:#10241b"><span class="chip__name">teal-hover</span><span class="chip__hex">#e8f4ef</span><span class="chip__use">Teal 10% lighter: the Secondary button's hover.</span></div>
         <div class="chip" style="background:#6fbf97;color:#10241b"><span class="chip__name">fresh</span><span class="chip__hex">#6fbf97</span><span class="chip__use">Step numbers, icon fills, text on forest (6.1 to 7.4:1).</span></div>
         <div class="chip" style="background:#3c8661;color:#ffffff"><span class="chip__name">fresh-dark</span><span class="chip__hex">#3c8661</span><span class="chip__use">The focus ring on light grounds, 3.2 to 4.4:1.</span></div>
@@ -291,7 +295,7 @@
         <div class="chip" style="background:#fbf8f1"><span class="chip__name">surface</span><span class="chip__hex">#fbf8f1</span><span class="chip__use">Cards and panels.</span></div>
         <div class="chip" style="background:#f8f4ea"><span class="chip__name">surface-alt</span><span class="chip__hex">#f8f4ea</span><span class="chip__use">Table headers and striped rows.</span></div>
         <div class="chip" style="background:#f3eee2"><span class="chip__name">page</span><span class="chip__hex">#f3eee2</span><span class="chip__use">The page ground.</span></div>
-        <div class="chip" style="background:#e4ddcc"><span class="chip__name">line-subtle</span><span class="chip__hex">#e4ddcc</span><span class="chip__use">Faint rules inside cards.</span></div>
+        <div class="chip" style="background:#e4ddcc"><span class="chip__name">line-subtle</span><span class="chip__hex">#e4ddcc</span><span class="chip__use">Faint rules inside cards, and file-type badges.</span></div>
         <div class="chip" style="background:#cfc6b2"><span class="chip__name">line</span><span class="chip__hex">#cfc6b2</span><span class="chip__use">Dividers. Decorative only.</span></div>
         <div class="chip" style="background:#8a8270"><span class="chip__name">border</span><span class="chip__hex">#8a8270</span><span class="chip__use">Form control borders, 3.6:1 on surface.</span></div>
       </div>
@@ -359,6 +363,7 @@
           <div class="g-cell"><button class="g-btn g-btn--primary g-btn--large" type="button">Submit Document</button><span class="g-cap">Large</span></div>
           <div class="g-cell"><button class="g-btn g-btn--primary" type="button">Search</button><span class="g-cap">Default</span></div>
           <div class="g-cell"><button class="g-btn g-btn--outline g-btn--compact" type="button">View</button><span class="g-cap">Compact</span></div>
+          <div class="g-cell"><a class="g-btn g-btn--outline g-btn--compact g-btn--icon" href="#d" title="Download"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg><span class="visually-hidden">Download</span></a><span class="g-cap">Compact Icon</span></div>
         </div>
       </article>
 
@@ -395,12 +400,22 @@
       </article>
 
       <article class="spec">
-        <header class="spec__head"><h3 class="spec__name">Choice Cards and Chips</h3><p class="spec__note">Radio cards for one choice, pill chips for several. Selected turns Teal with a Forest border; the native control stays visible.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Errors on Forest</h3><p class="spec__note">Alert fails on Forest (2.7:1), so errors there are Orange (6.1:1): Orange message text above the field, a 2px Orange field border, and an Orange notice with Forest Dark text. Help text is Teal.</p></header>
+        <div class="spec__stage spec__stage--forest" style="flex-direction:column;align-items:stretch">
+          <div class="g-field" style="color:var(--forest-ink);max-width:none"><label for="sp-code" style="color:var(--forest-ink)">6-Digit Code</label><p class="g-err" id="sp-code-e" style="color:var(--orange)">That code isn't right. Check the email and enter it again.</p><input class="g-input" id="sp-code" type="text" aria-invalid="true" aria-describedby="sp-code-e" value="481209" style="border-color:var(--orange)"></div>
+          <div class="g-note g-note--warn" role="status"><div><b>Code Expired</b><p>That code has expired or was already used.</p></div></div>
+        </div>
+      </article>
+
+      <article class="spec">
+        <header class="spec__head"><h3 class="spec__name">Choice Cards and Chips</h3><p class="spec__note">Radio cards for one choice, pill chips for several. Selected turns Teal with a Forest border; the native control stays visible. An applied filter is a Forest pill with Cream text and a Cream ×, Forest Dark on hover; clicking it removes the filter. A topic shown in a row is a display-only tag: Teal fill, no border, Forest Dark text (11.9:1).</p></header>
         <div class="spec__stage" style="flex-direction:column">
           <fieldset style="border:0;margin:0;padding:0;width:100%;max-width:360px"><legend style="font-weight:700;margin-bottom:8px">Category</legend>
             <div class="g-cards"><label class="g-card"><input type="radio" name="sp-cat">Agendas</label><label class="g-card"><input type="radio" name="sp-cat" checked>Minutes</label></div>
           </fieldset>
           <div style="display:flex;gap:8px;flex-wrap:wrap"><label class="g-chip"><input type="checkbox">Recreation</label><label class="g-chip"><input type="checkbox" checked>Roadwork</label></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="g-filter" href="#f">Minutes<span aria-hidden="true">×</span></a><a class="g-filter" href="#f">Select Board<span aria-hidden="true">×</span></a></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="g-tag-topic">Recreation &amp; Trails</span><span class="g-tag-topic">Roads &amp; Bridges</span></div>
         </div>
       </article>
 
@@ -412,7 +427,7 @@
       </article>
 
       <article class="spec spec--wide">
-        <header class="spec__head"><h3 class="spec__name">Notices</h3><p class="spec__note">Teal informs, Forest Dark confirms, Orange warns, a solid Alert fill is an emergency, an Alert outline reports form errors. Every notice has a written title.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Notices</h3><p class="spec__note">Teal informs, Forest Dark confirms, Orange warns, a solid Alert fill is an emergency, an Alert outline reports form errors. On Forest, Orange also reports errors. Every notice has a written title.</p></header>
         <div class="spec__stage">
           <div class="g-notes" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
             <div class="g-note g-note--info" role="status"><div><b>Thank You</b><p>"Select Board Minutes, October 14, 2026" is waiting for review.</p></div></div>
@@ -425,7 +440,7 @@
       </article>
 
       <article class="spec">
-        <header class="spec__head"><h3 class="spec__name">Status Tags</h3><p class="spec__note">Status is always a word. Teal published, Orange pending, outline draft, Alert returned; file types are Teal badges.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Status Tags</h3><p class="spec__note">Status is always a word. Teal published, Orange pending, outline draft, Alert returned; file types are Line Subtle badges.</p></header>
         <div class="spec__stage" style="flex-direction:column">
           <div class="g-tags"><span class="g-tag g-tag--pub">Published</span><span class="g-tag g-tag--pend">Pending Review</span><span class="g-tag g-tag--draft">Draft</span><span class="g-tag g-tag--ret">Returned</span></div>
           <div class="g-tags"><span class="g-type">PDF</span><span class="g-type">Word</span><span class="g-type">Excel</span><span class="g-type">JPEG</span></div>
@@ -433,9 +448,9 @@
       </article>
 
       <article class="spec">
-        <header class="spec__head"><h3 class="spec__name">Record Row</h3><p class="spec__note">Board records under a Forest header: bold title, muted metadata, a file pill that names the format.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Record Row</h3><p class="spec__note">Board records under a Forest header: a bold Figtree title (never Young Serif, here or in the Documents table), muted metadata, and a Compact Outline button for the file that names its format. Every Download in a list is that button; in the Documents table, where every row repeats it, it is the Compact Outline icon circle, with the words kept for screen readers and as its tooltip. In the Documents table a result's topics sit under its title as topic tags, never in a column of their own. Below 1200px the Documents table becomes list rows on the page ground: date and file type in the label style, the title, the board in Muted, and the icon circle at 44px for touch.</p></header>
         <div class="spec__stage">
-          <div class="g-rec"><div class="g-rec__head"><div><b>Select Board</b><span>[Next meeting date, time and place]</span></div><span class="g-tag g-tag--pend">Upcoming</span></div><ul><li><div><div style="font-weight:700">Minutes, October 14, 2026</div><div class="g-rec__meta">Draft</div></div><a class="g-file" href="#m" aria-label="Minutes, October 14, 2026, PDF">PDF</a></li><li><div><div style="font-weight:700">Agenda, October 14, 2026</div><div class="g-rec__meta">Word document</div></div><a class="g-file" href="#a" aria-label="Agenda, October 14, 2026, Word">DOCX</a></li></ul></div>
+          <div class="g-rec"><div class="g-rec__head"><div><b>Select Board</b><span>[Next meeting date, time and place]</span></div><span class="g-tag g-tag--pend">Upcoming</span></div><ul><li><div><div style="font-weight:700">Minutes, October 14, 2026</div><div class="g-rec__meta">Draft</div></div><a class="g-btn g-btn--outline g-btn--compact" href="#m" aria-label="Minutes, October 14, 2026, PDF">PDF</a></li><li><div><div style="font-weight:700">Agenda, October 14, 2026</div><div class="g-rec__meta">Word document</div></div><a class="g-btn g-btn--outline g-btn--compact" href="#a" aria-label="Agenda, October 14, 2026, Word">DOCX</a></li></ul></div>
         </div>
       </article>
 
@@ -447,7 +462,7 @@
       </article>
 
       <article class="spec spec--wide">
-        <header class="spec__head"><h3 class="spec__name">Site Footer</h3><p class="spec__note">Forest Dark: the town's name with ", VT" in Fresh, a Teal contact line, Cream links including Accessibility.</p></header>
+        <header class="spec__head"><h3 class="spec__name">Site Footer</h3><p class="spec__note">Forest Dark: the town's name with ", VT" in Fresh, a Teal contact line, Cream links including Accessibility that turn Orange on hover.</p></header>
         <div class="spec__stage" style="padding:24px">
           <div class="g-foot"><div><b>Town of Glover<span>, VT</span></b><span class="g-foot__c">[Town Office address] · [Phone]</span></div><nav aria-label="Sample footer"><a href="#a11y">Accessibility</a><a href="#docs">Document Library</a><a href="#meet">Meeting Schedule</a></nav></div>
         </div>
@@ -462,8 +477,8 @@
       <div class="rule"><h3 class="rule__name">The AA Rule</h3><p class="rule__body">Every public page meets WCAG 2.1 AA. Text is at least 4.5:1, or 3:1 at 24px and larger. Control borders, focus rings and meaningful icons reach 3:1. Additional layers of accessibility are permitted using a custom accessibility widget, never in place of meeting AA.</p></div>
       <div class="rule"><h3 class="rule__name">The Signal Rule</h3><p class="rule__body">Fresh and Orange are never text or icons on a light ground. On light grounds they are fills behind Forest Dark or Ink text. As text, they appear only on Forest and Forest Dark.</p></div>
       <div class="rule"><h3 class="rule__name">The Focus Rule</h3><p class="rule__body">Every control shows a 3px ring with a 2 to 3px offset when focused from the keyboard: Fresh Dark on light grounds, Orange on Forest grounds. No rule removes it.</p></div>
-      <div class="rule"><h3 class="rule__name">The Link Rule</h3><p class="rule__body">Links are underlined. On light grounds they are Link Green; on Forest grounds, Cream or Fresh, and the banner's breadcrumb is Orange. Color alone never marks a link.</p></div>
-      <div class="rule"><h3 class="rule__name">The One Container Rule</h3><p class="rule__body">Every page uses <code>$CONTAINER-WIDTH</code> (82rem) and <code>$GUTTER</code> (20px on phones up to 80px). No page or feature sets its own max width.</p></div>
+      <div class="rule"><h3 class="rule__name">The Link Rule</h3><p class="rule__body">Links are underlined. On light grounds they are Link Green; on Forest grounds, Cream or Fresh, and the banner's breadcrumb is Orange. A Cream link on Forest turns Orange on hover. Color alone never marks a link.</p></div>
+      <div class="rule"><h3 class="rule__name">The One Container Rule</h3><p class="rule__body">Every page uses <code>$CONTAINER-WIDTH</code> (90rem, 1440px with the gutters) and <code>$GUTTER</code> (20px on phones up to 80px). No page or feature sets its own max width.</p></div>
       <div class="rule"><h3 class="rule__name">The Pill Rule</h3><p class="rule__body">Every button, chip, tag and search bar is a pill. Fields are 8px, cards and notices 12px, feature panels 20px, badges 4px. Nothing else is rounded any other way.</p></div>
       <div class="rule"><h3 class="rule__name">The Serif Rule</h3><p class="rule__body">Young Serif sets headings only, at weight 400, never bold. Figtree sets everything else. A third face is a defect.</p></div>
       <div class="rule"><h3 class="rule__name">The One Primary Rule</h3><p class="rule__body">A view has one Primary button. A second main action is Accent or Secondary, and a link that only goes somewhere is a Text Link.</p></div>
@@ -480,13 +495,14 @@
       <div class="verdict verdict--do"><h3>Do</h3><ul>
         <li>Do keep every color in <code>_colors.scss</code> and reference it through <code>--color-*</code>; partials never carry a raw hex.</li>
         <li>Do keep the public site light with forest bookends: Forest Dark header and footer, a Forest banner, cream between.</li>
-        <li>Do use Teal for secondary actions, notices, selected states and badges, with Forest Dark text.</li>
+        <li>Do use Teal for secondary actions, notices, selected states and topic tags, with Forest Dark text.</li>
         <li>Do use Orange for Accent buttons, attention notices, search matches, labels and breadcrumbs on forest.</li>
         <li>Do set headings in Young Serif 400 and let size and color carry the hierarchy.</li>
         <li>Do use placeholders like [Town Clerk email] until the town supplies real details.</li>
       </ul></div>
       <div class="verdict verdict--dont"><h3>Don't</h3><ul>
         <li>Don't put Fresh or Orange text on cream, white, Surface or Teal.</li>
+        <li>Don't use Alert on Forest grounds; errors there are Orange.</li>
         <li>Don't bold Young Serif, set body text in it, or add a third typeface.</li>
         <li>Don't square off a button or chip, add a shadow to anything but a dialog, or set a page its own max width.</li>
         <li>Don't remove a focus ring, or mark a link or a status with color alone.</li>

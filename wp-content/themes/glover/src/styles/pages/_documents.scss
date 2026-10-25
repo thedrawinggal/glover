@@ -12,24 +12,117 @@
   align-items: start;
 }
 
-// Shown only once library.js has loaded, and only on narrow screens.
+// The Filters button shows only once library.js has loaded, and only on
+// narrow screens, where it opens the filters as a full-screen panel.
 .documents__filters-toggle {
   display: none;
 }
 
-.documents.is-enhanced {
-  .documents__filters-toggle {
-    display: inline-flex;
-    justify-self: start;
-  }
+.documents.is-enhanced .filters__submit {
+  display: none;
+}
 
-  .documents__sidebar[data-collapsed] {
-    display: none;
-  }
+@media (max-width: $LESS_THAN_LG) {
+  .documents.is-enhanced {
+    .documents__filters-toggle {
+      display: inline-flex;
+    }
 
-  .filters__submit {
-    display: none;
+    // The bar's Sort label is read by screen readers only, to leave room for Filters.
+    .documents__sort label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .documents__sidebar[data-collapsed] {
+      display: none;
+    }
+
+    // Open: the panel covers the page below the admin bar, with the heading
+    // and Close at the top and Clear All and Show at the bottom.
+    .documents__sidebar:not([data-collapsed]) {
+      position: fixed;
+      inset: var(--wp-admin--admin-bar--height, 0) 0 0;
+      z-index: 1000;
+      overflow-y: auto;
+      background: var(--color-surface);
+
+      .filters {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+      }
+
+      .filters__header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        align-items: center;
+        padding: 0.875rem $GUTTER;
+        background: var(--color-surface);
+        border-bottom: 1px solid var(--color-line-subtle);
+      }
+
+      .filters__clear {
+        display: none;
+      }
+
+      .filters__close {
+        display: inline-flex;
+      }
+
+      .filters__group {
+        padding: 1.25rem $GUTTER;
+        border-bottom-color: var(--color-line-subtle);
+      }
+
+      // Each category is a full-width 44px row.
+      .check-list li {
+        align-items: center;
+        min-height: 2.75rem;
+        padding: 0;
+        border-bottom: 1px solid var(--color-line-subtle);
+      }
+
+      .check-list input {
+        margin: 0;
+      }
+
+      .filters__footer {
+        position: sticky;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+        gap: 0.625rem;
+        margin-top: auto;
+        padding: 0.875rem $GUTTER 1.125rem;
+        background: var(--color-surface);
+        border-top: 1px solid var(--color-line);
+
+        .button {
+          padding-inline: 1rem;
+          white-space: nowrap;
+        }
+      }
+    }
   }
+}
+
+.filters__close,
+.filters__footer {
+  display: none;
+}
+
+// The page behind the open panel doesn't scroll.
+.documents-filters-open {
+  overflow: hidden;
 }
 
 // Refine panel
@@ -71,6 +164,18 @@
   padding: 0;
 }
 
+// A legend normally sits in its fieldset's top border, above the group's top
+// padding, which puts that padding between it and its controls. Floated, it
+// sits in the group like the Board label, the same 8px above its controls.
+legend.filters__label {
+  float: left;
+  width: 100%;
+
+  + * {
+    clear: both;
+  }
+}
+
 .filters__submit {
   padding-top: 1rem;
 }
@@ -81,6 +186,22 @@
   gap: 0.4rem;
   margin: 0;
   padding: 0;
+
+  // Topic chips have a 2px border, chosen or not, with 1px less padding so
+  // their size stays the same. Unchosen, border and text are Muted (6.2:1 on
+  // Surface); chosen turns Teal with a Forest border (_chip.scss).
+  .chip {
+    border-width: 2px;
+    border-color: var(--color-muted);
+    padding: calc(0.2rem - 1px) calc(0.75rem - 1px);
+    color: var(--color-muted);
+    font-weight: $FONT-WEIGHT-SEMIBOLD;
+  }
+
+  // Semibold whether chosen or not, the weight of the buttons.
+  .chip-toggle:checked + .chip {
+    font-weight: $FONT-WEIGHT-SEMIBOLD;
+  }
 }
 
 // Year range: two dropdowns, plus a two-handle slider added by library.js.
@@ -174,9 +295,20 @@
   border: 1px solid var(--color-border);
   border-radius: $RADIUS-PILL;
 
+  // Focus shows on the whole pill, the field's focus state in its shape: a
+  // 2px Forest border and the Fresh Dark ring.
+  &:has(.form-input:focus) {
+    @include field-focus;
+  }
+
   .form-input {
     flex: 1;
     border: 0;
+
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+    }
   }
 }
 
@@ -191,6 +323,16 @@
 
 .documents__summary {
   margin: 0;
+}
+
+.documents__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.documents__filters-toggle {
+  gap: 0.4rem;
 }
 
 .documents__sort {
@@ -215,19 +357,14 @@
   opacity: 0.6;
 }
 
-// Results: stacked cards until $XL, then a real table. Explicit ARIA
-// roles in the markup keep table semantics when cells are display: block.
+// Results: list rows until $XL, then a real table. Explicit ARIA roles in
+// the markup keep table semantics when cells are display: block or grid.
 // Each result is its own <tbody>, so a result and its search snippets stay
-// together and striping follows results, not rows. The column headings are
-// visually hidden at every width (each row carries its own date label) but
-// stay in the table for screen readers.
+// together. The column headings stay for screen readers but show only as the
+// table's header row.
 
 .results-table {
   width: 100%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-radius: $RADIUS-LARGE;
-  overflow: hidden;
 
   &,
   tbody,
@@ -243,47 +380,13 @@
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
   }
-
-  tr {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--color-line);
-  }
-
-  td {
-    padding: 0.25rem 0;
-  }
-
-  td[data-label]::before {
-    content: attr(data-label) ": ";
-    font-weight: $FONT-WEIGHT-BOLD;
-  }
-
-  td.results-table__title::before,
-  td[data-label="Type"]::before {
-    content: none;
-  }
-
-  tbody:nth-of-type(even) tr {
-    background: var(--color-surface-alt);
-  }
-
-  td.results-table__date::before {
-    content: none;
-  }
-
-  .badge {
-    padding: 0.3rem 0.9rem;
-    border-radius: $RADIUS-SMALL;
-    font-size: 0.8125rem;
-  }
 }
 
 .results-table__title a {
   color: var(--color-forest);
-  font-family: $FONT-SERIF;
-  font-size: 1.25rem;
-  font-weight: $FONT-WEIGHT-HEADING;
-  line-height: 1.25;
+  font-size: 1.1875rem;
+  font-weight: $FONT-WEIGHT-BOLD;
+  line-height: 1.35;
   text-decoration: none;
 
   @media (hover: hover) {
@@ -293,29 +396,8 @@
   }
 }
 
-.results-table__board,
 .results-table__date {
   color: var(--color-muted);
-}
-
-.results-table__date-label {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: $FONT-WEIGHT-BOLD;
-  line-height: 1.3;
-}
-
-// Download: the file pill from the spec plate's Record Row. Hover fills Teal.
-.results-table__action .button--secondary {
-  border-width: 1.5px;
-  border-color: var(--color-link);
-  background: transparent;
-  color: var(--color-link);
-
-  @include hover {
-    border-color: var(--color-link);
-    background: var(--color-teal);
-  }
 }
 
 // Search matches: the searched words are marked in titles and snippets,
@@ -337,17 +419,6 @@
   list-style: none;
 }
 
-// Stacked cards: snippets sit under the title, below a faint divider.
-.search-matches--stacked {
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--color-line-subtle);
-}
-
-.results-table__matches-row {
-  display: none !important;
-}
-
 .search-match {
   margin: 0;
   color: var(--color-ink);
@@ -363,56 +434,152 @@
   font-weight: $FONT-WEIGHT-BOLD;
   white-space: nowrap;
 
-  // Page links inside the Title cell stay at snippet size.
-  a,
-  .results-table__title & a {
+  a {
     color: var(--color-ink);
-    font-family: inherit;
-    font-size: inherit;
     font-weight: $FONT-WEIGHT-BOLD;
-    line-height: inherit;
     text-decoration: underline;
   }
 }
 
-.results-table__action {
-  padding-top: 0.5rem;
-}
+// List rows: the date and file type in the label style, the title, the board
+// in Muted, and the Download circle on the right. Topics show only in the
+// table. A result's snippets follow in a Surface box under the row.
+@media (max-width: $LESS_THAN_XL) {
+  .results-table {
+    border-top: 1px solid var(--color-line);
+  }
 
-.results-table__empty-cell {
-  display: none !important;
+  .results-table__result > tr:first-child {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "date type . action"
+      "title title title action"
+      "board board board action";
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+
+    > td {
+      padding: 0;
+    }
+  }
+
+  .results-table__date {
+    grid-area: date;
+    @include eyebrow;
+  }
+
+  td[data-label="Type"] {
+    grid-area: type;
+    @include eyebrow;
+    color: var(--color-muted);
+
+    &::before {
+      content: "\00b7";
+      margin: 0 0.4em;
+    }
+
+    // The badge reads as part of the label line here.
+    .badge {
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      color: inherit;
+      font-size: inherit;
+    }
+  }
+
+  .results-table__title {
+    grid-area: title;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    margin-top: 0.125rem;
+
+    .status-label {
+      margin-left: 0;
+    }
+  }
+
+  .results-table__topics {
+    display: none;
+  }
+
+  .results-table__board {
+    grid-area: board;
+    margin-top: 0.125rem;
+    color: var(--color-muted);
+    font-size: $FONT-SIZE-SMALL;
+  }
+
+  .results-table__action {
+    grid-area: action;
+    padding-left: 0.875rem !important;
+
+    // A full 44px touch target on phones.
+    .button--icon.button--compact {
+      width: 2.75rem;
+      min-height: 2.75rem;
+    }
+  }
+
+  .results-table__result--matches > tr:first-child {
+    border-bottom: 0;
+  }
+
+  .results-table__matches-row {
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .results-table__matches-spacer {
+    display: none !important;
+  }
+
+  .search-matches--row {
+    padding: 0.625rem 0.75rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-subtle);
+    border-radius: $RADIUS;
+  }
+
+  .search-match {
+    font-size: $FONT-SIZE-SMALL;
+
+    & + & {
+      margin-top: 0.375rem;
+    }
+  }
 }
 
 @media (min-width: $LG) {
   .documents__layout {
     grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
   }
-
-  .documents.is-enhanced {
-    .documents__filters-toggle {
-      display: none;
-    }
-
-    .documents__sidebar[data-collapsed] {
-      display: block;
-    }
-  }
 }
 
-// The full table needs about 760px for its columns; below $XL the results stay stacked cards.
+// The full table needs about 760px for its columns; below $XL the results stay list rows.
 @media (min-width: $XL) {
   .results-table {
     display: table;
     border-collapse: collapse;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: $RADIUS-LARGE;
+    overflow: hidden;
 
     tbody {
       display: table-row-group;
     }
 
+    tbody:nth-of-type(even) tr {
+      background: var(--color-surface-alt);
+    }
+
     tr {
       display: table-row;
-      padding: 0;
-      border-bottom: 0;
     }
 
     td {
@@ -433,9 +600,55 @@
       padding-bottom: 1.4rem;
     }
 
-    td[data-label]::before {
-      content: none;
+    // The header row: Surface Alt, column names in the label style in
+    // Muted, as the spec plate sets for table headers.
+    thead {
+      position: static;
+      display: table-header-group;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
     }
+
+    thead tr {
+      background: var(--color-surface-alt);
+    }
+
+    th {
+      @include eyebrow;
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-line);
+      color: var(--color-muted);
+      text-align: left;
+      vertical-align: bottom;
+    }
+
+    // The Type column is only as wide as its label, with a third less space
+    // before the title (27px rather than 40px).
+    th:first-child,
+    td:first-child {
+      width: 1%;
+      padding-right: 0.6875rem;
+    }
+
+    // One width for every type (wide enough for JPEG), so the gap to the
+    // title is the same on every row.
+    .badge {
+      min-width: 3.25rem;
+      text-align: center;
+      padding: 0.3rem 0.5rem;
+      border-radius: $RADIUS-SMALL;
+      font-size: 0.8125rem;
+    }
+  }
+
+  // The board: bold, in the title's Forest, with a tighter line height.
+  .results-table__board {
+    color: var(--color-forest);
+    font-size: $FONT-SIZE-SMALL;
+    font-weight: $FONT-WEIGHT-BOLD;
+    line-height: 1.3;
   }
 
   .results-table__action {
@@ -447,28 +660,18 @@
     white-space: nowrap;
   }
 
-  // Titles get room to fit on one or two lines.
+  // Titles get room to fit on one or two lines, with their topics stacked below.
   .results-table__title {
-    width: 40%;
+    width: 52%;
     min-width: 14rem;
   }
 
-  // Full table: snippets get their own row, from the Title column to the
-  // Date column, stopping short of the Download button.
-  .search-matches--stacked {
-    display: none;
-  }
-
-  .results-table__matches-row {
-    display: table-row !important;
+  .results-table__topics {
+    margin-top: 0.5rem;
   }
 
   .search-matches--row {
     padding-top: 0.25rem;
-  }
-
-  .results-table__empty-cell {
-    display: table-cell !important;
   }
 }
 
@@ -495,7 +698,7 @@
   border-radius: $RADIUS-LARGE;
 }
 
-// "Request an accessible copy": there are no document pages, so the library offers it here.
+// How to ask for an accessible copy: there are no document pages, so the library says it here.
 .documents__request {
   margin-top: 0;
   margin-bottom: 2rem;

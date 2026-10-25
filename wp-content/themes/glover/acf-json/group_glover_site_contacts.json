@@ -1,0 +1,72 @@
+{
+    "key": "group_glover_site_contacts",
+    "title": "Site Contacts",
+    "fields": [
+        {
+            "key": "field_glover_site_contacts_webmaster",
+            "label": "Webmaster",
+            "name": "site_contacts_webmaster",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "The person who looks after the website.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_site_contacts_town_clerk",
+            "label": "Town Clerk",
+            "name": "site_contacts_town_clerk",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "The current Town Clerk.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "glover-site-contacts"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792762700
+}

@@ -104,7 +104,7 @@ function glover_google_render_status_page()
             <?php submit_button('Test Drive access', 'secondary', 'submit', false, glover_google_is_configured('drive') ? array() : array('disabled' => 'disabled')); ?>
         </form>
         <?php if (glover_google_is_configured('sign_in')) : ?>
-            <a class="button" href="<?php echo esc_url(glover_google_sign_in_url(admin_url('options-general.php?page=glover-google'))); ?>">Open the sign-in page</a>
+            <a class="button" href="<?php echo esc_url(wp_login_url(admin_url('options-general.php?page=glover-google'))); ?>">Open the sign-in page</a>
         <?php endif; ?>
     </div>
     <?php

@@ -167,6 +167,12 @@ function glover_document_library_sync_file_visibility($post_id)
     if ($attachment_id) {
         glover_document_library_move_attachment($attachment_id, get_post_status($post_id) !== 'publish');
 
+        // A file published from the private folder may carry "-1" from a
+        // name clash there; in the public folder it gets its proper name.
+        if (get_post_status($post_id) === 'publish') {
+            glover_document_library_rename_file($post_id);
+        }
+
         if ((int) wp_get_post_parent_id($attachment_id) !== (int) $post_id) {
             wp_update_post(array('ID' => $attachment_id, 'post_parent' => $post_id));
         }

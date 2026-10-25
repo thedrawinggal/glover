@@ -369,6 +369,10 @@ function glover_document_library_activity_label($entry)
     );
     $action = (string) ($entry['action'] ?? '');
 
+    if ($action === 'title tidied') {
+        return 'Title tidied' . (!empty($entry['note']) ? ' ' . $entry['note'] : '');
+    }
+
     return isset($labels[$action]) ? $labels[$action] : ucfirst($action);
 }
 

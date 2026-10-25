@@ -1,0 +1,23 @@
+{
+    "key": "ui_options_page_glover_site_contacts",
+    "title": "Site Contacts",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Site Contacts",
+    "menu_slug": "glover-site-contacts",
+    "parent_slug": "users.php",
+    "advanced_configuration": true,
+    "icon_url": "",
+    "menu_title": "Site Contacts",
+    "position": null,
+    "redirect": false,
+    "description": "Who the site names as the Webmaster and the Town Clerk.",
+    "menu_icon": [],
+    "update_button": "Update",
+    "updated_message": "Site Contacts Updated",
+    "capability": "manage_options",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": true,
+    "modified": 1792762700
+}

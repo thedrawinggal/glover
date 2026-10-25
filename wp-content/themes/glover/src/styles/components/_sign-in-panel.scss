@@ -1,0 +1,172 @@
+// Sign-in panel: a Forest Dark feature panel with the intro on the left and a
+// Forest card on the right whose contents follow the sign-in step. Form
+// fields, notices and errors inside use the on-forest styles in _form.scss.
+// Markup: components/common/sign-in-panel.php.
+
+.sign-in-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3.5rem;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  border-radius: $RADIUS-PANEL;
+  background: var(--color-forest-dark);
+  color: var(--color-forest-ink);
+}
+
+.sign-in-panel__intro {
+  flex: 1 1 22rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.875rem;
+
+  p {
+    margin: 0;
+    max-width: 30rem;
+  }
+}
+
+.sign-in-panel__icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $RADIUS-PILL;
+  background: var(--color-fresh);
+  color: var(--color-forest-dark);
+}
+
+// Where the town logo goes; a placeholder until the logo is added.
+.sign-in-panel__logo {
+  width: 9rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--color-teal);
+  border-radius: $RADIUS;
+  color: var(--color-teal);
+  @include eyebrow;
+}
+
+.sign-in-panel__title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.sign-in-panel__label {
+  @include eyebrow;
+  margin: 0;
+  color: var(--color-orange);
+}
+
+.sign-in-panel__heading {
+  margin: 0;
+  color: inherit;
+}
+
+.sign-in-panel__access {
+  color: var(--color-teal);
+}
+
+.sign-in-panel__card {
+  flex: 1 1 24rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.75rem;
+  border-radius: $RADIUS-LARGE;
+  background: var(--color-forest);
+}
+
+.sign-in-panel__notice {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  font-size: $FONT-SIZE-SMALL;
+
+  p {
+    margin: 0;
+  }
+
+  strong {
+    font-size: $FONT-SIZE-BASE;
+  }
+}
+
+.sign-in-panel__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  .form-label,
+  .form-help,
+  .form-error {
+    margin: 0;
+  }
+
+  .form-input {
+    margin-top: 0.25rem;
+  }
+}
+
+.sign-in-panel__code {
+  font-size: 1.25rem;
+  letter-spacing: 0.3em;
+}
+
+.sign-in-panel__button {
+  width: 100%;
+}
+
+.sign-in-panel__form .sign-in-panel__button {
+  margin-top: 0.625rem;
+}
+
+.sign-in-panel__center {
+  margin: 0.5rem 0 0;
+  text-align: center;
+}
+
+// "or" between the two sign-in methods, with a rule on each side.
+.sign-in-panel__or {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--color-teal);
+  font-size: $FONT-SIZE-SMALL;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-teal);
+  }
+}
+
+// Other ways forward once a code is requested: Send a New Code, Use a
+// Different Email Address, Sign In With Google Instead.
+.sign-in-panel__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-teal);
+  font-weight: $FONT-WEIGHT-SEMIBOLD;
+
+  form {
+    display: contents;
+  }
+
+  .sign-in-panel & a,
+  .link-button {
+    padding: 0.25rem 0;
+    color: var(--color-forest-ink);
+    font-weight: inherit;
+    @include cream-link-hover;
+  }
+}

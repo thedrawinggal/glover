@@ -31,12 +31,7 @@ $contact = glover_document_library_help_contact();
     <p>Select a title to see its details, or Download to save a copy. Most documents are PDFs, which open in your web browser.</p>
 
     <h3>Need it in another format?</h3>
-    <p>If a document doesn't work with your screen reader or device, ask us and we'll send you an accessible copy.<?php
-        $request_url = glover_document_library_request_url();
-        if ($request_url) {
-            printf(' <a href="%s">Request an accessible copy</a>.', esc_url($request_url));
-        }
-        ?></p>
+    <p>If a document doesn't work with your screen reader or device, we'll send you an accessible copy. <?php echo glover_document_library_accessible_copy_link(); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?>.</p>
 
     <h3>Can't find what you need?</h3>
     <p>
@@ -44,8 +39,8 @@ $contact = glover_document_library_help_contact();
         if ($contact['phone']) {
             printf(' at <a href="tel:%s">%s</a>', esc_attr(preg_replace('/[^0-9+]/', '', $contact['phone'])), esc_html($contact['phone']));
         }
-        if ($contact['email']) {
-            printf(' or <a href="mailto:%1$s">%1$s</a>', esc_attr($contact['email']));
+        if ($contact['emails']) {
+            echo ' or ' . glover_document_library_help_contact_links();
         }
         ?>. We're glad to look for you.
     </p>

@@ -1,6 +1,6 @@
 <?php
 /**
- * The Refine panel. A plain GET form: it works without JavaScript, and
+ * The Filters panel. A plain GET form: it works without JavaScript, and
  * library.js upgrades it to live results.
  *
  * @var array $args Results from glover_document_library_results(), plus 'years'.
@@ -14,14 +14,21 @@ $filters = $args['filters'];
 $years = $args['years'];
 $from = $filters['from'] ? $filters['from'] : $years['min'];
 $to = $filters['to'] ? $filters['to'] : $years['max'];
-$categories = get_terms(array('taxonomy' => GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY, 'hide_empty' => false));
-$topics = get_terms(array('taxonomy' => GLOVER_DOCUMENT_LIBRARY_TOPIC_TAXONOMY, 'hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
+// Only categories and topics with at least one published document; empty
+// ones stay in WordPress for the submission form, just not here.
+$categories = get_terms(array('taxonomy' => GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY, 'hide_empty' => true));
+$topics = get_terms(array('taxonomy' => GLOVER_DOCUMENT_LIBRARY_TOPIC_TAXONOMY, 'hide_empty' => true, 'orderby' => 'count', 'order' => 'DESC'));
 $visible_topics = 9;
 ?>
 <form id="glover-library-filters" class="filters" method="get" action="<?php echo esc_url(get_post_type_archive_link(GLOVER_DOCUMENT_LIBRARY_POST_TYPE)); ?>" aria-labelledby="glover-filters-heading">
     <div class="filters__header">
-        <h2 id="glover-filters-heading" class="filters__title">Refine</h2>
-        <a href="<?php echo esc_url(glover_document_library_url()); ?>" data-library-link>Clear all</a>
+        <h2 id="glover-filters-heading" class="filters__title">Filters</h2>
+        <a class="filters__clear" href="<?php echo esc_url(glover_document_library_url()); ?>" data-library-link>Clear all</a>
+        <?php // Shown only when the filters open as a full-screen panel on narrow screens. ?>
+        <button type="button" class="button button--outline button--icon filters__close" data-filters-close hidden>
+            <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            <span class="visually-hidden">Close Filters</span>
+        </button>
     </div>
 
     <div class="filters__group">
@@ -100,5 +107,11 @@ $visible_topics = 9;
 
     <div class="filters__submit">
         <button type="submit" class="button button--primary">Apply filters</button>
+    </div>
+
+    <?php // The full-screen panel's footer. Results update as filters change, so Show closes the panel. ?>
+    <div class="filters__footer" hidden>
+        <a class="button button--outline button--large" href="<?php echo esc_url(glover_document_library_url(array('q' => $filters['q']))); ?>" data-library-link data-filters-clear>Clear All</a>
+        <button type="button" class="button button--primary button--large" data-filters-close data-filters-show><?php echo esc_html(sprintf(_n('Show %s Result', 'Show %s Results', (int) $args['total']), number_format_i18n((int) $args['total']))); ?></button>
     </div>
 </form>

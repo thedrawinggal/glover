@@ -20,9 +20,10 @@
 @import "./components/pagination";
 @import "./components/document-feed";
 @import "./components/steps";
+@import "./components/sign-in-panel";
 
 // pages: overrides and styles unique to one page
 @import "./pages/documents";
 @import "./pages/submit-document";
 @import "./pages/department-board";
-@import "./pages/sign-in";
+@import "./pages/login";

@@ -10,6 +10,7 @@
 
   a:not(.button) {
     color: var(--color-forest-ink);
+    @include cream-link-hover;
   }
 
   :focus-visible {

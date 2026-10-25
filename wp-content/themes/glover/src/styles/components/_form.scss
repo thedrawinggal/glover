@@ -33,27 +33,92 @@
   color: var(--color-alert);
 }
 
-.form-input,
-.form-select {
+// Every text box, text area and select on the site, in every state. The
+// Forest border on focus and the Alert border on errors are 2px, drawn as a
+// 1px border plus a 1px inset shadow so the field never changes size.
+$FIELD-ARROW: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2314352a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+@mixin field {
   width: 100%;
   min-height: 3rem;
+  margin: 0;
   padding: 0.625rem 0.875rem;
   border: 1px solid var(--color-border);
   border-radius: $RADIUS;
-  background: var(--color-white);
+  background-color: var(--color-white);
   color: var(--color-ink);
+  font-size: $FONT-SIZE-BASE;
+  line-height: $LINE-HEIGHT-BODY;
+  box-shadow: none;
 
-  &:focus-visible {
-    border: 2px solid var(--color-forest);
+  &::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+}
+
+@mixin field-focus {
+  border-color: var(--color-forest);
+  box-shadow: inset 0 0 0 1px var(--color-forest);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@mixin field-invalid {
+  border-color: var(--color-alert);
+  box-shadow: inset 0 0 0 1px var(--color-alert);
+}
+
+@mixin field-disabled {
+  border-color: var(--color-line);
+  background-color: var(--color-surface-alt);
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+// A native select: the field, with a Forest chevron in place of the
+// browser's arrow.
+@mixin field-select {
+  @include field;
+  padding-right: 2.75rem;
+  background-image: $FIELD-ARROW;
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-input {
+  @include field;
+}
+
+.form-select {
+  @include field-select;
+}
+
+.form-input,
+.form-select {
+  &:focus {
+    @include field-focus;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: 0;
   }
 
   &[aria-invalid="true"] {
-    border: 2px solid var(--color-alert);
+    @include field-invalid;
+  }
+
+  &:disabled {
+    @include field-disabled;
   }
 }
 
 textarea.form-input {
   min-height: 7rem;
+  resize: vertical;
 }
 
 .form-choice {
@@ -94,6 +159,53 @@ textarea.form-input {
 .count {
   color: var(--color-muted);
   font-variant-numeric: tabular-nums;
+}
+
+// On forest grounds (Forest or Forest Dark), add .on-forest to the container.
+// Alert fails there (2.7:1), so errors are Orange (6.1:1): Orange message
+// text, a 2px Orange field border, and .notice--warning for card-level
+// errors. Help text is Teal, links Fresh, the focus ring Orange.
+.on-forest {
+  a:not(.button) {
+    color: var(--color-fresh);
+    font-weight: $FONT-WEIGHT-SEMIBOLD;
+  }
+
+  .link-button {
+    color: var(--color-forest-ink);
+    @include cream-link-hover;
+  }
+
+  :focus-visible {
+    outline-color: var(--color-orange);
+  }
+
+  .form-label {
+    color: inherit;
+  }
+
+  .form-help {
+    color: var(--color-teal);
+  }
+
+  .form-error {
+    color: var(--color-orange);
+  }
+
+  .form-input[aria-invalid="true"],
+  .form-select[aria-invalid="true"] {
+    border-color: var(--color-orange);
+    box-shadow: inset 0 0 0 1px var(--color-orange);
+  }
+
+  .form-input:focus,
+  .form-select:focus {
+    outline-color: var(--color-orange);
+  }
+
+  .notice a {
+    color: inherit;
+  }
 }
 
 // Notices. Pair with role="status" or role="alert". Every notice has a written title.
@@ -151,5 +263,587 @@ textarea.form-input {
 
   strong:first-child {
     color: var(--color-alert);
+  }
+}
+
+// ACF front-end forms (acf_form(), class .acf-form) get the same fields as
+// every other form: ACF's own markup, restyled here so each form needs no
+// field styles of its own. Radio lists are choice cards, checkbox lists are
+// chips that wrap, and side-by-side true/false fields share one box.
+.acf-form {
+  .acf-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    border: 0;
+  }
+
+  .acf-fields > .acf-field {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .acf-hidden {
+    display: none;
+  }
+
+  .acf-required {
+    color: var(--color-alert);
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  .acf-label {
+    margin: 0 0 0.375rem;
+
+    label {
+      margin: 0;
+      font-size: $FONT-SIZE-BASE;
+      font-weight: $FONT-WEIGHT-BOLD;
+    }
+
+    .description {
+      margin: 0.375rem 0 0;
+      font-size: $FONT-SIZE-SMALL;
+      line-height: 1.45;
+      color: var(--color-muted);
+    }
+  }
+
+  .acf-input {
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    textarea {
+      @include field;
+    }
+
+    select:not(.select2-hidden-accessible) {
+      @include field-select;
+    }
+
+    textarea {
+      min-height: 7rem;
+      resize: vertical;
+    }
+
+    input,
+    textarea,
+    select {
+      &:focus {
+        @include field-focus;
+      }
+
+      &:focus:not(:focus-visible) {
+        outline: 0;
+      }
+
+      &:disabled {
+        @include field-disabled;
+      }
+    }
+  }
+
+  .acf-error .acf-input {
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    textarea,
+    select,
+    .select2-selection {
+      @include field-invalid;
+    }
+  }
+
+  .acf-date-picker {
+    max-width: 20rem;
+  }
+
+  // A group's sub fields sit inside it with no box of their own.
+  .acf-field-group > .acf-input > .acf-fields {
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  // Fields given a width in ACF (wrapper width) share a row and wrap on
+  // narrow screens, such as Month, Day and Year.
+  .acf-fields:has(> .acf-field[data-width]) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .acf-fields > .acf-field[data-width] {
+    flex: 1 1 auto;
+    min-width: 6rem;
+  }
+
+  .acf-fields > .acf-field-select[data-width] {
+    min-width: 12rem;
+  }
+
+  // File (basic uploader): a dashed drop area around the native input, whose
+  // button is the Primary pill.
+  .acf-basic-uploader {
+    display: block;
+    padding: 1.375rem;
+    border: 2px dashed var(--color-forest);
+    border-radius: $RADIUS-LARGE;
+    background: var(--color-surface);
+
+    &:focus-within {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 3px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      color: var(--color-muted);
+      cursor: pointer;
+
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    input[type="file"]::file-selector-button {
+      min-height: 2.75rem;
+      margin-right: 1rem;
+      padding: 0.5rem 1.375rem;
+      border: 2px solid var(--color-forest-dark);
+      border-radius: $RADIUS-PILL;
+      background: var(--color-forest-dark);
+      color: var(--color-forest-ink);
+      font: inherit;
+      font-weight: $FONT-WEIGHT-SEMIBOLD;
+      line-height: 1.2;
+      cursor: pointer;
+    }
+
+    input[type="file"]:hover::file-selector-button {
+      background: var(--color-link);
+      border-color: var(--color-link);
+    }
+  }
+
+  // Radio and checkbox lists. Selected is Teal with a 2px Forest border.
+  .acf-taxonomy-field .categorychecklist-holder {
+    max-height: none;
+    overflow: visible;
+    border: 0;
+  }
+
+  .acf-input .acf-checkbox-list,
+  .acf-input .acf-radio-list {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+
+    // ACF's clearfix would take a grid cell.
+    &::before,
+    &::after {
+      display: none;
+    }
+
+    li {
+      margin: 0;
+      list-style: none;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      min-height: 3rem;
+      height: 100%;
+      padding: 0.5rem 0.875rem;
+      border: 1px solid var(--color-border);
+      border-radius: $RADIUS;
+      background: var(--color-white);
+      font-size: $FONT-SIZE-BASE;
+      cursor: pointer;
+
+      &:has(input:checked) {
+        border-color: var(--color-forest);
+        box-shadow: inset 0 0 0 1px var(--color-forest);
+        background: var(--color-teal);
+        color: var(--color-forest-dark);
+        font-weight: $FONT-WEIGHT-BOLD;
+      }
+
+      &:has(input:focus-visible) {
+        outline: 3px solid var(--color-focus);
+        outline-offset: 2px;
+      }
+    }
+
+    input {
+      flex: 0 0 auto;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      accent-color: var(--color-forest);
+
+      &:focus-visible {
+        outline: 0;
+      }
+    }
+  }
+
+  // One choice: cards in a grid.
+  .acf-input .acf-radio-list,
+  .acf-input .acf-taxonomy-field[data-ftype="radio"] .acf-checkbox-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 0.625rem;
+  }
+
+  // Several choices: pill chips that wrap, however many there are.
+  .acf-input .acf-checkbox-list:not([role="radiogroup"]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    label {
+      display: inline-flex;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+      padding: 0.25rem 1rem 0.25rem 0.75rem;
+      border-radius: $RADIUS-PILL;
+    }
+  }
+
+  // True/false: the label in the small label style above a checkbox and its
+  // sentence, in a white box. Side-by-side ones share one box.
+  // .acf-field is repeated to outweigh ACF's own rule, which drops the top
+  // border of a group's first field.
+  .acf-fields > .acf-field.acf-field-true-false {
+    padding: 1.125rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: $RADIUS-LARGE;
+    background: var(--color-white);
+
+    .acf-label label {
+      @include eyebrow;
+      color: var(--color-muted);
+    }
+
+    .acf-true-false label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      flex: 0 0 1.375rem;
+      width: 1.375rem;
+      height: 1.375rem;
+      margin: 0.0625rem 0 0;
+      accent-color: var(--color-forest);
+    }
+
+    .message a {
+      font-weight: $FONT-WEIGHT-BOLD;
+    }
+  }
+
+  // The divider between them is an inset line inside the side borders, so
+  // the outer border runs unbroken down both sides.
+  .acf-fields > .acf-field.acf-field-true-false:has(+ .acf-field-true-false) {
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .acf-fields > .acf-field.acf-field-true-false + .acf-field-true-false {
+    margin-top: -1.75rem;
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: inset 0 1px 0 var(--color-line-subtle);
+  }
+
+  // Errors: Alert text above the field, and one notice above the form.
+  .acf-field .acf-notice.-error {
+    margin: 0 0 0.375rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-alert);
+    font-size: $FONT-SIZE-SMALL;
+    font-weight: $FONT-WEIGHT-BOLD;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  > .acf-notice.-error {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--color-alert);
+    border-radius: $RADIUS-LARGE;
+    background: var(--color-surface);
+    color: var(--color-ink);
+
+    p {
+      margin: 0;
+      font-weight: $FONT-WEIGHT-BOLD;
+    }
+  }
+}
+
+// Select2, ACF's searchable select (Select and Post Object fields with the
+// stylized UI). Closed, focused, open and in error it is the same 8px field;
+// the list opens as a separate 8px panel below it with a small gap, so the
+// field keeps its shape. The list is appended to <body>, so these rules
+// aren't scoped to the form.
+.select2-container.-acf {
+  .select2-selection--single,
+  .select2-selection--multiple {
+    @include field;
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.5rem;
+    cursor: pointer;
+  }
+
+  &.select2-container--open .select2-selection,
+  &.select2-container--open.select2-container--below .select2-selection,
+  &.select2-container--open.select2-container--above .select2-selection {
+    border-radius: $RADIUS;
+  }
+
+  &.select2-container--focus .select2-selection,
+  &.select2-container--open .select2-selection {
+    @include field-focus;
+  }
+
+  &.select2-container--disabled .select2-selection {
+    @include field-disabled;
+  }
+
+  .select2-selection--single {
+    padding-right: 2.75rem;
+    background-image: $FIELD-ARROW;
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+
+    .select2-selection__rendered {
+      flex: 1;
+      padding: 0 0.375rem;
+      line-height: $LINE-HEIGHT-BODY;
+      color: var(--color-ink);
+    }
+
+    .select2-selection__placeholder {
+      color: var(--color-muted);
+    }
+
+    .select2-selection__clear {
+      margin-right: 0.25rem;
+      color: var(--color-muted);
+      font-size: 1.25rem;
+    }
+
+    .select2-selection__arrow {
+      display: none;
+    }
+  }
+
+  .select2-selection--multiple {
+    .select2-selection__rendered {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.375rem;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .select2-selection__choice {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      min-height: 2rem;
+      margin: 0;
+      padding: 0 0.75rem;
+      border: 2px solid var(--color-forest);
+      border-radius: $RADIUS-PILL;
+      background: var(--color-teal);
+      color: var(--color-forest-dark);
+      font-size: $FONT-SIZE-SMALL;
+      font-weight: $FONT-WEIGHT-BOLD;
+    }
+
+    .select2-selection__choice__remove {
+      margin: 0;
+      color: var(--color-forest-dark);
+      font-size: 1.125rem;
+    }
+
+    .select2-search--inline {
+      flex: 1 1 8rem;
+    }
+
+    .select2-search__field {
+      width: 100% !important; // Select2 sets an inline width.
+      min-height: 2rem;
+      margin: 0;
+      padding: 0 0.375rem;
+      border: 0;
+      background: none;
+      font-size: $FONT-SIZE-BASE;
+      box-shadow: none;
+
+      &::placeholder {
+        color: var(--color-muted);
+      }
+
+      // The ring is on the whole field (.select2-container--focus above).
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+}
+
+// With the admin bar, WordPress pushes the page down with a margin on <html>
+// (32px, or 46px up to 782px wide). Select2 subtracts that margin when it
+// places its list, so the list opens that much too high; this puts it back.
+// The date picker places its calendar correctly and needs nothing.
+body.admin-bar > .select2-container {
+  margin-top: 32px;
+
+  @media screen and (max-width: 782px) {
+    margin-top: 46px;
+  }
+}
+
+// The list Select2 opens. It is appended to <body> without ACF's -acf class,
+// so the rules start from body to outweigh select2.css, which loads later.
+body > .select2-container--default {
+  .select2-dropdown,
+  .select2-dropdown--below,
+  .select2-dropdown--above {
+    margin-top: 0.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: $RADIUS;
+    background: var(--color-white);
+    overflow: hidden;
+  }
+
+  .select2-dropdown--above {
+    margin-top: -0.25rem;
+  }
+
+  .select2-search--dropdown {
+    padding: 0.5rem;
+
+    .select2-search__field {
+      @include field;
+      min-height: 2.75rem;
+
+      &:focus {
+        @include field-focus;
+        outline-offset: -1px;
+      }
+    }
+  }
+
+  .select2-results__option {
+    padding: 0.625rem 0.875rem;
+    color: var(--color-ink);
+  }
+
+  .select2-results__option[aria-selected="true"] {
+    background: var(--color-surface-alt);
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  .select2-results__option--highlighted[aria-selected] {
+    background: var(--color-teal);
+    color: var(--color-forest-dark);
+  }
+
+  .select2-results__message {
+    color: var(--color-muted);
+  }
+}
+
+// The date picker's calendar (jQuery UI, from ACF): an 8px panel like the
+// select list. The chosen day is Forest Dark, the hovered day Teal. Starts
+// from body to outweigh the jQuery UI theme, which loads later.
+body .acf-ui-datepicker .ui-datepicker {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: $RADIUS;
+  background: var(--color-white);
+  font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-SMALL;
+
+  .ui-widget-header {
+    border: 0;
+    border-radius: $RADIUS-SMALL;
+    background: var(--color-surface-alt);
+    color: var(--color-forest);
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  .ui-datepicker-prev,
+  .ui-datepicker-next {
+    border: 0;
+    border-radius: $RADIUS-PILL;
+    cursor: pointer;
+  }
+
+  .ui-datepicker-prev-hover,
+  .ui-datepicker-next-hover {
+    top: 2px;
+    background: var(--color-teal);
+  }
+
+  th {
+    color: var(--color-muted);
+  }
+
+  .ui-state-default {
+    border: 1px solid transparent;
+    border-radius: $RADIUS-SMALL;
+    background: none;
+    color: var(--color-ink);
+    text-align: center;
+  }
+
+  .ui-state-highlight {
+    border-color: var(--color-forest);
+    font-weight: $FONT-WEIGHT-BOLD;
+  }
+
+  .ui-state-hover {
+    background: var(--color-teal);
+    color: var(--color-forest-dark);
+  }
+
+  .ui-state-active {
+    border-color: var(--color-forest-dark);
+    background: var(--color-forest-dark);
+    color: var(--color-forest-ink);
+  }
+
+  .ui-datepicker-buttonpane button {
+    border-radius: $RADIUS-PILL;
   }
 }

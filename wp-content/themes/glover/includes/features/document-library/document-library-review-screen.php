@@ -356,9 +356,11 @@ function glover_document_library_render_pending_tab($data)
             </tbody>
         </table>
         <?php
-        glover_document_library_render_preview_dialog();
-        glover_document_library_render_return_dialog();
     }
+
+    // Shared by both tables' Return and Preview buttons.
+    glover_document_library_render_preview_dialog();
+    glover_document_library_render_return_dialog();
 }
 
 /**

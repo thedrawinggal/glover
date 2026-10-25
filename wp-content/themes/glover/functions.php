@@ -402,3 +402,6 @@ add_filter('use_block_editor_for_post_type', function ($use_block_editor, $post_
 // Major features are loaded through isolated coordinator includes.
 require_once get_template_directory() . '/includes/features/event-calendar/event-calendar.php';
 require_once get_template_directory() . '/includes/features/document-library/document-library.php';
+require_once get_template_directory() . '/includes/features/site-contacts/site-contacts.php';
+require_once get_template_directory() . '/includes/features/user-screens/user-screens.php';
+require_once get_template_directory() . '/includes/features/login-screen/login-screen.php';

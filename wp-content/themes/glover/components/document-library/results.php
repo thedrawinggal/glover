@@ -29,8 +29,8 @@ if (!$query->have_posts()) : ?>
             if ($contact['phone']) {
                 echo ' at ' . esc_html($contact['phone']);
             }
-            if ($contact['email']) {
-                printf(' or <a href="mailto:%1$s">%1$s</a>', esc_attr($contact['email']));
+            if ($contact['emails']) {
+                echo ' or ' . glover_document_library_help_contact_links();
             }
             ?>.
         </p>
@@ -47,7 +47,7 @@ $last = min($total, $first + GLOVER_DOCUMENT_LIBRARY_PER_PAGE - 1);
  * Print a result's snippets as a list.
  *
  * @param array  $snippets From glover_document_search_snippets().
- * @param string $modifier search-matches--row or search-matches--stacked.
+ * @param string $modifier search-matches--row.
  * @param string $file_url Public file URL.
  * @param string $name     Accessible name of the document, e.g. "Minutes (PDF)".
  */
@@ -84,9 +84,8 @@ $print_snippets = function ($snippets, $modifier, $file_url, $name) {
         <tr role="row">
             <th scope="col" role="columnheader">Type</th>
             <th scope="col" role="columnheader">Title</th>
-            <th scope="col" role="columnheader">Topic</th>
-            <th scope="col" role="columnheader">Department or board</th>
-            <th scope="col" role="columnheader">Effective date</th>
+            <th scope="col" role="columnheader">Department or Board</th>
+            <th scope="col" role="columnheader">Date</th>
             <th scope="col" role="columnheader"><span class="visually-hidden">Download</span></th>
         </tr>
     </thead>
@@ -99,7 +98,7 @@ $print_snippets = function ($snippets, $modifier, $file_url, $name) {
         $raw_date = get_field('document_date', $post_id, false);
         $snippets = $terms ? glover_document_search_snippets($post_id, $terms) : array();
         $file_url = glover_document_library_file_url($post_id);
-        $name = get_the_title() . ' (' . $details['label'] . ')';
+        $name = get_the_title() . ', ' . glover_document_library_board_date_text($post_id) . ' (' . $details['label'] . ')';
         ?>
         <tbody class="results-table__result<?php echo $snippets ? ' results-table__result--matches' : ''; ?>" role="rowgroup">
             <tr role="row">
@@ -109,32 +108,26 @@ $print_snippets = function ($snippets, $modifier, $file_url, $name) {
                     <?php if (glover_document_library_is_draft_minutes($post_id)) : ?>
                         <span class="status-label">Draft</span>
                     <?php endif; ?>
-                    <?php if ($snippets) {
-                        $print_snippets($snippets, 'search-matches--stacked', $file_url, $name);
-                    } ?>
-                </td>
-                <td role="cell" data-label="Topic"<?php echo ($topics && !is_wp_error($topics)) ? '' : ' class="results-table__empty-cell"'; ?>>
                     <?php if ($topics && !is_wp_error($topics)) : ?>
-                        <ul class="chip-list" role="list">
+                        <ul class="chip-list results-table__topics" role="list" aria-label="Topics">
                             <?php foreach ($topics as $topic) : ?>
-                                <li><span class="chip chip--outline"><?php echo esc_html($topic->name); ?></span></li>
+                                <li><span class="chip chip--tag"><?php echo esc_html($topic->name); ?></span></li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
                 </td>
-                <td role="cell" data-label="Department or board" class="results-table__board"><?php echo esc_html(implode(', ', $boards)); ?></td>
+                <td role="cell" data-label="Department or Board" class="results-table__board"><?php echo esc_html(implode(', ', $boards)); ?></td>
                 <td role="cell" data-label="Date" class="results-table__date">
                     <?php if ($raw_date) : ?>
-                        <span class="results-table__date-label" aria-hidden="true">Effective Date</span>
                         <time datetime="<?php echo esc_attr(glover_document_library_format_date($raw_date, 'Y-m-d')); ?>"><?php echo esc_html(glover_document_library_display_date($post_id)); ?></time>
                     <?php endif; ?>
                 </td>
-                <td role="cell" class="results-table__action"><?php echo glover_document_library_download_link($post_id); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></td>
+                <td role="cell" class="results-table__action"><?php echo glover_document_library_download_link($post_id, 'button button--outline button--compact button--icon', 'Download', true); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></td>
             </tr>
             <?php if ($snippets) : ?>
                 <tr role="row" class="results-table__matches-row">
                     <td role="cell" class="results-table__matches-spacer"></td>
-                    <td role="cell" colspan="4" class="results-table__matches"><?php $print_snippets($snippets, 'search-matches--row', $file_url, $name); ?></td>
+                    <td role="cell" colspan="3" class="results-table__matches"><?php $print_snippets($snippets, 'search-matches--row', $file_url, $name); ?></td>
                     <td role="cell" class="results-table__matches-spacer"></td>
                 </tr>
             <?php endif; ?>

@@ -124,8 +124,10 @@ function glover_document_library_drive_folder($token, $parent_id, $name)
 }
 
 /**
- * Folder names (Board / Year / Category) and the file name for a backup,
- * e.g. "2026-10-14_select-board_minutes.pdf".
+ * Folder names (Board / Year / Category) and the file name for a backup:
+ * the document's file name (glover_document_library_file_basename()), e.g.
+ * "select-board_minutes_2026-10-14_regular-meeting-minutes.pdf", with
+ * "_v2" and up for later versions.
  *
  * @param int $post_id       Document ID.
  * @param int $attachment_id File.
@@ -140,10 +142,9 @@ function glover_document_library_drive_location($post_id, $attachment_id)
     $raw_date = get_field('document_date', $post_id, false);
     $date = $raw_date ? glover_document_library_format_date($raw_date, 'Y-m-d') : wp_date('Y-m-d');
     $ext = strtolower(pathinfo((string) get_attached_file($attachment_id), PATHINFO_EXTENSION));
-    $versions = count(glover_document_library_meta_list($post_id, '_glover_previous_files'));
 
-    $name = $date . '_' . sanitize_title($board) . '_' . sanitize_title($category);
-    $name .= $versions ? '_v' . ($versions + 1) : '';
+    // The document's own file name, which carries "_v2" and up itself.
+    $name = glover_document_library_file_basename($post_id);
 
     return array(
         'folders' => array($board, substr($date, 0, 4), html_entity_decode($category, ENT_QUOTES)),
