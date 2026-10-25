@@ -343,6 +343,8 @@ foreach ($documents as $doc) {
         $previous = glover_document_library_allow_publish(true);
         wp_publish_post($post_id);
         glover_document_library_allow_publish($previous);
+        // Drive is off on purpose here, so say so rather than "Not configured".
+        glover_document_library_set_backup_status($post_id, 'test_data');
     }
 
     $created++;

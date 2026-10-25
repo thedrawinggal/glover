@@ -25,7 +25,10 @@ if (!defined('ABSPATH')) {
  */
 
 const GLOVER_DOCUMENT_LIBRARY_BACKUP_STATUSES = array(
+    // Published while no backup was set up (Google Drive not configured).
     'not_configured' => 'Not configured',
+    // Sample documents from tools/seed-documents.php, never backed up on purpose.
+    'test_data' => 'Test data',
     'queued' => 'Queued',
     'backed_up' => 'Backed up',
     'failed' => 'Failed',
