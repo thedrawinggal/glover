@@ -142,6 +142,8 @@ function glover_document_library_review_details($post_id)
     return array(
         'Title' => get_post_field('post_title', $post_id, 'raw'),
         'Document date' => glover_document_library_display_date($post_id, 'F j, Y'),
+        // The review tables' short form, e.g. "Oct 14, 2026".
+        'Short date' => glover_document_library_display_date($post_id, 'M j, Y'),
         'Minutes status' => $status === 'draft' ? 'Draft' : ($status === 'approved' ? 'Approved by the board' : ''),
         'Boards' => implode(', ', array_map('get_the_title', glover_document_library_document_board_ids($post_id))),
         'Category' => $terms(GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY),
@@ -307,8 +309,8 @@ function glover_document_library_render_pending_tab($data)
                     <th scope="col" class="column-primary">Title</th>
                     <th scope="col">Boards</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Document date</th>
-                    <th scope="col">File</th>
+                    <th scope="col" class="glover-review-tight">Document date</th>
+                    <th scope="col" class="glover-review-tight">File</th>
                     <th scope="col">Submitted</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -347,8 +349,8 @@ function glover_document_library_render_pending_tab($data)
                         </td>
                         <td><?php echo esc_html($details['Boards']); ?></td>
                         <td><?php echo esc_html($details['Category']); ?></td>
-                        <td><?php echo esc_html($details['Document date']); ?></td>
-                        <td><?php echo esc_html(trim(glover_document_library_file_details($post_id)['label'] . ', ' . glover_document_library_file_details($post_id)['size'], ', ')); ?></td>
+                        <td class="glover-review-tight"><?php echo esc_html($details['Short date']); ?></td>
+                        <td class="glover-review-tight"><?php echo esc_html(trim(glover_document_library_file_details($post_id)['label'] . ', ' . glover_document_library_file_details($post_id)['size'], ', ')); ?></td>
                         <td><?php echo esc_html(glover_document_library_review_submitted($post_id)); ?></td>
                         <td class="glover-review-actions"><?php glover_document_library_review_actions($post_id); ?></td>
                     </tr>
@@ -422,10 +424,10 @@ function glover_document_library_render_approved_tab()
                 <th scope="col" class="column-primary">Title</th>
                 <th scope="col">Boards</th>
                 <th scope="col">Category</th>
-                <th scope="col">Document date</th>
-                <th scope="col">File</th>
-                <th scope="col">Drive backup</th>
-                <th scope="col">Published</th>
+                <th scope="col" class="glover-review-tight">Document date</th>
+                <th scope="col" class="glover-review-tight">File</th>
+                <th scope="col" class="glover-review-tight">Drive backup</th>
+                <th scope="col" class="glover-review-tight">Published</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -453,10 +455,10 @@ function glover_document_library_render_approved_tab()
                     </td>
                     <td><?php echo esc_html($details['Boards']); ?></td>
                     <td><?php echo esc_html($details['Category']); ?></td>
-                    <td><?php echo esc_html($details['Document date']); ?></td>
-                    <td><?php echo glover_document_library_review_file_link($post_id, glover_document_library_file_details($post_id)['label'] . ' ' . glover_document_library_file_details($post_id)['size']); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></td>
-                    <td><?php echo esc_html(isset($statuses[$backup]) ? $statuses[$backup] : 'Not requested'); ?></td>
-                    <td><?php echo esc_html(get_the_date('M j, Y')); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($details['Short date']); ?></td>
+                    <td class="glover-review-tight"><?php echo glover_document_library_review_file_link($post_id, glover_document_library_file_details($post_id)['label'] . ' ' . glover_document_library_file_details($post_id)['size']); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in the helper. ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html(isset($statuses[$backup]) ? $statuses[$backup] : 'Not requested'); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html(get_the_date('M j, Y')); ?></td>
                     <td class="glover-review-actions"><?php glover_document_library_approved_actions($post_id); ?></td>
                 </tr>
             <?php endwhile; wp_reset_postdata(); ?>

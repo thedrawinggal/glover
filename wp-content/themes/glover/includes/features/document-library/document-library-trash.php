@@ -278,9 +278,9 @@ function glover_document_library_render_trash_tab($ids)
                 <th scope="col" class="column-primary">Title</th>
                 <th scope="col">Boards</th>
                 <th scope="col">Category</th>
-                <th scope="col">Document date</th>
-                <th scope="col">Was</th>
-                <th scope="col">Trashed</th>
+                <th scope="col" class="glover-review-tight">Document date</th>
+                <th scope="col" class="glover-review-tight">Was</th>
+                <th scope="col" class="glover-review-tight">Trashed</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -296,9 +296,9 @@ function glover_document_library_render_trash_tab($ids)
                     <td class="column-primary"><strong><?php echo esc_html($details['Title']); ?></strong></td>
                     <td><?php echo esc_html($details['Boards']); ?></td>
                     <td><?php echo esc_html($details['Category']); ?></td>
-                    <td><?php echo esc_html($details['Document date']); ?></td>
-                    <td><?php echo esc_html(isset($labels[$was]) ? $labels[$was] : 'Draft'); ?></td>
-                    <td><?php echo esc_html($trashed ? wp_date('M j, Y', $trashed) : ''); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($details['Short date']); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html(isset($labels[$was]) ? $labels[$was] : 'Draft'); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($trashed ? wp_date('M j, Y', $trashed) : ''); ?></td>
                     <td class="glover-review-actions">
                         <div class="glover-review-buttons">
                             <?php glover_document_library_trash_button($post_id, 'restore'); ?>
@@ -334,8 +334,8 @@ function glover_document_library_render_drafts_tab($ids)
                 <th scope="col" class="column-primary">Title</th>
                 <th scope="col">Boards</th>
                 <th scope="col">Category</th>
-                <th scope="col">Document date</th>
-                <th scope="col">Last edited</th>
+                <th scope="col" class="glover-review-tight">Document date</th>
+                <th scope="col" class="glover-review-tight">Last edited</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -346,8 +346,8 @@ function glover_document_library_render_drafts_tab($ids)
                     <td class="column-primary"><strong><a href="<?php echo esc_url(get_edit_post_link($post_id, 'url')); ?>"><?php echo esc_html($details['Title'] !== '' ? $details['Title'] : '(no title)'); ?></a></strong></td>
                     <td><?php echo esc_html($details['Boards']); ?></td>
                     <td><?php echo esc_html($details['Category']); ?></td>
-                    <td><?php echo esc_html($details['Document date']); ?></td>
-                    <td><?php echo esc_html(get_the_modified_date('M j, Y', $post_id)); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($details['Short date']); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html(get_the_modified_date('M j, Y', $post_id)); ?></td>
                     <td class="glover-review-actions">
                         <div class="glover-review-buttons">
                             <a class="button" href="<?php echo esc_url(get_edit_post_link($post_id, 'url')); ?>" aria-label="<?php echo esc_attr('Edit "' . $details['Title'] . '"'); ?>">Edit</a>

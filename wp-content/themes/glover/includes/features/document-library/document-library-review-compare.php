@@ -188,8 +188,8 @@ function glover_document_library_render_replacement_queue($groups)
                 <th scope="col" class="column-primary">Title</th>
                 <th scope="col">Boards</th>
                 <th scope="col">Category</th>
-                <th scope="col">Document date</th>
-                <th scope="col">File</th>
+                <th scope="col" class="glover-review-tight">Document date</th>
+                <th scope="col" class="glover-review-tight">File</th>
                 <th scope="col">Submitted</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -221,8 +221,8 @@ function glover_document_library_render_replacement_queue($groups)
                     </td>
                     <td><?php echo esc_html($shared('Boards')); ?></td>
                     <td><?php echo esc_html($shared('Category')); ?></td>
-                    <td><?php echo esc_html($shared('Document date')); ?></td>
-                    <td><?php echo esc_html($multiple ? count($replacement_ids) . ' files' : trim($file['label'] . ', ' . $file['size'], ', ')); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($shared('Short date')); ?></td>
+                    <td class="glover-review-tight"><?php echo esc_html($multiple ? count($replacement_ids) . ' files' : trim($file['label'] . ', ' . $file['size'], ', ')); ?></td>
                     <td><?php echo esc_html(implode('; ', array_map(function ($submitter) {
                         return $submitter['name'] . ', ' . $submitter['date'];
                     }, $submitters))); ?></td>

@@ -121,6 +121,13 @@
     width: 28%;
 }
 
+/* Short values (dates, file type, backup status) take only the width
+   they need, leaving the rest to Title, Boards and Category. */
+.glover-review-table .glover-review-tight {
+    width: 1%;
+    white-space: nowrap;
+}
+
 /* Edit | Return, Review on one line. */
 .glover-review-buttons {
     display: flex;
