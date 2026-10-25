@@ -214,9 +214,9 @@ function glover_document_library_undo_buttons($post_id, $separator = false, $det
 
     if (glover_document_library_can_move_back($post_id)) {
         $buttons['pending'] = array(
-            'label' => 'Move back to Pending',
+            'label' => 'Move to Pending',
             'message' => 'The document comes off the public site and out of search, and returns to the Pending tab until it is approved again.',
-            'confirm' => 'Move back to Pending',
+            'confirm' => 'Move to Pending',
         );
     }
 
