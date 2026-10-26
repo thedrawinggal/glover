@@ -1,0 +1,123 @@
+// Typefaces and top-level type values. Sizes use rem so text resizes to 200%
+// (WCAG 1.4.4). Headings scale fluidly between the phone and desktop values.
+
+// Both load from Google Fonts (GLOVER_FONTS_URL in functions.php).
+// Young Serif has one weight, 400: headings are never bolded.
+$FONT-SANS: Figtree, system-ui, -apple-system, "Segoe UI", sans-serif;
+$FONT-SERIF: "Young Serif", Georgia, serif;
+
+$FONT-SIZE-BASE: 1rem;
+$FONT-SIZE-SMALL: 0.9375rem;   // help text under labels
+$FONT-SIZE-LARGE: 1.125rem;    // large button labels
+$FONT-SIZE-XSMALL: 0.8125rem;
+$FONT-SIZE-EYEBROW: 0.75rem;
+
+$FONT-SIZE-H1: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+$FONT-SIZE-H2: clamp(1.375rem, 1.15rem + 0.9vw, 1.75rem);
+$FONT-SIZE-H3: 1.25rem;
+$FONT-SIZE-H4: 1.125rem;
+$FONT-SIZE-H5: 1rem;
+$FONT-SIZE-H6: 0.875rem;
+
+$FONT-WEIGHT-REGULAR: 400;
+$FONT-WEIGHT-SEMIBOLD: 600;
+$FONT-WEIGHT-BOLD: 700;
+$FONT-WEIGHT-HEADING: 400;
+
+$LINE-HEIGHT-BODY: 1.5;
+$LINE-HEIGHT-HEADING: 1.2;
+$LETTER-SPACING-EYEBROW: 0.08em;
+
+:root {
+  --font-sans: #{$FONT-SANS};
+  --font-serif: #{$FONT-SERIF};
+}
+
+body {
+  font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-BASE;
+  line-height: $LINE-HEIGHT-BODY;
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $FONT-SERIF;
+  font-weight: $FONT-WEIGHT-HEADING;
+  line-height: $LINE-HEIGHT-HEADING;
+  color: var(--color-forest);
+  text-wrap: balance;
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: $FONT-SIZE-H1; letter-spacing: -0.01em; }
+h2 { font-size: $FONT-SIZE-H2; }
+h3 { font-size: $FONT-SIZE-H3; }
+h4 { font-size: $FONT-SIZE-H4; }
+h5 { font-size: $FONT-SIZE-H5; }
+h6 { font-size: $FONT-SIZE-H6; }
+
+p {
+  margin: 0 0 1em;
+}
+
+// reset.scss strips weight and style from these; restore their meaning.
+strong,
+b {
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+em,
+i,
+cite {
+  font-style: italic;
+}
+
+small {
+  font-size: $FONT-SIZE-SMALL;
+}
+
+// Editor-entered content (the_content, guide pages) gets real lists back.
+// Shared with the content editors through admin-editor.scss.
+@mixin rich-text-content {
+  ul,
+  ol {
+    margin: 0 0 1em;
+    padding-left: 1.5em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li + li {
+    margin-top: 0.35em;
+  }
+
+  h2,
+  h3,
+  h4 {
+    margin-top: 1.25em;
+  }
+}
+
+.rich-text {
+  @include rich-text-content;
+}
+
+// Small uppercase label used above form groups and table columns.
+@mixin eyebrow {
+  font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-EYEBROW;
+  font-weight: $FONT-WEIGHT-BOLD;
+  letter-spacing: $LETTER-SPACING-EYEBROW;
+  text-transform: uppercase;
+}

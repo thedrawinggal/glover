@@ -23,14 +23,14 @@
         "not_found": "No locations found",
         "not_found_in_trash": "No locations found in Trash"
     },
-    "description": "Reusable event locations and their addresses.",
+    "description": "Reusable event and meeting locations and their addresses.",
     "public": false,
     "hierarchical": false,
     "exclude_from_search": true,
     "publicly_queryable": false,
     "show_ui": true,
     "show_in_menu": true,
-    "admin_menu_parent": "edit.php?post_type=event",
+    "admin_menu_parent": "",
     "show_in_admin_bar": false,
     "show_in_nav_menus": false,
     "show_in_rest": true,
@@ -62,5 +62,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "Enter location name",
-    "modified": 1785765866
+    "modified": 1786464136
 }

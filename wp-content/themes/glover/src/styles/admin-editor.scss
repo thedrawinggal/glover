@@ -1,0 +1,24 @@
+// Content styles for the admin editors, so editors see text as the public site
+// renders it inside .rich-text. Loaded by add_editor_style() into the block
+// editor canvas (Posts, Pages) and TinyMCE (custom post types, ACF WYSIWYG
+// fields). WordPress scopes body and :root rules to the block editor canvas.
+// Content typography only: no site layout, components, or the reset.
+@import "./base/colors";
+@import "./base/typography";
+
+body {
+  background: var(--color-page);
+
+  @include rich-text-content;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

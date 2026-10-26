@@ -1,0 +1,37 @@
+.glover-modal {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transition: .15s ease-in-out;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+
+  &.open {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .glover-modal-closer {
+    cursor: pointer;
+    transition: .15s ease-in-out;
+    // todo: update this - this will probably be unique to each project
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="39" height="38" viewBox="0 0 39 38" fill="none"><path d="M33.0246 0.0780748L38.6108 5.66422L25.5586 18.7164L38.2158 31.3736L32.1918 37.3976L19.5345 24.7404L6.4824 37.7926L0.896254 32.2064L13.9484 19.1543L1.22048 6.42637L7.24455 0.402302L19.9725 13.1302L33.0246 0.0780748Z" fill="%23FBDC00"/></svg>');
+
+    &:hover {
+      opacity: $COMMON-HOVER-OPACITY;
+    }
+  }
+}
+
+.glover-modal-opener {
+  transition: .15s ease-in-out;
+
+  &:hover {
+    opacity: $COMMON-HOVER-OPACITY;
+  }
+}

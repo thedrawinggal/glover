@@ -1,10 +1,19 @@
 <?php
+// Young Serif for headings, Figtree for everything else (docs/design/spec-plate.html).
+const GLOVER_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap';
+
 // theme setup
-function cultivate_theme_setup()
+function glover_theme_setup()
 {
     add_theme_support('post-thumbnails');
     add_theme_support('title-tag');
-    load_theme_textdomain('cltv8', get_template_directory() . '/languages');
+
+    // One content stylesheet for every editor: the block editor (Posts, Pages)
+    // and TinyMCE (custom post types, ACF WYSIWYG fields). Built from
+    // src/styles/admin-editor.scss; WordPress skips it until the file exists.
+    add_theme_support('editor-styles');
+    add_editor_style(array(str_replace(',', '%2C', GLOVER_FONTS_URL), 'dist/styles/admin-editor.css'));
+    load_theme_textdomain('glover', get_template_directory() . '/languages');
 
     // Register menus
     function register_menus()
@@ -16,10 +25,10 @@ function cultivate_theme_setup()
     add_action('init', 'register_menus');
 }
 
-add_action('after_setup_theme', 'cultivate_theme_setup');
+add_action('after_setup_theme', 'glover_theme_setup');
 
 // enqueue project-specific scripts/CSS
-function cltv8_enqueue_scripts()
+function glover_enqueue_scripts()
 {
     // TODO: if this project uses google maps, uncomment this and change the conditional logic below so that it only loads on pages that use it. You may need to update how it fetches the API key from ACF as well.
     //    if (is_single() && ('news' == get_post_type() || 'project' == get_post_type())) {
@@ -50,9 +59,9 @@ function cltv8_enqueue_scripts()
     // Before doing a production deployment that involves CSS or JS bundle changes, change the below bundle version
     // numbers (to make browsers fetch the latest versions).
     $site_domain = str_replace(array('http://', 'https://'), '', get_site_url());
-    $is_dev_environment = (str_ends_with($site_domain, '.cltv8.com') || str_starts_with($site_domain, 'localhost'));
+    $is_dev_environment = str_starts_with($site_domain, 'localhost');
     wp_enqueue_script(
-        'cltv8-app-script',
+        'glover-app-script',
         get_template_directory_uri() . '/dist/js/app.js',
         array(),
         $is_dev_environment ? time() : '1.0.1',
@@ -61,16 +70,17 @@ function cltv8_enqueue_scripts()
             'strategy' => 'async',
         )
     );
+    wp_enqueue_style('glover-fonts', GLOVER_FONTS_URL, array(), null);
     wp_enqueue_style(
-        'cltv8-app-style',
+        'glover-app-style',
         get_template_directory_uri() . '/dist/styles/app.css',
-        array(),
+        array('glover-fonts'),
         $is_dev_environment ? time() : '1.0.1',
         'all'
     );
 }
 
-add_action('wp_enqueue_scripts', 'cltv8_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'glover_enqueue_scripts');
 
 // Enqueue admin area styles
 add_action('admin_enqueue_scripts', 'enqueue_admin_styles');
@@ -81,17 +91,21 @@ function enqueue_admin_styles()
     wp_enqueue_style('admin-style', get_stylesheet_directory_uri() . '/style-admin.css', array(), filemtime($admin_style));
 }
 
-// Add custom styles to WYSIWYG editor
-add_filter('mce_css', 'add_editor_styles');
-function add_editor_styles($mce_css)
+// TinyMCE caches editor stylesheets by WordPress version only, so version the
+// theme's by file date to show changes as soon as it is rebuilt.
+add_filter('editor_stylesheets', 'glover_version_editor_stylesheets');
+function glover_version_editor_stylesheets($stylesheets)
 {
-    $editor_style = 'dist/styles/admin-editor.css?v=1.0.0';
-    if (!empty($mce_css)) {
-        $mce_css .= ',' . $editor_style;
-    } else {
-        $mce_css = $editor_style;
+    $path = get_stylesheet_directory() . '/dist/styles/admin-editor.css';
+    $url = get_stylesheet_directory_uri() . '/dist/styles/admin-editor.css';
+
+    if (!file_exists($path)) {
+        return $stylesheets;
     }
-    return $mce_css;
+
+    return array_map(function ($stylesheet) use ($url, $path) {
+        return $stylesheet === $url ? add_query_arg('v', filemtime($path), $url) : $stylesheet;
+    }, $stylesheets);
 }
 
 // add support for acf options page
@@ -369,5 +383,25 @@ add_filter('acf/load_field/type=wysiwyg', function ($field) {
     return $field;
 });
 
+
+//////////////////////////////////////////
+/// Classic editor for custom post types
+//////////////////////////////////////////
+
+// Use the classic editor for every custom post type; posts and pages keep the block editor.
+add_filter('use_block_editor_for_post_type', function ($use_block_editor, $post_type) {
+    $post_type_object = get_post_type_object($post_type);
+
+    if ($post_type_object && !$post_type_object->_builtin) {
+        return false;
+    }
+
+    return $use_block_editor;
+}, 10, 2);
+
 // Major features are loaded through isolated coordinator includes.
 require_once get_template_directory() . '/includes/features/event-calendar/event-calendar.php';
+require_once get_template_directory() . '/includes/features/document-library/document-library.php';
+require_once get_template_directory() . '/includes/features/site-contacts/site-contacts.php';
+require_once get_template_directory() . '/includes/features/user-screens/user-screens.php';
+require_once get_template_directory() . '/includes/features/login-screen/login-screen.php';

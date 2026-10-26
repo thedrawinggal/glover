@@ -1,0 +1,24 @@
+// .badge: small file-type label (PDF, Word): Line Subtle with Forest Dark
+// text (12:1).
+// .status-label: a text status such as "Draft", never shown by color alone.
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: $RADIUS-SMALL;
+  background: var(--color-line-subtle);
+  color: var(--color-forest-dark);
+  font-size: $FONT-SIZE-EYEBROW;
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+.status-label {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: $RADIUS-PILL;
+  font-family: $FONT-SANS;
+  font-size: $FONT-SIZE-XSMALL;
+  font-weight: $FONT-WEIGHT-BOLD;
+}

@@ -1,0 +1,35 @@
+.glover-dropdown {
+  position: relative;
+  user-select: none;
+
+  .glover-dropdown-button {
+    transition: $COMMON-TRANSITION;
+
+    .glover-dropdown-button-icon {
+      transition: $COMMON-TRANSITION;
+    }
+  }
+
+  .glover-dropdown-content {
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+    overflow: hidden;
+    top: 100%;
+    left: 0;
+    max-height: 0;
+    transition: $COMMON-TRANSITION;
+  }
+
+  &.open {
+    .glover-dropdown-button {
+      .glover-dropdown-button-icon {
+        @include transform(rotate(180deg));
+      }
+    }
+
+    .glover-dropdown-content {
+      max-height: 2000px;
+    }
+  }
+}

@@ -1,0 +1,99 @@
+// Page banner: the Forest band at the top of every interior page, holding
+// the breadcrumb (in the label style), the page title (the page's only h1),
+// an optional intro and note, and a right-hand area for actions and other
+// content. Markup: components/common/page-banner.php.
+
+.page-banner {
+  background: var(--color-forest);
+  color: var(--color-forest-ink);
+  padding: 1.75rem 0 2.25rem;
+
+  a:not(.button) {
+    color: var(--color-forest-ink);
+    @include cream-link-hover;
+  }
+
+  :focus-visible {
+    outline-color: var(--color-orange);
+  }
+}
+
+.page-banner__inner {
+  max-width: $CONTAINER-WIDTH;
+  margin: 0 auto;
+  padding: 0 $GUTTER;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 2rem;
+}
+
+// Breadcrumb on forest: the label style, Orange links, Fresh arrows. Doubled
+// class so it outranks _breadcrumb.scss, which loads after this file.
+.breadcrumb.page-banner__breadcrumb {
+  flex: 1 1 100%;
+  @include eyebrow;
+
+  .page-banner & a {
+    color: var(--color-orange);
+  }
+
+  li + li::before {
+    color: var(--color-fresh);
+  }
+}
+
+.page-banner__heading {
+  flex: 999 1 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.page-banner__title {
+  margin: 0;
+  color: inherit;
+}
+
+.page-banner__intro {
+  margin: 0;
+  max-width: $CONTENT-WIDTH;
+}
+
+// Right-hand area: other content first, then the actions. Below the title,
+// left aligned, on narrow screens; beside it, right aligned, from $LG.
+.page-banner__aside {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1.5rem;
+  min-width: 0;
+}
+
+.page-banner__extra {
+  min-width: 0;
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.page-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.page-banner__note {
+  flex: 1 1 100%;
+  margin: 0;
+  font-weight: $FONT-WEIGHT-BOLD;
+}
+
+@media (min-width: $LG) {
+  .page-banner__aside {
+    justify-content: flex-end;
+  }
+}

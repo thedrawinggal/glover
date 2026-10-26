@@ -1,0 +1,408 @@
+/*
+ * Profile, Edit User and Add New User: the town's layout, built by
+ * user-screens.js. Accent color comes from WordPress's admin theme color.
+ * The grays (#dcdcde lines, #646970 secondary text, #8c8f94 field borders,
+ * #b32d2e delete) are WordPress's own admin grays; core defines no CSS
+ * variables for them.
+ */
+
+/* Until the layout script runs, so WordPress's layout doesn't flash. It
+   shows anyway after two seconds if the script never runs. */
+html:not(.glover-user-ready) body.js #your-profile,
+html:not(.glover-user-ready) body.js #createuser {
+    visibility: hidden;
+    animation: glover-user-reveal 0s 2s forwards;
+}
+
+@keyframes glover-user-reveal {
+    to {
+        visibility: visible;
+    }
+}
+
+/* Header */
+
+.glover-user-header {
+    margin: -10px -20px 0 -22px;
+    padding: 28px 20px 0 22px;
+    background: #fff;
+    border-bottom: 1px solid #dcdcde;
+}
+
+/* The header stacks by the content area's width, so it fits the Uploaders
+   dialog. The container is the content area, not the header, because a
+   container can't run under WordPress's floated Help tab. */
+#wpbody-content {
+    container: glover-user-header / inline-size;
+}
+
+.glover-user-header:not(:has(.glover-user-header__sections)) {
+    padding-bottom: 28px;
+}
+
+.glover-user-header__crumbs {
+    margin-bottom: 16px;
+    color: #646970;
+}
+
+.glover-user-header__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.glover-user-header__avatar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--wp-admin-theme-color);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.glover-user-header__avatar--new {
+    background: none;
+    border: 2px dashed #8c8f94;
+    color: #646970;
+}
+
+.glover-user-header__avatar--new .dashicons {
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+}
+
+.glover-user-header__text {
+    flex: 1 1 280px;
+    min-width: 0;
+}
+
+.wrap .glover-user-header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.glover-user-header__meta {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #646970;
+    overflow-wrap: anywhere;
+}
+
+.glover-user-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.glover-user-header__tags li {
+    margin: 0;
+    padding: 2px 8px;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.glover-user-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.glover-user-header__actions .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+}
+
+/* The saving spinner takes room only while it spins. */
+.glover-user-header__actions .spinner:not(.is-active) {
+    display: none;
+}
+
+/* WordPress's delete red, outlined with no fill. */
+.wp-core-ui .glover-user-header__delete,
+.wp-core-ui .glover-user-header__delete:visited {
+    border-color: #b32d2e;
+    background: transparent;
+    color: #b32d2e;
+}
+
+.wp-core-ui .glover-user-header__delete:hover,
+.wp-core-ui .glover-user-header__delete:focus {
+    border-color: #8a2424;
+    background: transparent;
+    color: #8a2424;
+}
+
+.wp-core-ui .glover-user-header__delete:focus {
+    box-shadow: 0 0 0 1px #8a2424;
+}
+
+.glover-user-header__sections ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.glover-user-header__sections li {
+    margin: 0;
+}
+
+.glover-user-header__sections a {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 2px solid transparent;
+    color: #50575e;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.glover-user-header__sections a:hover {
+    color: var(--wp-admin-theme-color);
+}
+
+.glover-user-header__sections a[aria-current] {
+    border-bottom-color: var(--wp-admin-theme-color);
+    color: #1d2327;
+    font-weight: 600;
+}
+
+/* Sections */
+
+/* The sections stack by the room the form has, not the screen width, so
+   tablets, the collapsed admin menu and the Uploaders dialog stack too. */
+.glover-user-sections {
+    container: glover-user-sections / inline-size;
+}
+
+.glover-user-section {
+    display: grid;
+    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+    gap: 16px 48px;
+    padding: 32px 0;
+    border-top: 1px solid #dcdcde;
+    scroll-margin-top: 48px;
+}
+
+.glover-user-section:first-child {
+    border-top: 0;
+}
+
+.glover-user-section[hidden] {
+    display: none;
+}
+
+.glover-user-section h2 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.glover-user-section__intro {
+    max-width: 30ch;
+    margin: 6px 0 0;
+    color: #646970;
+    overflow-wrap: anywhere;
+}
+
+.glover-user-section__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+    max-width: 640px;
+}
+
+/* Fields */
+
+.glover-user-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+/* WordPress's password script shows the weak-password row with an inline
+   style when it applies. */
+.glover-user-field[hidden],
+.glover-user-field.hidden,
+.glover-user-field.hide-if-js,
+.glover-user-field.pw-weak {
+    display: none;
+}
+
+.glover-user-field__title {
+    font-weight: 600;
+}
+
+.glover-user-field__control p.description {
+    margin-top: 6px;
+}
+
+/* The ids match WordPress's own 25em width rule for Add New User. */
+#your-profile.glover-user-screen .glover-user-field__control :is(input[type="text"], input[type="email"], input[type="url"], input[type="password"], select):not(.small-text),
+#createuser.glover-user-screen .glover-user-field__control :is(input[type="text"], input[type="email"], input[type="url"], input[type="password"], select) {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Wide rows take both columns. */
+.glover-user-field--check,
+.glover-user-field--action,
+.glover-user-block,
+.glover-user-table,
+.glover-user-field[data-glover-field="email"],
+.glover-user-field[data-glover-field="user-login"],
+.glover-user-field[data-glover-field="pass1"],
+.glover-user-field[data-glover-field="pass2"],
+.glover-user-field[data-glover-field="pw-weak"] {
+    grid-column: 1 / -1;
+}
+
+/* An action: its description beside the button. */
+.glover-user-field--action {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+}
+
+/* A line between actions, never after the last, which the section's own
+   top border follows. */
+.glover-user-field--action ~ .glover-user-field--action {
+    padding-top: 20px;
+    border-top: 1px solid #dcdcde;
+}
+
+.glover-user-field--action .glover-user-field__title {
+    flex: 1 1 280px;
+    font-size: 14px;
+}
+
+.glover-user-field--action .glover-user-field__title p.description {
+    margin: 4px 0 0;
+    font-weight: 400;
+}
+
+.glover-user-field--action .glover-user-field__control {
+    flex: 0 1 auto;
+    max-width: 100%;
+}
+
+.glover-user-field--action .wp-pwd:not(.hidden) {
+    min-width: min(100%, 25em);
+}
+
+/* Application Passwords, kept whole. */
+.glover-user-block h2 {
+    font-size: 14px;
+}
+
+.glover-user-block > p:first-of-type {
+    margin-top: 4px;
+    color: #646970;
+}
+
+/* Other field groups (Document Submitter), kept as ACF's own table. */
+.glover-user-table,
+.glover-user-table > tbody {
+    display: block;
+}
+
+.glover-user-table > tbody > tr {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.glover-user-table > tbody > tr:last-child {
+    margin-bottom: 0;
+}
+
+/* Specific enough to win over ACF's form-table cell widths and padding. */
+.glover-user-screen .glover-user-table.form-table > tbody > tr > :is(th, td) {
+    display: block;
+    width: auto;
+    padding: 0;
+}
+
+.glover-user-screen .glover-user-table .acf-label .description {
+    margin-top: 2px;
+}
+
+.glover-user-table .acf-label label {
+    font-weight: 600;
+}
+
+@media screen and (max-width: 782px) {
+    .glover-user-header {
+        margin: -10px -12px 0 -10px;
+        padding: 20px 12px 0 10px;
+    }
+}
+
+/* Too narrow for the buttons beside the name: they go below it, and the
+   initials get smaller. */
+@container glover-user-header (max-width: 640px) {
+    .glover-user-header__main {
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .glover-user-header__avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+    }
+
+    .glover-user-header__text {
+        flex-basis: 0;
+    }
+
+    .glover-user-header__actions {
+        flex: 1 1 100%;
+        gap: 12px;
+    }
+}
+
+/* Too narrow for the description beside the fields: it goes on top. */
+@container glover-user-sections (max-width: 900px) {
+    .glover-user-section {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .glover-user-section__intro {
+        max-width: 60ch;
+    }
+
+    .glover-user-section__fields {
+        max-width: none;
+    }
+}
+
+/* Too narrow for two fields side by side. */
+@container glover-user-sections (max-width: 520px) {
+    .glover-user-section__fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

@@ -1,0 +1,427 @@
+{
+    "key": "group_glover_document_library_settings",
+    "title": "Document Library Settings",
+    "fields": [
+        {
+            "key": "field_glover_document_settings_tab_general",
+            "label": "General",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_document_settings_approver",
+            "label": "Approvers",
+            "name": "document_library_approver",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "Everyone listed can review and approve submitted documents, and each gets an email when one is waiting.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_upload_cap",
+            "label": "Upload size cap (MB)",
+            "name": "document_library_upload_cap",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Optional. Leave blank for no cap. The web host's own upload limit always applies.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 1,
+            "max": "",
+            "step": 1,
+            "placeholder": "",
+            "prepend": "",
+            "append": "MB",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contact_name",
+            "label": "Help contact name",
+            "name": "document_library_help_contact_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown in the library's help window as the person or office to contact.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Town Clerk's Office",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contact_phone",
+            "label": "Help contact phone",
+            "name": "document_library_help_contact_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "802-525-6227",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_help_contacts",
+            "label": "Help Contacts",
+            "name": "document_library_help_contacts",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "Their email addresses are shown in the library's help window and on Submit a Document.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_requirements_page",
+            "label": "Requirements guide page",
+            "name": "document_library_requirements_page",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "The page holding the accessibility and legal requirements for uploaded documents. The clerk keeps it current.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "page"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 0,
+            "allow_null": 1,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_document_settings_tab_uploaders",
+            "label": "Uploaders",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_document_settings_add_uploader",
+            "label": "Approved Uploaders",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "The list of approved uploaders, with Add User and Edit User. Built in document-library-uploaders.php.",
+            "new_lines": "",
+            "esc_html": 0
+        },
+        {
+            "key": "field_glover_document_settings_uploaders",
+            "label": "Approved uploaders",
+            "name": "document_library_uploaders",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "People who may submit documents, the boards they submit for, and whether their documents skip review. Turn on All boards to let someone post for every board. Approvers can always submit for every board. Each person needs a WordPress account first (Users > Add New).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add uploader",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glover_document_settings_uploader_user",
+                    "label": "Person",
+                    "name": "user",
+                    "aria-label": "",
+                    "type": "user",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "role": "",
+                    "return_format": "id",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "bidirectional": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_all_boards",
+                    "label": "All boards",
+                    "name": "all_boards",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_boards",
+                    "label": "Boards",
+                    "name": "boards",
+                    "aria-label": "",
+                    "type": "post_object",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_glover_document_settings_uploader_all_boards",
+                                "operator": "!=",
+                                "value": "1"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "department-board"
+                    ],
+                    "post_status": [
+                        "publish"
+                    ],
+                    "taxonomy": "",
+                    "return_format": "id",
+                    "multiple": 1,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "bidirectional": 0,
+                    "ui": 1,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                },
+                {
+                    "key": "field_glover_document_settings_uploader_auto_approve",
+                    "label": "Auto-approve",
+                    "name": "auto_approve",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_glover_document_settings_uploaders"
+                }
+            ]
+        },
+        {
+            "key": "field_glover_document_settings_tab_search",
+            "label": "Search",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_glover_document_settings_search_remove_emails",
+            "label": "Email addresses",
+            "name": "document_library_search_remove_emails",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Email addresses inside documents can't be searched for and never appear in search results. Addresses at the town's own domain (townofglover.com) are always kept.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Remove email addresses outside the town from search",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_glover_document_settings_search_excluded_terms",
+            "label": "Excluded words and phrases",
+            "name": "document_library_search_excluded_terms",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Separate entries with commas or new lines, for example: jenny@example.com, 123 Main Street, John Q. Smith. Capitals don't matter, and only whole words match, so \"Smith\" does not remove \"Smithfield\". Entries shorter than three characters are ignored. Saving a change updates every document in the background. This list is never shown on the public site.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": "",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_glover_document_settings_search_status",
+            "label": "Search status",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "new_lines": "",
+            "esc_html": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "glover-document-library-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792945641
+}

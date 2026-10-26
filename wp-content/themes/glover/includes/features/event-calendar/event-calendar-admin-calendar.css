@@ -1,0 +1,67 @@
+/* Admin Events calendar. FullCalendar injects its own base styles; these
+   rules cover only the Add button and occurrence states. */
+
+.glover-event-calendar {
+    margin-top: 16px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+}
+
+.glover-event-calendar .fc-daygrid-day-top {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.glover-calendar-add {
+    margin: 4px;
+    padding: 0 6px;
+    border: 1px solid #2271b1;
+    border-radius: 3px;
+    background: #fff;
+    color: #2271b1;
+    font-size: 12px;
+    line-height: 20px;
+    text-decoration: none;
+    opacity: 0;
+}
+
+.glover-calendar-add:hover {
+    background: #2271b1;
+    color: #fff;
+}
+
+/* Revealed on hover, and on keyboard focus so it is never an invisible
+   tab stop. */
+.fc-daygrid-day:hover .glover-calendar-add,
+.glover-calendar-add:focus {
+    opacity: 1;
+}
+
+/* Touch screens have no hover, so the button stays visible. */
+@media (hover: none) {
+    .glover-calendar-add {
+        opacity: 1;
+    }
+}
+
+.glover-calendar-event__content {
+    display: block;
+    overflow: hidden;
+    padding: 1px 2px;
+    white-space: normal;
+}
+
+.glover-calendar-event__status,
+.glover-calendar-event__time {
+    font-weight: 600;
+}
+
+.glover-calendar-event--cancelled .glover-calendar-event__title {
+    text-decoration: line-through;
+}
+
+.glover-calendar-event--cancelled,
+.glover-calendar-event--draft {
+    opacity: 0.75;
+}

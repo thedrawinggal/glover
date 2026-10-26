@@ -1,0 +1,112 @@
+{
+    "key": "group_glover_user_document_submitter",
+    "title": "Document Submitter",
+    "fields": [
+        {
+            "key": "field_glover_user_submitter_all_boards",
+            "label": "All Boards",
+            "name": "document_submitter_all_boards",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Approvers and administrators can always submit for every board.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Can post for every board",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_glover_user_submitter_boards",
+            "label": "Boards",
+            "name": "document_submitter_boards",
+            "aria-label": "",
+            "type": "post_object",
+            "instructions": "Required for Document Submitters unless All Boards is on.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glover_user_submitter_all_boards",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "department-board"
+            ],
+            "post_status": [
+                "publish"
+            ],
+            "taxonomy": "",
+            "return_format": "id",
+            "multiple": 1,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "ui": 1,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_glover_user_submitter_auto_approve",
+            "label": "Auto-Approve",
+            "name": "document_submitter_auto_approve",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Their documents publish without review",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "user_form",
+                "operator": "==",
+                "value": "all"
+            },
+            {
+                "param": "current_user_role",
+                "operator": "==",
+                "value": "administrator"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "left",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Read from and saved to the Uploaders list in Document Library settings, never to user meta.",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792765265
+}

@@ -1,0 +1,68 @@
+{
+    "key": "taxonomy_document_subject",
+    "title": "Topics",
+    "menu_order": 0,
+    "active": true,
+    "taxonomy": "document-subject",
+    "object_type": [
+        "document-library"
+    ],
+    "advanced_configuration": true,
+    "import_source": "",
+    "import_date": "",
+    "labels": {
+        "name": "Topics",
+        "singular_name": "Topic",
+        "menu_name": "Topics",
+        "search_items": "Search Topics",
+        "all_items": "All Topics",
+        "parent_item": "Parent Topic",
+        "edit_item": "Edit Topic",
+        "view_item": "View Topic",
+        "update_item": "Update Topic",
+        "add_new_item": "Add New Topic",
+        "new_item_name": "New Topic Name",
+        "not_found": "No topics found"
+    },
+    "description": "Informal tags shown as chips in the library filters. A controlled list; submitters pick from it.",
+    "capabilities": {
+        "manage_terms": "manage_categories",
+        "edit_terms": "manage_categories",
+        "delete_terms": "manage_categories",
+        "assign_terms": "edit_posts"
+    },
+    "public": false,
+    "publicly_queryable": false,
+    "hierarchical": false,
+    "show_ui": true,
+    "show_in_menu": true,
+    "show_in_nav_menus": false,
+    "show_in_rest": true,
+    "rest_base": "",
+    "rest_namespace": "wp/v2",
+    "rest_controller_class": "WP_REST_Terms_Controller",
+    "show_tagcloud": false,
+    "show_in_quick_edit": true,
+    "show_admin_column": true,
+    "rewrite": {
+        "permalink_rewrite": "no_permalink",
+        "slug": "",
+        "with_front": false,
+        "rewrite_hierarchical": false
+    },
+    "query_var": "none",
+    "query_var_name": "",
+    "default_term": {
+        "default_term_enabled": false,
+        "default_term_name": "",
+        "default_term_slug": "",
+        "default_term_description": ""
+    },
+    "sort": null,
+    "meta_box": "disabled",
+    "meta_box_cb": "",
+    "meta_box_sanitize_cb": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1792421356
+}

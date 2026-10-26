@@ -1,0 +1,50 @@
+// Modal dialogs built from [data-glover-dialog] sections by dialogs.js.
+// Without JavaScript, .dialog-content is an ordinary section on the page.
+
+.dialog {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 1.5rem 1.75rem;
+  border: 0;
+  border-radius: $RADIUS-LARGE;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  overflow: auto;
+
+  &::backdrop {
+    background: var(--color-backdrop);
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  h3 {
+    margin: 1.25rem 0 0.25rem;
+    font-size: $FONT-SIZE-H4;
+  }
+
+  .dialog-content {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.dialog__close {
+  float: right;
+  margin-left: 1rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.375rem;
+  border: 2px solid var(--color-forest-dark);
+  border-radius: $RADIUS-PILL;
+  background: transparent;
+  color: var(--color-forest-dark);
+  font-weight: $FONT-WEIGHT-SEMIBOLD;
+  cursor: pointer;
+}
+
+.dialog-content {
+  max-width: $CONTENT-WIDTH;
+  margin: 2rem auto 0;
+  padding: 0 $GUTTER;
+}

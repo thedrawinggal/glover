@@ -1,0 +1,1309 @@
+/*
+ * Documents screen (Document Library > Documents). WordPress admin colors and
+ * type; the replacement queue and compare dialog have their own layout.
+ */
+
+/*
+ * Colors. Anything that should follow the person's admin color scheme uses
+ * WordPress's own --wp-admin-theme-color variables. WordPress has no CSS
+ * variables for its grays, borders, red or notice colors, so their core
+ * values (wp-admin/css/common.css, forms.css, wp-includes/css/buttons.css)
+ * are named once here and nowhere else in this file.
+ */
+:root {
+    --glover-wp-text: #1d2327;
+    --glover-wp-text-muted: #50575e;
+    --glover-wp-border: #c3c4c7;
+    --glover-wp-border-light: #dcdcde;
+    --glover-wp-border-strong: #a7aaad;
+    --glover-wp-surface: #fff;
+    --glover-wp-surface-alt: #f6f7f7;
+    --glover-wp-red: #d63638;
+    --glover-wp-red-dark: #8a2424;
+    --glover-wp-warning-border: #996800;
+    --glover-wp-warning-bg: #fcf9e8;
+    --glover-wp-warning: #dba617;
+    --glover-wp-success: #00a32a;
+    --glover-wp-success-bg: #edfaef;
+    --glover-wp-success-text: #005c12;
+    --glover-wp-neutral: #8c8f94;
+    --glover-wp-neutral-text: #3c434a;
+    --glover-wp-shadow: rgba(0, 0, 0, 0.35);
+    --glover-wp-backdrop: rgba(0, 0, 0, 0.7);
+    /* The "Changed" tag: yellow on yellow, as approved (8:1 contrast). */
+    --glover-changed-bg: #fcf3c4;
+    --glover-changed-border: #dba617;
+    --glover-changed-text: #614a00;
+}
+
+.glover-review .nav-tab-wrapper {
+    margin-bottom: 1.25em;
+}
+
+.glover-review h2 .count,
+.glover-review .nav-tab .count {
+    font-weight: 400;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-review-intro {
+    max-width: 48em;
+    color: var(--glover-wp-text-muted);
+    font-size: 14px;
+}
+
+/* Every review table: plain alternating white and very light gray rows. */
+.glover-review .widefat tbody > tr:nth-child(odd) > * {
+    background: var(--glover-wp-surface);
+}
+
+.glover-review .widefat tbody > tr:nth-child(even) > * {
+    background: var(--glover-wp-surface-alt);
+}
+
+.glover-review-tag {
+    display: inline-block;
+    padding: 0 0.45em;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.7;
+    white-space: nowrap;
+}
+
+.glover-review-table .glover-review-tag {
+    margin-left: 0.35em;
+}
+
+/* Changed details: yellow on yellow, with the word itself carrying the meaning (8:1 contrast). */
+.glover-review-tag--changed {
+    border-color: var(--glover-changed-border);
+    background: var(--glover-changed-bg);
+    color: var(--glover-changed-text);
+}
+
+/* "Replaces: <title>" can be long, so it wraps inside the Title column. */
+.glover-review-tag--replaces {
+    white-space: normal;
+}
+
+.glover-review-tag--warning {
+    border-color: var(--glover-wp-warning-border);
+    background: var(--glover-wp-warning-bg);
+    color: var(--glover-changed-text);
+}
+
+.glover-review-flags {
+    margin: 0.35em 0 0;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-review-search {
+    margin: 0 0 1em;
+}
+
+.glover-review-search label {
+    display: block;
+    margin-bottom: 0.25em;
+    font-weight: 600;
+}
+
+.glover-review-pages {
+    margin-top: 1em;
+}
+
+.glover-review-empty {
+    font-size: 1.1em;
+}
+
+.glover-review-table .column-primary {
+    width: 28%;
+}
+
+/* Short values (dates, file type, backup status) take only the width
+   they need, leaving the rest to Title, Boards and Category. */
+.glover-review-table .glover-review-tight {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Edit | Return, Review on one line. */
+.glover-review-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.glover-review-sep {
+    padding: 0 2px;
+    color: var(--glover-wp-border-strong);
+}
+
+.glover-compare__actions .button {
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 38px;
+}
+
+/* Compare dialog. */
+
+.glover-compare-dialog {
+    width: min(1080px, calc(100vw - 32px));
+    max-width: none;
+    max-height: calc(100vh - 64px);
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0 6px 30px var(--glover-wp-shadow);
+    color: var(--glover-wp-text);
+}
+
+.glover-compare-dialog::backdrop {
+    background: var(--glover-wp-backdrop);
+}
+
+.glover-compare-dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.glover-compare-dialog .glover-compare {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: calc(100vh - 64px);
+}
+
+.glover-compare-dialog .glover-compare__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.glover-compare-page {
+    max-width: 1080px;
+    background: var(--glover-wp-surface);
+    border: 1px solid var(--glover-wp-border);
+    border-radius: 4px;
+}
+
+.glover-compare {
+    font-size: 13px;
+}
+
+.glover-compare__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 18px 24px 16px;
+    border-bottom: 1px solid var(--glover-wp-border-light);
+}
+
+.glover-compare__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.glover-compare__heading h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.glover-compare__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__label--blue {
+    color: var(--wp-admin-theme-color-darker-20, #183ad6);
+}
+
+.glover-compare__muted {
+    color: var(--glover-wp-text-muted);
+    font-weight: 400;
+}
+
+.glover-compare__close {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--glover-wp-text-muted);
+    cursor: pointer;
+}
+
+.glover-compare__close:hover {
+    color: var(--glover-wp-text);
+    border-color: var(--glover-wp-border);
+}
+
+.glover-compare__submitter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 24px;
+    padding: 14px 24px;
+    background: var(--glover-wp-surface-alt);
+    border-bottom: 1px solid var(--glover-wp-border-light);
+}
+
+.glover-compare__person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.glover-compare__person img {
+    border-radius: 50%;
+}
+
+.glover-compare__note {
+    flex: 1 1 360px;
+    min-width: 0;
+    padding: 10px 14px;
+    background: var(--glover-wp-surface);
+    border: 1px solid var(--glover-wp-border-light);
+    border-radius: 4px;
+}
+
+.glover-compare__note-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__note p {
+    margin: 0;
+    font-size: 14px;
+    white-space: pre-line;
+}
+
+.glover-compare__section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 24px 8px;
+}
+
+.glover-compare__section h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.glover-compare__section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+/* Files. */
+
+.glover-compare__files {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 8px;
+}
+
+.glover-compare__arrow {
+    align-self: center;
+    justify-self: center;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__file {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    border: 1px solid var(--glover-wp-border);
+    border-radius: 4px;
+    background: var(--glover-wp-surface);
+}
+
+.glover-compare__file--proposed {
+    padding: 13px;
+    border: 2px solid var(--wp-admin-theme-color, #3858e9);
+}
+
+.glover-compare__file--card {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.glover-compare__file-icon {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 58px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+    border: 1px solid var(--glover-wp-border-strong);
+    border-radius: 2px 10px 2px 2px;
+    background: var(--glover-wp-surface-alt);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__file-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.glover-compare__file-name {
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.glover-compare__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+}
+
+/* Several replacements: the published file, then a card per replacement. */
+
+.glover-compare__arrow--down {
+    margin: -2px 0;
+}
+
+.glover-compare__choices {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.glover-compare__choices legend {
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.glover-compare__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.glover-compare__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid var(--glover-wp-border);
+    border-radius: 4px;
+    background: var(--glover-wp-surface);
+    cursor: pointer;
+}
+
+.glover-compare__card:has(input:checked) {
+    padding: 13px;
+    border: 2px solid var(--wp-admin-theme-color, #3858e9);
+    background: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 7%, var(--glover-wp-surface));
+}
+
+.glover-compare__card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glover-compare__card-top input[type="radio"] {
+    margin: 0;
+}
+
+.glover-compare__card-who {
+    display: flex;
+    flex-direction: column;
+}
+
+.glover-compare__card-note {
+    font-size: 13px;
+}
+
+.glover-compare__card-foot {
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+/* Details tables. */
+
+.glover-compare__table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--glover-wp-border);
+    border-radius: 4px;
+}
+
+.glover-compare__table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.glover-compare__table th,
+.glover-compare__table td {
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.glover-compare__table thead th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glover-wp-border);
+    font-weight: 600;
+}
+
+.glover-compare__table tbody th {
+    font-weight: 600;
+}
+
+.glover-compare__table tbody tr:nth-child(even) > * {
+    background: var(--glover-wp-surface-alt);
+}
+
+.glover-compare__col-label {
+    width: 130px;
+}
+
+.glover-compare__col-choice {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* The chosen value is dark and bold, the other gray (both pass 4.5:1). */
+.glover-compare__current {
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__proposed {
+    font-weight: 600;
+}
+
+.glover-compare__row--keep .glover-compare__current {
+    color: var(--glover-wp-text);
+    font-weight: 600;
+}
+
+.glover-compare__row--keep .glover-compare__proposed {
+    color: var(--glover-wp-text-muted);
+    font-weight: 400;
+}
+
+.glover-compare__proposed .glover-review-tag {
+    margin-left: 2px;
+}
+
+.glover-compare__change-note {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__edit-title {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.glover-compare__title-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    font-weight: 400;
+}
+
+.glover-compare__title-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__title-field input {
+    width: 100%;
+}
+
+.glover-compare__title-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.glover-compare__title-buttons[hidden] {
+    display: none;
+}
+
+.glover-compare.is-enhanced .glover-compare__title-field {
+    margin-top: 0;
+}
+
+/* Keep current / Use proposed: radios drawn as a two-part button. */
+
+.glover-choice {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--wp-admin-theme-color, #3858e9);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.glover-choice label {
+    display: block;
+}
+
+.glover-choice label + label {
+    border-left: 1px solid var(--wp-admin-theme-color, #3858e9);
+}
+
+.glover-choice input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+}
+
+.glover-choice span {
+    display: block;
+    padding: 4px 8px;
+    background: var(--glover-wp-surface);
+    color: var(--wp-admin-theme-color, #3858e9);
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.glover-choice input:checked + span {
+    background: var(--wp-admin-theme-color, #3858e9);
+    color: var(--glover-wp-surface);
+    font-weight: 600;
+}
+
+.glover-choice input:focus-visible + span {
+    outline: 2px solid var(--glover-wp-text);
+    outline-offset: -4px;
+}
+
+.glover-choice input:checked:focus-visible + span {
+    outline-color: var(--glover-wp-surface);
+}
+
+/* Details that stay the same. */
+
+.glover-compare__same summary {
+    display: inline-block;
+    padding: 6px 0;
+    color: var(--wp-admin-theme-color, #3858e9);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.glover-compare__same[open] summary {
+    margin-bottom: 8px;
+}
+
+.glover-compare__table--same {
+    min-width: 0;
+    border: 1px solid var(--glover-wp-border-light);
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__table--same th {
+    width: 130px;
+    color: var(--glover-wp-text);
+}
+
+.glover-compare__none {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Footer: summary, reason, actions. */
+
+.glover-compare__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 14px 24px 16px;
+    border-top: 1px solid var(--glover-wp-border-light);
+    background: var(--glover-wp-surface-alt);
+}
+
+.glover-compare__footer[hidden] {
+    display: none;
+}
+
+.glover-compare__summary {
+    margin: 0;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-compare__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+}
+
+.glover-compare__field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.glover-compare__field input,
+.glover-compare__field textarea {
+    width: 100%;
+}
+
+.glover-compare__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.glover-compare__actions > a:not(.button),
+.glover-compare__actions > .button-link {
+    padding: 10px 4px;
+    font-size: 14px;
+}
+
+.glover-compare__actions .button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+@media (max-width: 782px) {
+    .glover-compare__header,
+    .glover-compare__submitter,
+    .glover-compare__section,
+    .glover-compare__footer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .glover-compare__files {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .glover-compare__files .glover-compare__arrow {
+        transform: rotate(90deg);
+    }
+}
+
+/* Check text, shown in place of the comparison. */
+
+.glover-compare__check {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1 1 auto;
+}
+
+.glover-compare__check-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--glover-wp-border-light);
+    background: var(--glover-wp-surface-alt);
+}
+
+.glover-compare__check-bar h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.glover-compare__check-bar .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 36px;
+}
+
+.glover-compare__check-body {
+    padding: 4px 24px 24px;
+}
+
+.glover-compare-dialog .glover-compare__check-body {
+    overflow-y: auto;
+}
+
+.glover-compare__check-body .glover-preview-dialog__frame {
+    margin-top: 16px;
+}
+
+.glover-compare__check-body .glover-text-check__text {
+    max-width: none;
+}
+
+/* Preview document. */
+
+.glover-preview-dialog__body {
+    padding: 16px 24px;
+}
+
+.glover-preview-dialog__frame {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 300px);
+    min-height: 360px;
+    border: 1px solid var(--glover-wp-border);
+    border-radius: 4px;
+    background: var(--glover-wp-surface-alt);
+}
+
+.glover-preview-dialog .glover-compare__footer {
+    margin-top: 0;
+}
+
+.glover-preview-dialog .glover-text-check__text {
+    max-width: none;
+}
+
+.glover-compare__actions .button-primary[href] {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Return dialog. */
+
+.glover-return-dialog {
+    width: min(640px, calc(100vw - 32px));
+}
+
+.glover-return-dialog__body {
+    padding: 16px 24px 8px;
+    font-size: 14px;
+}
+
+.glover-return-dialog__body p {
+    margin: 0 0 12px;
+}
+
+.glover-return-dialog .glover-compare__footer {
+    margin-top: 0;
+}
+
+/* Uploaders tab (Document Library > Settings): the list and the user dialog. */
+
+.glover-uploaders {
+    max-width: 1200px;
+    margin-bottom: 24px;
+}
+
+.glover-uploaders__actions {
+    text-align: right;
+}
+
+.glover-user-dialog {
+    width: min(960px, calc(100vw - 48px));
+    height: calc(100vh - 48px);
+    max-height: none;
+}
+
+.glover-user-dialog .glover-compare {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.glover-user-dialog__frame {
+    flex: 1;
+    width: 100%;
+    border: 0;
+}
+
+/* Parts the script hides; author display rules above would otherwise win. */
+.glover-compare [hidden] {
+    display: none !important;
+}
+
+.glover-undo-form {
+    display: inline-block;
+    margin: 0;
+}
+
+/* Approved tab: size columns to their content so Actions stays on screen. */
+.glover-review-table--approved th,
+.glover-review-table--approved td {
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.glover-review-table--approved .glover-review-actions {
+    white-space: nowrap;
+    width: 1%;
+}
+
+/* Narrower windows: stack the Approved actions instead of cutting them off. */
+@media (max-width: 1279px) {
+    .glover-review-table--approved .glover-review-actions {
+        white-space: normal;
+        width: auto;
+    }
+
+    .glover-review-table--approved .glover-review-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .glover-review-table--approved .glover-review-buttons .button,
+    .glover-review-table--approved .glover-undo-form {
+        width: 100%;
+        text-align: center;
+    }
+
+    .glover-review-table--approved .glover-review-sep {
+        display: none;
+    }
+}
+
+.glover-review-view {
+    margin: 0 0 1em;
+}
+
+/* Delete permanently: WordPress's own destructive red (core .button-link-delete). */
+.glover-review .button.glover-button-delete {
+    color: var(--glover-wp-red);
+    border-color: var(--glover-wp-red);
+}
+
+.glover-review .button.glover-button-delete:hover,
+.glover-review .button.glover-button-delete:focus {
+    color: var(--glover-wp-surface);
+    background: var(--glover-wp-red);
+    border-color: var(--glover-wp-red);
+}
+
+/* Destructive confirm in the shared dialog (Delete permanently). */
+.glover-compare-dialog .button.button-primary.glover-dialog-danger {
+    background: var(--glover-wp-red);
+    border-color: var(--glover-wp-red);
+    color: var(--glover-wp-surface);
+}
+
+.glover-compare-dialog .button.button-primary.glover-dialog-danger:hover,
+.glover-compare-dialog .button.button-primary.glover-dialog-danger:focus {
+    background: var(--glover-wp-red-dark);
+    border-color: var(--glover-wp-red-dark);
+}
+
+/* Returned tab: intro text with Trash all at the right. */
+.glover-review-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin: 1em 0;
+}
+
+.glover-review-toolbar .glover-review-intro {
+    margin: 0;
+}
+
+/* Tags sit on their own line under the title, side by side, wrapping. */
+.glover-review-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.glover-review-table .glover-review-tags .glover-review-tag {
+    margin-left: 0;
+}
+
+/* Review dialog: the submitter's note, above the file. Long notes scroll. */
+.glover-preview-dialog__note {
+    flex: none;
+    margin: 16px 24px 0;
+    max-height: 9.5em;
+    overflow-y: auto;
+}
+
+.glover-preview-dialog__note h3.glover-compare__note-label {
+    margin: 0 0 2px;
+}
+
+.glover-preview-dialog__note p {
+    white-space: pre-line;
+}
+
+.glover-preview-dialog__note[hidden] {
+    display: none;
+}
+
+/* Edit screen: Review under the Document file field. */
+.glover-edit-review {
+    margin: 12px 0 0;
+}
+
+/* Edit screen (document-library-edit-screen.php). Core markup and classes do
+   the styling; these only space things. */
+.glover-edit-back {
+    margin: 0 0 4px;
+}
+
+.wp-heading-inline .glover-edit-status {
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.glover-edit-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+#glover-document-status .misc-pub-section .glover-edit-buttons {
+    justify-content: flex-start;
+}
+
+#glover-document-details .glover-review-tags {
+    margin: 0 0 8px;
+}
+
+/* The Document box is laid out like WordPress's Publish box: no inner
+   padding, so the gray footer runs edge to edge. */
+#poststuff #glover-document-status .inside {
+    margin: 0;
+    padding: 0;
+}
+
+/* Return on the left, Approve on the right, like Save Draft and Preview. */
+#glover-document-status .glover-edit-review-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+#glover-document-status .glover-edit-review-actions .button-primary {
+    margin-left: auto;
+}
+
+/* Sidebar box contents (design: "Sidebar boxes, restyled" on the edit screen canvas). */
+.glover-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 12px 2px 10px;
+    border: 1px solid;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.glover-status-pill::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.glover-status-pill--approved {
+    border-color: var(--glover-wp-success);
+    background: var(--glover-wp-success-bg);
+    color: var(--glover-wp-success-text);
+}
+
+.glover-status-pill--approved::before {
+    background: var(--glover-wp-success);
+}
+
+.glover-status-pill--pending {
+    border-color: var(--glover-wp-warning);
+    background: var(--glover-wp-warning-bg);
+    color: var(--glover-changed-text);
+}
+
+.glover-status-pill--pending::before {
+    background: var(--glover-wp-warning);
+}
+
+.glover-status-pill--returned,
+.glover-status-pill--draft {
+    border-color: var(--glover-wp-neutral);
+    background: var(--glover-wp-surface-alt);
+    color: var(--glover-wp-neutral-text);
+}
+
+.glover-status-pill--returned::before,
+.glover-status-pill--draft::before {
+    background: var(--glover-wp-neutral);
+}
+
+#glover-document-status .glover-edit-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 10px;
+}
+
+.glover-edit-external {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+}
+
+.glover-edit-external .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.glover-edit-dl {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.glover-edit-fact {
+    display: flex;
+    gap: 8px;
+}
+
+.glover-edit-fact .dashicons {
+    color: var(--glover-wp-text-muted);
+    margin-top: 1px;
+}
+
+.glover-edit-fact dt,
+.glover-edit-label {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--glover-wp-text-muted);
+}
+
+.glover-edit-fact dd {
+    margin: 0;
+}
+
+.glover-edit-muted {
+    color: var(--glover-wp-text-muted);
+    font-size: 12px;
+}
+
+.glover-edit-quote {
+    margin: 4px 0 0;
+    padding: 8px 10px;
+    background: var(--glover-wp-surface-alt);
+    border: 1px solid var(--glover-wp-border-light);
+    border-radius: 2px;
+}
+
+.glover-edit-panel {
+    padding: 10px 12px;
+    background: var(--glover-wp-surface-alt);
+    border: 1px solid var(--glover-wp-border-light);
+    border-radius: 2px;
+}
+
+.glover-edit-panel p {
+    margin: 0 0 8px;
+}
+
+#glover-document-status .misc-pub-section .glover-edit-buttons,
+.glover-edit-buttons--start {
+    justify-content: flex-start;
+}
+
+.glover-edit-details {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+#glover-document-details .glover-review-tags {
+    margin: 0;
+}
+
+.glover-edit-note__who {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.glover-edit-note__who img {
+    border-radius: 50%;
+}
+
+.glover-edit-rows {
+    margin: 0;
+    border-top: 1px solid var(--glover-wp-border-light);
+}
+
+.glover-edit-rows > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--glover-wp-border-light);
+}
+
+.glover-edit-rows dt {
+    flex: none;
+    color: var(--glover-wp-text-muted);
+    white-space: nowrap;
+}
+
+.glover-edit-rows dd {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.glover-edit-rows dd {
+    margin: 0;
+    text-align: right;
+}
+
+.glover-edit-history {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.glover-edit-history .glover-edit-label {
+    margin-top: 6px;
+}
+
+.glover-edit-versions {
+    margin: 0;
+}
+
+.glover-edit-versions li {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 8px;
+}
+
+.glover-edit-versions .dashicons {
+    color: var(--glover-wp-text-muted);
+}
+
+/* Activity: a timeline whose line runs unbroken through the dots. */
+.glover-edit-timeline {
+    margin: 0;
+    list-style: none;
+}
+
+.glover-edit-timeline li {
+    position: relative;
+    margin: 0;
+    padding: 0 0 12px 20px;
+    line-height: 1.4;
+}
+
+.glover-edit-timeline li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--glover-wp-border-light);
+}
+
+.glover-edit-timeline li:first-child::before {
+    top: 6px;
+}
+
+.glover-edit-timeline li:last-child {
+    padding-bottom: 0;
+}
+
+.glover-edit-timeline li:last-child::before {
+    bottom: auto;
+    height: 6px;
+}
+
+.glover-edit-timeline li:only-child::before {
+    display: none;
+}
+
+.glover-edit-timeline li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--glover-wp-border-strong);
+}
+
+.glover-edit-timeline li:first-child::after {
+    background: var(--wp-admin-theme-color, #3858e9);
+}
+
+/* JPEG documents in the preview dialogs. */
+.glover-preview-dialog__image {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 300px);
+    margin: 0 auto;
+    border: 1px solid var(--glover-wp-border);
+}
