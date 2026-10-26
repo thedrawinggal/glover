@@ -221,7 +221,7 @@ function glover_document_library_latest_for_board($board_id, $limit = 5)
  */
 function glover_document_library_accessible_copy_link()
 {
-    $email = GLOVER_DOCUMENT_LIBRARY_ACCESSIBLE_COPY_EMAIL;
+    $email = GLOVER_DOCUMENT_LIBRARY_CLERK_EMAIL;
 
     return sprintf('Email the Town Clerk at <a href="mailto:%1$s">%1$s</a>', esc_attr($email));
 }

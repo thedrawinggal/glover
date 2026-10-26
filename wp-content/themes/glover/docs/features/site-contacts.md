@@ -62,7 +62,6 @@ The screen is wp-admin only and uses ACF's native options page and User field (S
 Existing contact sources that could switch to the helper, none changed yet:
 
 - **Document Library Settings, Help contact name, phone and email** (`glover_document_library_help_contact()` in `includes/features/document-library/document-library-public.php`). Free text with "Town Clerk's Office" as the default name. It is shown on the Documents help dialog and results, the Submit a Document sign-in panel and steps ("Email the Town Clerk at …"), the "Questions? Town Clerk:" footer of submitter emails. The email could default to the Town Clerk's account email when the field is blank.
-- **Submit a Document, "Webmaster:" link** (`template-document-submission.php`). Uses `GLOVER_GOOGLE_MAIL_FROM`, the webmaster@ sending alias from `wp-config.php`, as the Webmaster's address. It could use `glover_site_webmaster()` instead.
 - **Glover Google must-use plugin.** Sends all mail from the `GLOVER_GOOGLE_MAIL_FROM` alias, with Reply-To defaulting to it. That is the site's sending identity, not a person, so it should stay a constant. The sign-in page's "contact the Town Clerk's office" message is plain text with no address.
 - A person's account email may be a personal address. Before any public page shows the Town Clerk's or Webmaster's account email, decide whether that is acceptable or whether the town's shared office addresses should stay as the public contact.
 

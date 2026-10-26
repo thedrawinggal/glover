@@ -107,5 +107,5 @@ These live in `components/document-library/` and serve the Document Library feat
 | `help.php` | Search help, shown as a dialog. | Documents |
 | `requirements.php` | Accessibility and legal requirements for uploads, from the page chosen in settings, shown as a dialog. | Submit a Document |
 | `latest-documents.php` | "Latest documents" feed for one board (`board_id`, `limit`). Styles: `components/_document-feed.scss`. | Department and board pages |
-| `submit-aside.php` | The signed-in right-hand column: account with Sign Out and assigned boards, the Upload Requirements panel (opens the requirements dialog) and Questions?. From 992px it stays pinned in view as the form scrolls (on screens at least 720px tall). Styles in `pages/_submit-document.scss`. | Submit a Document, signed in |
+| `submit-aside.php` | The signed-in right-hand column: account with Sign Out and assigned boards, the Upload Requirements panel (opens the requirements dialog) and Questions? (the Town Clerk). From 992px it stays pinned in view as the form scrolls (on screens at least 720px tall). Styles in `pages/_submit-document.scss`. | Submit a Document, signed in |
 | `submit-sign-in.php` | The Sign-In Panel with the submitters' left side, followed by the Steps component (How It Works). | Submit a Document, signed out |

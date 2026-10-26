@@ -9,8 +9,8 @@ const GLOVER_DOCUMENT_LIBRARY_CATEGORY_TAXONOMY = 'document-category';
 const GLOVER_DOCUMENT_LIBRARY_TOPIC_TAXONOMY = 'document-subject';
 const GLOVER_DOCUMENT_LIBRARY_BOARD_TAXONOMY = 'document-board';
 const GLOVER_DOCUMENT_LIBRARY_BOARD_POST_TYPE = 'department-board';
-// Where people ask for a document in an accessible format.
-const GLOVER_DOCUMENT_LIBRARY_ACCESSIBLE_COPY_EMAIL = 'clerk@townofglover.com';
+// The Town Clerk's public address: accessible-copy requests and Submit a Document's Questions? panel.
+const GLOVER_DOCUMENT_LIBRARY_CLERK_EMAIL = 'clerk@townofglover.com';
 const GLOVER_DOCUMENT_LIBRARY_SETTINGS_SLUG = 'glover-document-library-settings';
 const GLOVER_DOCUMENT_LIBRARY_ROLE = 'document_submitter';
 const GLOVER_DOCUMENT_LIBRARY_SUBMIT_CAP = 'submit_glover_documents';

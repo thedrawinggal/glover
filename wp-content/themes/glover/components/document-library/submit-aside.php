@@ -20,8 +20,6 @@ foreach (array_slice(preg_split('/\s+/', $name), 0, 2) as $word) {
 
 $boards = glover_document_library_allowed_boards();
 $all_boards = count($boards) === count(glover_document_library_all_boards());
-$clerk_links = glover_document_library_help_contact_links();
-$webmaster_email = defined('GLOVER_GOOGLE_MAIL_FROM') ? GLOVER_GOOGLE_MAIL_FROM : '';
 ?>
 <aside class="submit-document__aside" aria-label="Your Account and Help">
     <section class="submit-account" aria-labelledby="submit-account-name">
@@ -56,15 +54,8 @@ $webmaster_email = defined('GLOVER_GOOGLE_MAIL_FROM') ? GLOVER_GOOGLE_MAIL_FROM 
         <a class="button button--secondary" href="#glover-requirements" data-dialog-open="glover-requirements">Review the Requirements</a>
     </section>
 
-    <?php if ($clerk_links || $webmaster_email) : ?>
-        <section class="submit-questions" aria-labelledby="submit-questions-heading">
-            <h2 id="submit-questions-heading" class="submit-questions__heading">Questions?</h2>
-            <?php if ($clerk_links) : ?>
-                <p>Town Clerk: <?php echo $clerk_links; // Escaped by the helper. ?></p>
-            <?php endif; ?>
-            <?php if ($webmaster_email) : ?>
-                <p>Webmaster: <a href="mailto:<?php echo esc_attr($webmaster_email); ?>"><?php echo esc_html($webmaster_email); ?></a></p>
-            <?php endif; ?>
-        </section>
-    <?php endif; ?>
+    <section class="submit-questions" aria-labelledby="submit-questions-heading">
+        <h2 id="submit-questions-heading" class="submit-questions__heading">Questions?</h2>
+        <p>Town Clerk: <a href="mailto:<?php echo esc_attr(GLOVER_DOCUMENT_LIBRARY_CLERK_EMAIL); ?>"><?php echo esc_html(GLOVER_DOCUMENT_LIBRARY_CLERK_EMAIL); ?></a></p>
+    </section>
 </aside>
